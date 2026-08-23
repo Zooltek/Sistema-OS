@@ -42,17 +42,19 @@ if (! defined('BASEPATH')) {
 |
 */
 
-$route['default_controller'] = 'mapos';
+$route['default_controller'] = 'amuraOS';
 $route['404_override'] = '';
 
 // Rotas Amura OS
-$route['sistema'] = 'mapos/index';
-$route['sistema/configurar'] = 'mapos/configurar';
-$route['sistema/emitente'] = 'mapos/emitente';
-$route['sistema/backup'] = 'mapos/backup';
-$route['sistema/atualizarBanco'] = 'mapos/atualizarBanco';
-$route['sistema/atualizarSistema'] = 'mapos/atualizarMapos';
-$route['sistema/(:any)'] = 'mapos/$1';
+$route['sistema'] = 'amuraOS/index';
+$route['sistema/configurar'] = 'amuraOS/configurar';
+$route['sistema/emitente'] = 'amuraOS/emitente';
+$route['sistema/backup'] = 'amuraOS/backup';
+$route['sistema/atualizarBanco'] = 'amuraOS/atualizarBanco';
+$route['sistema/atualizarSistema'] = 'amuraOS/atualizarMapos';
+$route['sistema/(:any)'] = 'amuraOS/$1';
+$route['mapos/(:any)'] = 'amuraOS/$1';
+$route['mapos'] = 'amuraOS/index';
 
 // Rotas da API
 if (filter_var($_ENV['API_ENABLED'] ?? false, FILTER_VALIDATE_BOOLEAN)) {

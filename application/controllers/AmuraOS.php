@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
-class Mapos extends MY_Controller
+class AmuraOS extends MY_Controller
 {
     public function __construct()
     {

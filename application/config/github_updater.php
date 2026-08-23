@@ -7,17 +7,17 @@ if (! defined('BASEPATH')) {
 /**
  * The user name of the git hub user who owns the repo
  */
-$config['github_user'] = 'RamonSilva20';
+$config['github_user'] = 'Zooltek';
 
 /**
  * The repo on GitHub we will be updating from
  */
-$config['github_repo'] = 'mapos';
+$config['github_repo'] = 'Sistema-OS';
 
 /**
  * The branch to update from
  */
-$config['github_branch'] = 'master';
+$config['github_branch'] = 'main';
 
 /**
  * The current commit the files are on.

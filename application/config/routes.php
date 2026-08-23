@@ -45,6 +45,15 @@ if (! defined('BASEPATH')) {
 $route['default_controller'] = 'mapos';
 $route['404_override'] = '';
 
+// Rotas Amura OS
+$route['sistema'] = 'mapos/index';
+$route['sistema/configurar'] = 'mapos/configurar';
+$route['sistema/emitente'] = 'mapos/emitente';
+$route['sistema/backup'] = 'mapos/backup';
+$route['sistema/atualizarBanco'] = 'mapos/atualizarBanco';
+$route['sistema/atualizarSistema'] = 'mapos/atualizarMapos';
+$route['sistema/(:any)'] = 'mapos/$1';
+
 // Rotas da API
 if (filter_var($_ENV['API_ENABLED'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
     require APPPATH . 'config/routes_api.php';

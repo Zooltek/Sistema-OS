@@ -40,7 +40,7 @@ Acesse as portas no seu navegador:
 
 ---
 
-## ⚙️ Configurações do Sistema (`/mapos/configurar`)
+## ⚙️ Configurações do Sistema (`/sistema/configurar`)
 
 O módulo de configurações centrais permite personalizar todo o comportamento operacional, visual e financeiro do Amura OS. O acesso é restrito aos usuários com permissão de administrador (`cSistema`).
 
@@ -88,7 +88,7 @@ O módulo de configurações centrais permite personalizar todo o comportamento 
 
 ---
 
-## 💾 Backup do Sistema (`/mapos/backup`)
+## 💾 Backup do Sistema (`/sistema/backup`)
 
 O backup garante a segurança total das informações cadastradas no Amura OS.
 
@@ -104,11 +104,11 @@ O backup garante a segurança total das informações cadastradas no Amura OS.
 
 ---
 
-## 🔄 Atualização do Sistema e Banco de Dados (`/mapos/configurar` -> Aba Atualizações)
+## 🔄 Atualização do Sistema e Banco de Dados (`/sistema/configurar` -> Aba Atualizações)
 
 O Amura OS possui rotinas automatizadas para manter o banco de dados e a estrutura do código sempre atualizados.
 
-### 1. Atualização do Banco de Dados (`/mapos/atualizarBanco`)
+### 1. Atualização do Banco de Dados (`/sistema/atualizarBanco`)
 - **Finalidade**: Executa as *migrations* do CodeIgniter, adicionando novas colunas, tabelas ou índices necessários para novas funcionalidades.
 - **Passo a Passo**:
   1. Acesse **Configurações -> Atualizações**.
@@ -116,11 +116,11 @@ O Amura OS possui rotinas automatizadas para manter o banco de dados e a estrutu
   3. No modal de confirmação, verifique a mensagem e confirme.
   4. O sistema executará todas as migrações pendentes e exibirá a mensagem de sucesso: *"Banco de dados atualizado com sucesso!"*.
 
-### 2. Atualização do Sistema (`/mapos/atualizarMapos`)
+### 2. Atualização do Sistema (`/sistema/atualizarSistema`)
 - **Finalidade**: Sincroniza o código-fonte do Amura OS com as versões mais recentes do repositório.
 - **Passo a Passo**:
   1. Acesse **Configurações -> Atualizações**.
-  2. Clique no botão **Atualizar Mapos**.
+  2. Clique no botão **Atualizar Amura OS**.
   3. O sistema verificará se há novas atualizações disponíveis e aplicará a atualização com segurança.
 
 > [!WARNING]

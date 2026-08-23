@@ -44,7 +44,7 @@ Para agilizar o atendimento, utilize as teclas de atalho a qualquer momento no s
 ## 3. Configuração da Empresa (Emitente)
 
 Antes de emitir OS ou Vendas, configure os dados da sua empresa:
-1. Acesse o menu **Configurações -> Emitente** (`/mapos/emitente`).
+1. Acesse o menu **Configurações -> Emitente** (`/sistema/emitente`).
 2. Preencha a Razão Social, CNPJ, Inscrição Estadual, Endereço completo, Telefone e E-mail de contato.
 3. Clique em **Alterar Logotipo** para enviar a imagem da sua marca (recomendado 130x130px).
 4. Essa logomarca e os dados da empresa serão impressos no cabeçalho de todas as OS, Vendas e Termos de Garantia.
@@ -67,7 +67,7 @@ Antes de emitir OS ou Vendas, configure os dados da sua empresa:
 
 ## 5. Guia Detalhado de Configurações do Sistema
 
-Acesse o menu **Configurações -> Sistema** (`/mapos/configurar`). O módulo de configurações está dividido em 8 abas funcionais:
+Acesse o menu **Configurações -> Sistema** (`/sistema/configurar`). O módulo de configurações está dividido em 8 abas funcionais:
 
 ```
 [ Gerais ] [ Financeiro ] [ Produtos ] [ Notificações ] [ Atualizações ] [ OS ] [ API ] [ E-mail ]
@@ -120,7 +120,7 @@ Acesse o menu **Configurações -> Sistema** (`/mapos/configurar`). O módulo de
 O backup é a única garantia de que suas informações estarão a salvo em caso de falha de hardware ou imprevistos.
 
 ### 🔄 Como Fazer o Backup em 1 Clique:
-1. Clique no menu superior **Configurações -> Backup** (ou acesse a URL `/mapos/backup`).
+1. Clique no menu superior **Configurações -> Backup** (ou acesse a URL `/sistema/backup`).
 2. O sistema gerará e baixará um arquivo `.zip` contendo toda a base de dados MySQL (ex: `backup23-08-2026_18-00-00.zip`).
 
 ### 🛡️ Plano Recomendado de Segurança:
@@ -136,17 +136,17 @@ O backup é a única garantia de que suas informações estarão a salvo em caso
 
 Mantenha seu sistema seguro e com os últimos recursos instalados.
 
-### 🗄️ Atualizando a Estrutura do Banco de Dados (`/mapos/atualizarBanco`)
+### 🗄️ Atualizando a Estrutura do Banco de Dados (`/sistema/atualizarBanco`)
 Quando houver atualizações que alterem colunas ou criem novas tabelas no banco de dados:
 1. Acesse **Configurações -> Atualizações**.
 2. Clique no botão **Banco de Dados**.
 3. Confirme a execução no aviso que aparecerá na tela.
 4. O Amura OS executará as *migrations* internas automaticamente e exibirá a mensagem de sucesso.
 
-### 💻 Atualizando o Código do Sistema (`/mapos/atualizarMapos`)
+### 💻 Atualizando o Código do Sistema (`/sistema/atualizarSistema`)
 1. Antes de atualizar, **FAÇA UM BACKUP DO BANCO DE DADOS** (conforme a Seção 6).
 2. Acesse **Configurações -> Atualizações**.
-3. Clique no botão **Atualizar Mapos**.
+3. Clique no botão **Atualizar Amura OS**.
 4. O sistema irá sincronizar e atualizar os arquivos da aplicação.
 
 ---

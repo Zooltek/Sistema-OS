@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Amura OS - Inicializando...</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #1e1e2d 0%, #0d0252 100%);
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .logo-container {
+      text-align: center;
+      margin-bottom: 25px;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    .logo-img {
+      max-height: 85px;
+      max-width: 280px;
+      filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.4));
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 15px;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #a2a3b7;
+      margin-top: 5px;
+    }
+    .loader-box {
+      width: 260px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+      margin-top: 25px;
+    }
+    .loader-bar {
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff9204, #f55776);
+      border-radius: 3px;
+      position: absolute;
+      animation: loading 1.5s infinite ease-in-out;
+    }
+    .status-text {
+      font-size: 12px;
+      color: #8c90a6;
+      margin-top: 12px;
+    }
+    @keyframes loading {
+      0% { left: -40%; width: 40%; }
+      50% { left: 40%; width: 60%; }
+      100% { left: 100%; width: 40%; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <img src="../assets/img/logo-original.png" class="logo-img" alt="Amura OS">
+    <div class="title">Amura OS</div>
+    <div class="subtitle">Sistema de Controle de Ordens de Serviço</div>
+  </div>
+  
+  <div class="loader-box">
+    <div class="loader-bar"></div>
+  </div>
+  
+  <div class="status-text" id="status">Iniciando serviços do sistema...</div>
+
+  <script>
+    const messages = [
+      'Iniciando serviços do sistema...',
+      'Verificando conexão com o servidor local...',
+      'Carregando módulos da aplicação...'
+    ];
+    let idx = 0;
+    setInterval(() => {
+      idx = (idx + 1) % messages.length;
+      document.getElementById('status').innerText = messages[idx];
+    }, 1200);
+  </script>
+</body>
+</html>

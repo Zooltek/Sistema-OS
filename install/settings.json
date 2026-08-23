@@ -1,0 +1,13 @@
+{
+	"title": "Amura OS - Sistema de Controle de Ordens de Serviço",
+	"extensions": [
+		"cURL",
+		"MySQLi",
+		"GD",
+    "zip"
+	],
+  "database_file": "../banco.sql",
+  "writeable_directories": {
+    "files": "/updates"
+  }
+}

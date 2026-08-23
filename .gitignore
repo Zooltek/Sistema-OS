@@ -1,0 +1,11 @@
+node_modules/
+dist/win-unpacked/
+dist/*.blockmap
+dist/builder-debug.yml
+docker/data/
+docker/dbdata/
+application/logs/*.php
+!application/logs/index.html
+.env.local
+.DS_Store
+Thumbs.db

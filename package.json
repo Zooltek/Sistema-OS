@@ -1,0 +1,39 @@
+{
+  "name": "amura-os-desktop",
+  "version": "1.0.0",
+  "description": "Amura OS - Aplicativo Desktop de Gestão de Ordens de Serviço",
+  "main": "desktop/main.js",
+  "author": "Amura Tecnologias",
+  "scripts": {
+    "start": "electron .",
+    "electron:start": "electron .",
+    "electron:build": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.amura.os",
+    "productName": "Amura OS",
+    "copyright": "Copyright © 2026 Amura Tecnologias",
+    "files": [
+      "desktop/**/*",
+      "assets/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "desktop/assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Amura OS"
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}

@@ -109,19 +109,22 @@ O backup garante a segurança total das informações cadastradas no Amura OS.
 O Amura OS possui rotinas automatizadas para manter o banco de dados e a estrutura do código sempre atualizados.
 
 ### 1. Atualização do Banco de Dados (`/sistema/atualizarBanco`)
-- **Finalidade**: Executa as *migrations* do CodeIgniter, adicionando novas colunas, tabelas ou índices necessários para novas funcionalidades.
+- **Mecanismo**: Utiliza a biblioteca interna de *Migrations* do CodeIgniter (`application/migrations/`). O sistema consulta a tabela `migrations` no MySQL, identifica migrações pendentes em relação aos arquivos de script e aplica automaticamente as alterações na estrutura de tabelas.
 - **Passo a Passo**:
   1. Acesse **Configurações -> Atualizações**.
   2. Clique em **Banco de Dados**.
   3. No modal de confirmação, verifique a mensagem e confirme.
-  4. O sistema executará todas as migrações pendentes e exibirá a mensagem de sucesso: *"Banco de dados atualizado com sucesso!"*.
+  4. O sistema executará as migrações e exibirá: *"Banco de dados atualizado com sucesso!"*.
 
-### 2. Atualização do Sistema (`/sistema/atualizarSistema`)
-- **Finalidade**: Sincroniza o código-fonte do Amura OS com as versões mais recentes do repositório.
-- **Passo a Passo**:
-  1. Acesse **Configurações -> Atualizações**.
-  2. Clique no botão **Atualizar Amura OS**.
-  3. O sistema verificará se há novas atualizações disponíveis e aplicará a atualização com segurança.
+### 2. Atualização do Código do Sistema (`/sistema/atualizarSistema`)
+- **Mecanismo**: Utiliza a biblioteca `Github_updater` ([github_updater.php](file:///d:/Projetos/Amura%20OS/application/libraries/Github_updater.php)).
+- **Integração com o GitHub**: Conecta-se à API REST do repositório `https://github.com/Zooltek/Sistema-OS.git` na branch `main`.
+- **Fluxo de Atualização**:
+  1. Compara a hash do commit atual (`current_commit` em `application/config/github_updater.php`) com a versão mais recente publicada no repositório.
+  2. Baixa o arquivo `.zip` da última versão diretamente do GitHub via cURL.
+  3. Extrai e compara a lista de arquivos modificados e removidos.
+  4. Atualiza os arquivos no servidor mantendo arquivos ignorados intactos.
+  5. Atualiza o código da versão e a hash do commit em arquivo.
 
 > [!WARNING]
 > **Atenção ao Atualizar**:

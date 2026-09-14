@@ -2,6 +2,9 @@ node_modules/
 dist/win-unpacked/
 dist/*.blockmap
 dist/builder-debug.yml
+dist/*Portable*.exe
+dist/AmuraOS_Data/
+data_local/
 docker/data/
 docker/dbdata/
 application/logs/*.php
@@ -9,3 +12,4 @@ application/logs/*.php
 .env.local
 .DS_Store
 Thumbs.db
+

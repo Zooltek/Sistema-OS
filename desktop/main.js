@@ -1,12 +1,12 @@
 const { app, BrowserWindow, Menu, Tray, nativeImage, ipcMain, shell } = require('electron');
 const path = require('path');
-const http = require('http');
+const ProcessManager = require('./server/process-manager');
 
 let mainWindow = null;
 let splashWindow = null;
-let tray = null;
+let processManager = null;
 
-const SERVER_URL = 'http://localhost:8002';
+const SERVER_URL = 'http://127.0.0.1:8002';
 const APP_TITLE = 'Amura OS - Sistema de Gestão';
 
 function createSplashWindow() {
@@ -107,7 +107,7 @@ function createMainWindow() {
   // Abrir links externos no navegador padrão do sistema
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
-      if (!url.includes('localhost:8002')) {
+      if (!url.includes('127.0.0.1:8002') && !url.includes('localhost:8002')) {
         shell.openExternal(url);
         return { action: 'deny' };
       }
@@ -121,51 +121,47 @@ function createMainWindow() {
     mainWindow.setTitle(APP_TITLE);
   });
 
-  // Travar fechamento na bandeja (Tray) ou sair
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
 
-function checkServerAndLoad(retryCount = 0) {
-  http.get(SERVER_URL, (res) => {
-    if (res.statusCode >= 200 && res.statusCode < 400) {
-      mainWindow.loadURL(SERVER_URL);
-      mainWindow.once('ready-to-show', () => {
-        if (splashWindow && !splashWindow.isDestroyed()) {
-          splashWindow.close();
-        }
-        mainWindow.show();
-        mainWindow.maximize();
-      });
-    } else {
-      retryServerCheck(retryCount);
-    }
-  }).on('error', () => {
-    retryServerCheck(retryCount);
-  });
-}
+// Inicialização do aplicativo
+app.whenReady().then(async () => {
+  createSplashWindow();
+  createMainWindow();
 
-function retryServerCheck(retryCount) {
-  if (retryCount > 60) {
+  processManager = new ProcessManager(app, app.isPackaged);
+
+  try {
+    await processManager.start((statusMessage) => {
+      if (splashWindow && !splashWindow.isDestroyed() && splashWindow.webContents) {
+        splashWindow.webContents.executeJavaScript(`
+          const el = document.getElementById('status');
+          if (el) el.innerText = '${statusMessage}';
+        `).catch(() => {});
+      }
+    });
+
+    mainWindow.loadURL(SERVER_URL);
+    mainWindow.once('ready-to-show', () => {
+      if (splashWindow && !splashWindow.isDestroyed()) {
+        splashWindow.close();
+      }
+      mainWindow.show();
+      mainWindow.maximize();
+    });
+  } catch (err) {
     if (splashWindow && !splashWindow.isDestroyed()) {
       splashWindow.close();
     }
-    const errWindow = new BrowserWindow({ width: 500, height: 260, title: 'Erro de Conexão' });
+    const errWindow = new BrowserWindow({ width: 550, height: 280, title: 'Erro de Inicialização' });
     errWindow.loadURL(`data:text/html;charset=utf-8,
       <style>body { font-family: sans-serif; background: #1e1e2d; color: #fff; padding: 25px; text-align: center; }</style>
-      <h3 style="color:#f55776;">Não foi possível conectar ao servidor local (port 8002)</h3>
-      <p>Certifique-se de que os containers do Amura OS estão em execução.</p>
+      <h3 style="color:#f55776;">Falha ao iniciar os serviços locais</h3>
+      <p style="color:#a2a3b7; font-size:13px; margin-top:10px;">${err.message}</p>
     `);
-    return;
   }
-  setTimeout(() => checkServerAndLoad(retryCount + 1), 1000);
-}
-
-app.whenReady().then(() => {
-  createSplashWindow();
-  createMainWindow();
-  checkServerAndLoad();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -174,7 +170,16 @@ app.whenReady().then(() => {
   });
 });
 
-app.on('window-all-closed', () => {
+app.on('before-quit', async (e) => {
+  if (processManager) {
+    await processManager.stopAll();
+  }
+});
+
+app.on('window-all-closed', async () => {
+  if (processManager) {
+    await processManager.stopAll();
+  }
   if (process.platform !== 'darwin') {
     app.quit();
   }

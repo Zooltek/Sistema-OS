@@ -7,22 +7,39 @@
   "scripts": {
     "start": "electron .",
     "electron:start": "electron .",
-    "electron:build": "electron-builder --win --x64"
+    "electron:build": "electron-builder --win --x64",
+    "electron:build:portable": "electron-builder --win portable --x64",
+    "electron:build:all": "electron-builder --win nsis portable --x64"
   },
   "build": {
     "appId": "com.amura.os",
     "productName": "Amura OS",
     "copyright": "Copyright © 2026 Amura Tecnologias",
+    "asar": false,
     "files": [
       "desktop/**/*",
-      "assets/**/*"
+      "!desktop/scripts/**/*",
+      "!desktop/temp_downloads/**/*",
+      "assets/**/*",
+      "application/**/*",
+      "vendor/**/*",
+      "index.php",
+      "banco.sql",
+      ".env",
+      "!data_local/**/*"
     ],
     "directories": {
       "output": "dist"
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "icon": "desktop/assets/icon.png"
+    },
+    "portable": {
+      "artifactName": "${productName} Portable ${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,

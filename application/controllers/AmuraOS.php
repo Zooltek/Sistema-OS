@@ -525,20 +525,20 @@ class AmuraOS extends MY_Controller
         $this->load->library('github_updater');
 
         if (!$this->github_updater->has_update()) {
-            $this->session->set_flashdata('success', 'Seu mapos já está atualizado!');
+            $this->session->set_flashdata('success', 'Seu Amura OS já está atualizado!');
 
-            return redirect(site_url('mapos/configurar'));
+            return redirect(site_url('sistema/configurar'));
         }
 
         $success = $this->github_updater->update();
 
         if ($success) {
-            $this->session->set_flashdata('success', 'Mapos atualizado com sucesso!');
+            $this->session->set_flashdata('success', 'Amura OS atualizado com sucesso!');
         } else {
-            $this->session->set_flashdata('error', 'Erro ao atualizar mapos!');
+            $this->session->set_flashdata('error', 'Erro ao atualizar o Amura OS!');
         }
 
-        return redirect(site_url('mapos/configurar'));
+        return redirect(site_url('sistema/configurar'));
     }
 
     public function calendario()

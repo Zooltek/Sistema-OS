@@ -21,6 +21,12 @@ Bem-vindo ao **Manual Oficial do Usuário do Amura OS**, o sistema avançado de 
 - **No Aplicativo Desktop (Windows)**: Dê um duplo clique no atalho **Amura OS** na sua Área de Trabalho ou execute `Amura OS Setup 1.0.0.exe`.
 - **No Navegador Web**: Acesse o endereço [http://localhost:8002](http://localhost:8002).
 
+### 🔑 Credenciais Padrão de Acesso:
+- **E-mail**: `admin@admin.com`
+- **Senha**: `admin`
+
+> **Dica**: Recomendamos alterar a senha no primeiro acesso através do menu superior de usuário -> *Minha Conta / Alterar Senha*.
+
 ### Tela Principal (Dashboard):
 Ao fazer login, você verá o Dashboard com:
 - **Cards Superiores**: Resumo de Clientes, Produtos, Serviços, Lançamentos Financeiros e OS.

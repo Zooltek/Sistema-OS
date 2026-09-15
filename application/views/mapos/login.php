@@ -48,14 +48,14 @@
 
     .login-wrapper {
       width: 100%;
-      max-width: 960px;
+      max-width: 1060px;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 52px;
+      grid-template-columns: 1.18fr 0.82fr;
+      gap: 68px;
       align-items: center;
     }
 
-    /* Coluna Esquerda: Imagem Pareada com Logo */
+    /* Coluna Esquerda: Imagem com Logo no Canto Superior Esquerdo */
     .showcase-column {
       display: flex;
       flex-direction: column;
@@ -64,30 +64,41 @@
       width: 100%;
     }
 
-    .brand-logo-wrap {
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .brand-logo-img {
-      height: 42px;
-      width: auto;
-      max-width: 230px;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
-    }
-
     .hero-image-card {
+      position: relative;
       width: 100%;
-      height: 395px;
+      height: 415px;
       border-radius: 16px;
       overflow: hidden;
       border: 1px solid var(--card-border);
-      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 22px 50px -12px rgba(0, 0, 0, 0.75);
       background: #111620;
     }
 
-    .hero-image-card img {
+    .brand-logo-badge {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      background: rgba(13, 17, 24, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      padding: 7px 15px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+    }
+
+    .brand-logo-badge img {
+      height: 30px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .hero-image-card .hero-bg-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -96,7 +107,7 @@
       transition: transform 0.4s ease;
     }
 
-    .hero-image-card:hover img {
+    .hero-image-card:hover .hero-bg-img {
       transform: scale(1.02);
     }
 
@@ -108,7 +119,7 @@
       text-align: center;
       line-height: 1.5;
       letter-spacing: -0.2px;
-      max-width: 440px;
+      max-width: 460px;
     }
 
     .accent-gradient {
@@ -132,7 +143,7 @@
       border-radius: 14px;
       padding: 26px 24px;
       width: 100%;
-      max-width: 375px;
+      max-width: 370px;
       box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.65);
     }
 
@@ -370,14 +381,13 @@
 
 <body>
   <div class="login-wrapper">
-    <!-- Coluna Esquerda: Imagem com Logo e Frase de Impacto -->
+    <!-- Coluna Esquerda: Imagem com Logo no Canto Superior Esquerdo e Frase de Impacto -->
     <div class="showcase-column">
-      <div class="brand-logo-wrap">
-        <img src="<?= base_url() ?>assets/img/Logo-Claro2.png" class="brand-logo-img" alt="Amura Sistemas">
-      </div>
-
       <div class="hero-image-card">
-        <img src="<?= base_url() ?>assets/img/os-hero.jpg" alt="Amura OS">
+        <div class="brand-logo-badge">
+          <img src="<?= base_url() ?>assets/img/Logo-Claro2.png" alt="Amura Sistemas">
+        </div>
+        <img src="<?= base_url() ?>assets/img/os-hero.jpg" class="hero-bg-img" alt="Amura OS">
       </div>
 
       <p class="hero-impact-text">

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual do Usuário - Amura OS</title>
+  <style>
+    :root {
+      --bg-primary: #151521;
+      --bg-secondary: #1e1e2d;
+      --bg-card: #27273a;
+      --accent: #ff9204;
+      --accent-hover: #e07f00;
+      --blue: #38bdf8;
+      --text-main: #f1f1f5;
+      --text-muted: #92929f;
+      --border: #323248;
+      --code-bg: #11111a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .brand h1 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .search-box input {
+      width: 100%;
+      padding: 9px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .search-box input:focus {
+      border-color: var(--accent);
+    }
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 10px;
+    }
+    .sidebar-nav a {
+      display: block;
+      padding: 9px 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      border-radius: 6px;
+      margin-bottom: 3px;
+      transition: all 0.2s;
+    }
+    .sidebar-nav a:hover, .sidebar-nav a.active {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-left: 3px solid var(--accent);
+    }
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .top-bar {
+      height: 52px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+    .top-bar .title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .top-actions button {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .top-actions button:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .content-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px 45px 60px 45px;
+      scroll-behavior: smooth;
+    }
+    .doc-section {
+      margin-bottom: 40px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-section:last-child {
+      border-bottom: none;
+    }
+    h2 {
+      font-size: 20px;
+      color: var(--accent);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    h3 {
+      font-size: 16px;
+      color: var(--blue);
+      margin: 18px 0 10px 0;
+    }
+    p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #d1d1db;
+      margin-bottom: 12px;
+    }
+    ul, ol {
+      padding-left: 22px;
+      margin-bottom: 14px;
+    }
+    li {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #d1d1db;
+      margin-bottom: 5px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #323248;
+      color: var(--accent);
+    }
+    .card-info {
+      background: var(--bg-card);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 6px;
+      margin: 15px 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .card-tip {
+      background: #192a24;
+      border-left: 4px solid #10b981;
+      padding: 14px 18px;
+      border-radius: 6px;
+      margin: 15px 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #a7f3d0;
+    }
+    kbd {
+      background: #11111a;
+      border: 1px solid #44445a;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-family: monospace;
+      color: #fff;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 13px;
+      color: #38bdf8;
+      margin: 12px 0;
+    }
+    @media print {
+      body { background: #fff; color: #000; height: auto; overflow: visible; }
+      .sidebar, .top-bar { display: none; }
+      .content-area, .content-scroll { overflow: visible; padding: 0; }
+      .doc-section { border-bottom: 1px solid #ddd; }
+      h2, h3 { color: #000; }
+      p, li { color: #333; }
+      .card-info, .card-tip { border-left-color: #333; background: #f4f4f4; color: #000; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <span style="font-size: 22px;">⚡</span>
+        <h1>Manual do Usuário</h1>
+      </div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Pesquisar tópico..." onkeyup="filterTopics()">
+      </div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <a href="#acesso" class="active">1. Acesso e Visão Geral</a>
+      <a href="#atalhos">2. Atalhos de Teclado</a>
+      <a href="#empresa">3. Configuração da Empresa</a>
+      <a href="#operacional">4. Gestão Operacional</a>
+      <a href="#configuracoes">5. Guia de Configurações</a>
+      <a href="#backup">6. Guia Completo de Backup</a>
+      <a href="#atualizacoes">7. Atualizações do Sistema</a>
+    </nav>
+  </aside>
+
+  <!-- Content -->
+  <main class="content-area">
+    <header class="top-bar">
+      <div class="title">Amura OS &bull; Documentação e Ajuda Oficial</div>
+      <div class="top-actions">
+        <button onclick="window.print()">🖨️ Imprimir Manual</button>
+      </div>
+    </header>
+
+    <div class="content-scroll" id="contentScroll">
+      <!-- 1. Acesso -->
+      <section class="doc-section" id="acesso">
+        <h2>1. Acesso e Visão Geral</h2>
+        <p>Bem-vindo ao <b>Manual Oficial do Usuário do Amura OS</b>, o sistema avançado de gestão de Ordens de Serviço, Vendas, Produtos, Clientes e Controle Financeiro da Amura Tecnologias.</p>
+        
+        <h3>Como Acessar:</h3>
+        <ul>
+          <li><b>No Aplicativo Desktop (Windows):</b> Dê um duplo clique no atalho <b>Amura OS</b> ou no executável portátil.</li>
+          <li><b>No Navegador Web:</b> Acesse o endereço <code>http://localhost:8002</code> ou <code>http://127.0.0.1:8002</code>.</li>
+        </ul>
+
+        <div class="card-info">
+          <b>🔑 Credenciais Padrão de Acesso:</b><br>
+          &bull; <b>E-mail:</b> <code>admin@admin.com</code><br>
+          &bull; <b>Senha:</b> <code>admin</code>
+        </div>
+        <div class="card-tip">
+          <b>Dica de Segurança:</b> Recomendamos alterar a senha no primeiro acesso através do menu superior de usuário &rarr; <i>Minha Conta / Alterar Senha</i>.
+        </div>
+
+        <h3>Tela Principal (Dashboard):</h3>
+        <ul>
+          <li><b>Cards Superiores:</b> Resumo instantâneo de Clientes, Produtos, Serviços, Lançamentos Financeiros e OS.</li>
+          <li><b>Estatísticas Financeiras:</b> Gráfico com totalização de Receitas (verde), Despesas (vermelho) e Saldo (azul).</li>
+          <li><b>Agenda e OS Recentes:</b> Acompanhamento rápido das atividades operacionais do dia.</li>
+        </ul>
+      </section>
+
+      <!-- 2. Atalhos -->
+      <section class="doc-section" id="atalhos">
+        <h2>2. Atalhos Rápidos de Teclado</h2>
+        <p>Para agilizar o atendimento diário no balcão e na oficina, utilize as teclas de atalho a qualquer momento:</p>
+        <ul>
+          <li><kbd>F1</kbd> &mdash; Abrir tela de pesquisa geral no sistema</li>
+          <li><kbd>F2</kbd> &mdash; Cadastrar novo Cliente</li>
+          <li><kbd>F3</kbd> &mdash; Cadastrar nova Ordem de Serviço (OS)</li>
+          <li><kbd>F4</kbd> &mdash; Cadastrar nova Venda</li>
+          <li><kbd>F6</kbd> &mdash; Acessar lista geral de Clientes</li>
+          <li><kbd>F7</kbd> &mdash; Acessar lista geral de Ordens de Serviço</li>
+          <li><kbd>Ctrl</kbd> + <kbd>R</kbd> &mdash; Recarregar a tela atual</li>
+          <li><kbd>F11</kbd> &mdash; Alternar modo de Tela Cheia</li>
+        </ul>
+      </section>
+
+      <!-- 3. Empresa -->
+      <section class="doc-section" id="empresa">
+        <h2>3. Configuração da Empresa (Emitente)</h2>
+        <p>Antes de emitir OS ou realizar vendas, configure os dados da sua empresa emitente:</p>
+        <ol>
+          <li>Acesse o menu <b>Configurações &rarr; Emitente</b> (<code>/sistema/emitente</code>).</li>
+          <li>Preencha a Razão Social, CNPJ, Inscrição Estadual, Endereço completo, Telefone e E-mail de contato.</li>
+          <li>Clique em <b>Alterar Logotipo</b> para enviar a imagem da sua marca (recomendado 130x130px).</li>
+          <li>A logomarca e os dados cadastrados serão impressos no cabeçalho de todas as OS, Vendas e Termos de Garantia.</li>
+        </ol>
+      </section>
+
+      <!-- 4. Gestão Operacional -->
+      <section class="doc-section" id="operacional">
+        <h2>4. Gestão Operacional (OS, Vendas, Clientes e Produtos)</h2>
+        <h3>Ordens de Serviço (OS):</h3>
+        <ul>
+          <li>Acesse <b>OS &rarr; Adicionar OS</b>.</li>
+          <li>Selecione o Cliente, informe o Equipamento, Defeito Relatado e Laudo Técnico.</li>
+          <li>Adicione os Produtos e Serviços utilizados. O sistema calcula automaticamente o valor total.</li>
+          <li><b>Faturamento:</b> Clique em <b>Faturar OS</b> para gerar o recebimento financeiro no caixa e dar baixa automática nos produtos em estoque.</li>
+          <li><b>Impressão:</b> Disponível em formato folha A4 completa ou Cupom Térmico Não Fiscal (80mm/58mm).</li>
+        </ul>
+
+        <h3>Vendas:</h3>
+        <ul>
+          <li>Acesse <b>Vendas &rarr; Adicionar Venda</b>.</li>
+          <li>Adicione os itens comprados, aplique desconto se necessário e clique em <b>Faturar Venda</b>.</li>
+        </ul>
+      </section>
+
+      <!-- 5. Configurações -->
+      <section class="doc-section" id="configuracoes">
+        <h2>5. Guia Detalhado de Configurações do Sistema</h2>
+        <p>Acesse o menu <b>Configurações &rarr; Sistema</b> (<code>/sistema/configurar</code>). O módulo está dividido em abas funcionais:</p>
+        
+        <pre>[ Gerais ] [ Financeiro ] [ Produtos ] [ Notificações ] [ Atualizações ] [ OS ] [ API ] [ E-mail ]</pre>
+
+        <h3>5.1. Aba Gerais:</h3>
+        <ul>
+          <li><b>Nome do Sistema:</b> Nome que aparece no topo, navegador e e-mails (Padrão: <code>Amura OS</code>).</li>
+          <li><b>Tema do Sistema:</b> Alterne entre 7 temas visuais (Dark, White, Pure Dark, Dark Orange, Dark Violet, White Green, White Black).</li>
+          <li><b>Registros por Página:</b> Quantidade de registros por tabela (10, 20, 50, 100).</li>
+        </ul>
+
+        <h3>5.2. Aba Financeiro e Pagamentos:</h3>
+        <ul>
+          <li><b>Permitir Baixa Retroativa:</b> Habilita o registro de pagamentos com datas passadas.</li>
+          <li><b>Edição/Exclusão de OS/Vendas Faturadas:</b> Quando desativado, protege lançamentos que já movimentaram o caixa.</li>
+          <li><b>Chave Pix:</b> Cadastre sua chave Pix (CPF, CNPJ, E-mail ou Aleatória) para impressão de QR Code direto na OS.</li>
+          <li><b>Gateways de Pagamento:</b> Suporte nativo a <b>EFI (Gerencianet)</b>, <b>Mercado Pago</b> e <b>Asaas</b>.</li>
+        </ul>
+
+        <h3>5.3. Notificações (WhatsApp e E-mail):</h3>
+        <ul>
+          <li><b>Notificação de OS por E-mail:</b> Selecione os destinatários (Todos, Cliente, Técnico, Emitente ou Nenhum).</li>
+          <li><b>Mensagem do WhatsApp:</b> Personalize o texto automático usando as variáveis <code>{CLIENTE_NOME}</code>, <code>{NUMERO_OS}</code>, <code>{STATUS_OS}</code>, <code>{VALOR_OS}</code>, <code>{DESCRI_PRODUTOS}</code> e <code>{EMITENTE}</code>.</li>
+        </ul>
+      </section>
+
+      <!-- 6. Backup -->
+      <section class="doc-section" id="backup">
+        <h2>6. Guia Completo de Backup de Dados</h2>
+        <p>O backup regular é fundamental para a segurança do seu negócio.</p>
+        
+        <h3>Como Fazer Backup pelo Menu Superior:</h3>
+        <ol>
+          <li>Clique no menu <b>Arquivo &rarr; Fazer Backup dos Dados (.sql)</b> no topo da tela.</li>
+          <li>Escolha onde deseja salvar o arquivo (ex: em um Pen Drive ou pasta do Google Drive/OneDrive).</li>
+          <li>O sistema exporta toda a estrutura e registros do banco MariaDB em segundos.</li>
+        </ol>
+
+        <div class="card-tip">
+          <b>Armazenamento dos Dados Portáteis:</b> Todos os dados do banco e anexos do Amura OS Portable ficam armazenados na pasta <code>AmuraOS_Data</code> junto ao executável ou no AppData do usuário. Você pode abri-la a qualquer momento pelo menu <b>Arquivo &rarr; Abrir Pasta de Dados</b>.
+        </div>
+      </section>
+
+      <!-- 7. Atualizações -->
+      <section class="doc-section" id="atualizacoes">
+        <h2>7. Guia de Atualização de Banco de Dados e Sistema</h2>
+        <h3>Atualizando a Estrutura do Banco (Migrations):</h3>
+        <p>Quando novas funcionalidades forem adicionadas ao sistema:</p>
+        <ol>
+          <li>Acesse <b>Configurações &rarr; Atualizações</b>.</li>
+          <li>Clique no botão <b>Banco de Dados</b>.</li>
+          <li>O Amura OS executará as migrations automaticamente e exibirá a mensagem de conclusão.</li>
+        </ol>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function filterTopics() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const links = document.querySelectorAll('#sidebarNav a');
+      const sections = document.querySelectorAll('.doc-section');
+
+      sections.forEach(sec => {
+        const text = sec.innerText.toLowerCase();
+        if (text.includes(input)) {
+          sec.style.display = 'block';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+
+      links.forEach(link => {
+        const targetId = link.getAttribute('href').substring(1);
+        const targetSec = document.getElementById(targetId);
+        if (targetSec && targetSec.style.display !== 'none') {
+          link.style.display = 'block';
+        } else {
+          link.style.display = 'none';
+        }
+      });
+    }
+
+    // Highlight active menu on scroll
+    const scrollContainer = document.getElementById('contentScroll');
+    const navLinks = document.querySelectorAll('#sidebarNav a');
+    const sections = document.querySelectorAll('.doc-section');
+
+    scrollContainer.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - scrollContainer.offsetTop;
+        if (scrollContainer.scrollTop >= top - 60) {
+          current = sec.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

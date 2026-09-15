@@ -1,6 +1,6 @@
 {
   "name": "amura-os-desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Amura OS - Aplicativo Desktop de Gestão de Ordens de Serviço",
   "main": "desktop/main.js",
   "author": "Amura Tecnologias",

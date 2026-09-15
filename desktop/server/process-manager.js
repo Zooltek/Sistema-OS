@@ -30,6 +30,7 @@ class ProcessManager {
     this.myIni = path.join(this.binDir, 'mariadb', 'my.ini');
 
     this.routerScript = path.join(this.desktopDir, 'server', 'router.php');
+    this.backupScript = path.join(this.desktopDir, 'server', 'backup.php');
     this.bancoSql = path.join(this.appRoot, 'banco.sql');
 
     // Determinar diretório de dados persistentes
@@ -43,19 +44,46 @@ class ProcessManager {
     }
 
     this.dbDataDir = path.join(this.dataDir, 'db');
+    this.logsDir = path.join(this.dataDir, 'logs');
+    this.logFile = path.join(this.logsDir, 'app_debug.log');
+    this.phpErrorLog = path.join(this.logsDir, 'php_error.log');
 
     this.mysqlProcess = null;
     this.phpProcess = null;
     this.isShuttingDown = false;
+    this.phpRestartTimeout = null;
+
+    // Criar diretórios necessários
+    try {
+      if (!fs.existsSync(this.dataDir)) fs.mkdirSync(this.dataDir, { recursive: true });
+      if (!fs.existsSync(this.dbDataDir)) fs.mkdirSync(this.dbDataDir, { recursive: true });
+      if (!fs.existsSync(this.logsDir)) fs.mkdirSync(this.logsDir, { recursive: true });
+    } catch (err) {
+      console.error('Erro ao criar pastas de dados/logs:', err);
+    }
   }
 
-  log(msg) {
-    console.log(`[ProcessManager] ${msg}`);
+  log(msg, level = 'INFO') {
+    const levelTag = String(level).padEnd(5);
+    const line = `[${new Date().toISOString()}] [${levelTag}] ${msg}\n`;
+    try {
+      if (fs.existsSync(this.logFile)) {
+        const stat = fs.statSync(this.logFile);
+        if (stat.size >= 5 * 1024 * 1024) { // 5MB max
+          const oldLog = this.logFile + '.old';
+          if (fs.existsSync(oldLog)) fs.unlinkSync(oldLog);
+          fs.renameSync(this.logFile, oldLog);
+        }
+      }
+      fs.appendFileSync(this.logFile, line);
+    } catch {}
+    console.log(`[ProcessManager] [${levelTag}] ${msg}`);
   }
 
   async start(onProgress) {
-    fs.mkdirSync(this.dataDir, { recursive: true });
-    fs.mkdirSync(this.dbDataDir, { recursive: true });
+    this.log('Iniciando ciclo de vida dos serviços Amura OS...');
+    this.log(`Diretório de dados: ${this.dataDir}`);
+    this.log(`Diretório de logs: ${this.logsDir}`);
 
     if (onProgress) onProgress('Verificando banco de dados...');
     await this.initDatabaseIfNeeded(onProgress);
@@ -84,7 +112,7 @@ class ProcessManager {
         execSync(installCmd, { stdio: 'inherit' });
         this.log('Banco de dados inicializado com sucesso.');
       } catch (err) {
-        this.log(`Aviso na inicialização do banco: ${err.message}`);
+        this.log(`Aviso na inicialização do banco: ${err.message}`, 'AVISO');
       }
     }
   }
@@ -121,7 +149,7 @@ class ProcessManager {
       };
 
       this.mysqlProcess.on('error', (err) => {
-        this.log(`Erro no processo MariaDB: ${err.message}`);
+        this.log(`Erro no processo MariaDB: ${err.message}`, 'ERRO');
         finish();
       });
 
@@ -132,7 +160,7 @@ class ProcessManager {
             this.log('MariaDB está pronto e respondendo (alive).');
             finish();
           } else if (attempts >= 60) {
-            this.log('Atingiu limite de tentativas para MariaDB ping.');
+            this.log('Atingiu limite de tentativas para MariaDB ping.', 'AVISO');
             finish();
           }
         });
@@ -155,7 +183,7 @@ class ProcessManager {
               this.log('banco.sql importado com sucesso!');
             }
           } catch (importErr) {
-            this.log(`Erro na importação: ${importErr.message}`);
+            this.log(`Erro na importação: ${importErr.message}`, 'ERRO');
           }
         } else {
           this.log('Banco de dados amura_os já existe.');
@@ -173,7 +201,7 @@ class ProcessManager {
           `;
           execSync(`"${this.mysqlExe}" -h 127.0.0.1 -P 3307 -u root -e "${fixUserSql.replace(/\r?\n/g, ' ')}"`, { stdio: 'ignore' });
         } catch (sanityErr) {
-          this.log(`Aviso ao verificar credenciais de usuário: ${sanityErr.message}`);
+          this.log(`Aviso ao verificar credenciais de usuário: ${sanityErr.message}`, 'AVISO');
         }
 
         resolve();
@@ -182,6 +210,8 @@ class ProcessManager {
   }
 
   async startPhpServer() {
+    if (this.isShuttingDown) return;
+
     this.log('Iniciando servidor PHP embutido...');
     const env = Object.assign({}, process.env, {
       DB_HOSTNAME: '127.0.0.1',
@@ -193,9 +223,12 @@ class ProcessManager {
       APP_BASEURL: 'http://localhost:8002/'
     });
 
+    const cleanPhpErrorLog = this.phpErrorLog.replace(/\\/g, '/');
+
     const args = [
       '-S', '127.0.0.1:8002',
       '-c', this.phpIni,
+      '-d', `error_log=${cleanPhpErrorLog}`,
       this.routerScript
     ];
 
@@ -203,11 +236,36 @@ class ProcessManager {
       cwd: this.appRoot,
       env: env,
       windowsHide: true,
-      stdio: 'pipe'
+      stdio: ['ignore', 'pipe', 'pipe']
+    });
+
+    this.phpProcess.stdout.on('data', (data) => {
+      const msg = data.toString().trim();
+      if (msg) this.log(`[PHP] ${msg}`);
+    });
+
+    this.phpProcess.stderr.on('data', (data) => {
+      const msg = data.toString().trim();
+      if (msg) this.log(`[PHP] ${msg}`);
     });
 
     this.phpProcess.on('error', (err) => {
-      this.log(`Erro no processo PHP: ${err.message}`);
+      this.log(`Erro no processo PHP: ${err.message}`, 'ERRO');
+    });
+
+    // BLINDAGEM: Auto-Restart do PHP em caso de crash inesperado
+    this.phpProcess.on('exit', (code, signal) => {
+      if (!this.isShuttingDown) {
+        this.log(`Servidor PHP encerrou inesperadamente (code: ${code}, signal: ${signal}). Auto-restart em 600ms...`, 'AVISO');
+        clearTimeout(this.phpRestartTimeout);
+        this.phpRestartTimeout = setTimeout(() => {
+          if (!this.isShuttingDown) {
+            this.startPhpServer();
+          }
+        }, 600);
+      } else {
+        this.log('Servidor PHP finalizado com sucesso.');
+      }
     });
   }
 
@@ -232,9 +290,59 @@ class ProcessManager {
     });
   }
 
+  // Backup do Banco de Dados MariaDB em formato .sql
+  async backupDatabase(destinationPath) {
+    return new Promise((resolve, reject) => {
+      this.log(`Iniciando geração de backup em: ${destinationPath}`);
+      const env = Object.assign({}, process.env, {
+        DB_HOSTNAME: '127.0.0.1',
+        DB_PORT: '3307',
+        DB_USERNAME: 'root',
+        DB_PASSWORD: '',
+        DB_DATABASE: 'amura_os'
+      });
+
+      const args = [
+        '-c', this.phpIni,
+        this.backupScript,
+        destinationPath
+      ];
+
+      const backupProc = spawn(this.phpExe, args, {
+        cwd: this.appRoot,
+        env: env,
+        windowsHide: true,
+        stdio: ['ignore', 'pipe', 'pipe']
+      });
+
+      let stderrOutput = '';
+      backupProc.stderr.on('data', (d) => {
+        stderrOutput += d.toString();
+      });
+
+      backupProc.on('exit', (code) => {
+        if (code === 0 && fs.existsSync(destinationPath) && fs.statSync(destinationPath).size > 0) {
+          const fileSizeKb = Math.round(fs.statSync(destinationPath).size / 1024);
+          this.log(`Backup concluído com sucesso! Tamanho: ${fileSizeKb} KB`);
+          resolve({ success: true, sizeKb: fileSizeKb });
+        } else {
+          const err = stderrOutput.trim() || `Processo de backup encerrou com código ${code}`;
+          this.log(`Falha na geração de backup: ${err}`, 'ERRO');
+          reject(new Error(err));
+        }
+      });
+
+      backupProc.on('error', (err) => {
+        this.log(`Erro ao executar rotina de backup: ${err.message}`, 'ERRO');
+        reject(err);
+      });
+    });
+  }
+
   async stopAll() {
     if (this.isShuttingDown) return;
     this.isShuttingDown = true;
+    clearTimeout(this.phpRestartTimeout);
     this.log('Encerrando serviços de suporte (PHP e MariaDB)...');
 
     if (this.phpProcess) {

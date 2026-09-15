@@ -35,7 +35,7 @@ function openManualWindow() {
     return;
   }
 
-  const iconPath = path.join(__dirname, '../assets/img/logo-original.png');
+  const iconPath = path.join(__dirname, 'assets/icon.png');
   const appIcon = fs.existsSync(iconPath) ? nativeImage.createFromPath(iconPath) : null;
 
   manualWindow = new BrowserWindow({
@@ -202,7 +202,7 @@ function buildApplicationMenu() {
 }
 
 function createMainWindow() {
-  const iconPath = path.join(__dirname, '../assets/img/logo-original.png');
+  const iconPath = path.join(__dirname, 'assets/icon.png');
   const appIcon = fs.existsSync(iconPath) ? nativeImage.createFromPath(iconPath) : null;
 
   mainWindow = new BrowserWindow({

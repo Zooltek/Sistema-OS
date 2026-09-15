@@ -48,10 +48,10 @@
 
     .login-wrapper {
       width: 100%;
-      max-width: 820px;
+      max-width: 960px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 52px;
       align-items: center;
     }
 
@@ -65,25 +65,25 @@
     }
 
     .brand-logo-wrap {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       text-align: center;
     }
 
     .brand-logo-img {
-      height: 38px;
+      height: 42px;
       width: auto;
-      max-width: 210px;
+      max-width: 230px;
       object-fit: contain;
       filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
     }
 
     .hero-image-card {
       width: 100%;
-      height: 350px;
-      border-radius: 14px;
+      height: 395px;
+      border-radius: 16px;
       overflow: hidden;
       border: 1px solid var(--card-border);
-      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.65);
+      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.7);
       background: #111620;
     }
 
@@ -100,11 +100,29 @@
       transform: scale(1.02);
     }
 
+    .hero-impact-text {
+      margin-top: 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.5;
+      letter-spacing: -0.2px;
+      max-width: 440px;
+    }
+
+    .accent-gradient {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
     /* Coluna Direita: Card de Login */
     .auth-column {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-end;
       width: 100%;
     }
 
@@ -114,7 +132,7 @@
       border-radius: 14px;
       padding: 26px 24px;
       width: 100%;
-      max-width: 380px;
+      max-width: 375px;
       box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.65);
     }
 
@@ -352,7 +370,7 @@
 
 <body>
   <div class="login-wrapper">
-    <!-- Coluna Esquerda: Imagem Pareada com Logo -->
+    <!-- Coluna Esquerda: Imagem com Logo e Frase de Impacto -->
     <div class="showcase-column">
       <div class="brand-logo-wrap">
         <img src="<?= base_url() ?>assets/img/Logo-Claro2.png" class="brand-logo-img" alt="Amura Sistemas">
@@ -361,6 +379,10 @@
       <div class="hero-image-card">
         <img src="<?= base_url() ?>assets/img/os-hero.jpg" alt="Amura OS">
       </div>
+
+      <p class="hero-impact-text">
+        Potência operacional e <span class="accent-gradient">controle inteligente</span> em cada ordem de serviço.
+      </p>
     </div>
 
     <!-- Coluna Direita: Formulário de Autenticação -->

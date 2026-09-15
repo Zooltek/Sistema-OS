@@ -55,19 +55,32 @@
       align-items: center;
     }
 
-    /* Coluna Esquerda: Imagem com Logo no Canto Superior Esquerdo */
+    /* Coluna Esquerda: Logo Acima da Imagem no Canto Esquerdo */
     .showcase-column {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       width: 100%;
     }
 
+    .brand-logo-wrap {
+      margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    .brand-logo-img {
+      height: 40px;
+      width: auto;
+      max-width: 220px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+      display: block;
+    }
+
     .hero-image-card {
-      position: relative;
       width: 100%;
-      height: 415px;
+      height: 395px;
       border-radius: 16px;
       overflow: hidden;
       border: 1px solid var(--card-border);
@@ -75,30 +88,7 @@
       background: #111620;
     }
 
-    .brand-logo-badge {
-      position: absolute;
-      top: 18px;
-      left: 18px;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      background: rgba(13, 17, 24, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 10px;
-      padding: 7px 15px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
-    }
-
-    .brand-logo-badge img {
-      height: 30px;
-      width: auto;
-      object-fit: contain;
-      display: block;
-    }
-
-    .hero-image-card .hero-bg-img {
+    .hero-image-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -107,7 +97,7 @@
       transition: transform 0.4s ease;
     }
 
-    .hero-image-card:hover .hero-bg-img {
+    .hero-image-card:hover img {
       transform: scale(1.02);
     }
 
@@ -381,13 +371,14 @@
 
 <body>
   <div class="login-wrapper">
-    <!-- Coluna Esquerda: Imagem com Logo no Canto Superior Esquerdo e Frase de Impacto -->
+    <!-- Coluna Esquerda: Logo no Canto Superior Esquerdo Acima da Imagem e Frase de Impacto -->
     <div class="showcase-column">
+      <div class="brand-logo-wrap">
+        <img src="<?= base_url() ?>assets/img/Logo-Claro2.png" class="brand-logo-img" alt="Amura Sistemas">
+      </div>
+
       <div class="hero-image-card">
-        <div class="brand-logo-badge">
-          <img src="<?= base_url() ?>assets/img/Logo-Claro2.png" alt="Amura Sistemas">
-        </div>
-        <img src="<?= base_url() ?>assets/img/os-hero.jpg" class="hero-bg-img" alt="Amura OS">
+        <img src="<?= base_url() ?>assets/img/os-hero.jpg" alt="Amura OS">
       </div>
 
       <p class="hero-impact-text">

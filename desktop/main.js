@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, nativeImage, ipcMain, shell, dialog } = require('electron');
+const { app, BrowserWindow, Menu, Tray, nativeImage, ipcMain, shell, dialog, session } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const ProcessManager = require('./server/process-manager');
@@ -219,7 +219,8 @@ function createMainWindow() {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
-      webSecurity: false
+      webSecurity: false,
+      plugins: true
     }
   });
 
@@ -227,7 +228,7 @@ function createMainWindow() {
   const menu = buildApplicationMenu();
   Menu.setApplicationMenu(menu);
 
-  // Abrir links externos no navegador padrão do sistema
+  // Abrir links externos no navegador padrão e links internos/relatórios em janela dedicada
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       if (!url.includes('127.0.0.1:8002') && !url.includes('localhost:8002')) {
@@ -235,7 +236,23 @@ function createMainWindow() {
         return { action: 'deny' };
       }
     }
-    return { action: 'allow' };
+    return {
+      action: 'allow',
+      overrideBrowserWindowOptions: {
+        width: 1200,
+        height: 800,
+        minWidth: 900,
+        minHeight: 600,
+        center: true,
+        title: 'Amura OS - Visualização e Impressão',
+        autoHideMenuBar: false,
+        backgroundColor: '#ffffff',
+        webPreferences: {
+          plugins: true,
+          webSecurity: false
+        }
+      }
+    };
   });
 
   // BLINDAGEM CONTRA TELA BRANCA:
@@ -364,6 +381,48 @@ app.whenReady().then(async () => {
       <p style="color:#a2a3b7; font-size:13px; margin-top:10px;">${err.message}</p>
     `);
   }
+
+  // Gerenciamento Inteligente de Downloads:
+  // Se o download foi disparado a partir de uma janela popup auxiliar (ex: exportação XLS),
+  // fecha a janela vazia assim que o download for concluído para não deixar tela branca órfã.
+  session.defaultSession.on('will-download', (event, item, webContents) => {
+    const win = BrowserWindow.fromWebContents(webContents);
+    if (win && win !== mainWindow) {
+      item.once('done', () => {
+        if (!win.isDestroyed()) {
+          win.close();
+        }
+      });
+    }
+  });
+
+  app.on('web-contents-created', (event, contents) => {
+    contents.setWindowOpenHandler(({ url }) => {
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        if (!url.includes('127.0.0.1:8002') && !url.includes('localhost:8002')) {
+          shell.openExternal(url);
+          return { action: 'deny' };
+        }
+      }
+      return {
+        action: 'allow',
+        overrideBrowserWindowOptions: {
+          width: 1200,
+          height: 800,
+          minWidth: 900,
+          minHeight: 600,
+          center: true,
+          title: 'Amura OS - Visualização e Impressão',
+          autoHideMenuBar: false,
+          backgroundColor: '#ffffff',
+          webPreferences: {
+            plugins: true,
+            webSecurity: false
+          }
+        }
+      };
+    });
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

@@ -8,11 +8,11 @@
 
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css" />
 
-<div class="row-fluid" style="margin-top:0">
+<div class="row-fluid" style="margin-top: 15px">
     <div class="span12">
         <div class="widget-box">
-            <div class="widget-title">
-                <h5>Cadastro de OS</h5>
+            <div class="widget-title" style="margin: 0; padding: 0 12px; min-height: 42px;">
+                <h5 style="margin: 0; line-height: 38px;">Cadastro de OS</h5>
             </div>
             <div class="widget-content nopadding tab-content">
                 <div class="span12" id="divProdutosServicos" style=" margin-left: 0">

@@ -5,11 +5,11 @@
 </style>
 
 <div class="new122">
-    <div class="widget-title" style="margin: -20px 0 0">
+    <div class="widget-title" style="margin: 0; padding: 0 10px; min-height: 42px; display: flex; align-items: center;">
         <span class="icon">
             <i class="fas fa-cash-register"></i>
         </span>
-        <h5>Vendas</h5>
+        <h5 style="margin: 0; line-height: 38px;">Vendas</h5>
     </div>
     <div class="span12" style="margin-left: 0">
         <form method="get" action="<?php echo base_url(); ?>index.php/vendas/gerenciar">

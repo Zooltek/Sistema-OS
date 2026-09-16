@@ -8,12 +8,14 @@
 
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css" />
 
-<div class="row-fluid" style="margin-top:0">
+<div class="row-fluid" style="margin-top: 15px">
     <div class="span12">
         <div class="widget-box">
-            <div class="widget-title" style="margin: -20px 0 0">
-                <span class="icon"><i class="fas fa-diagnoses"></i></span>
-                <h5>Editar Ordem de Serviço</h5>
+            <div class="widget-title" style="margin: 0; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; height: auto; min-height: 42px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center;">
+                    <span class="icon" style="padding: 9px 10px 7px 11px;"><i class="fas fa-diagnoses"></i></span>
+                    <h5 style="margin: 0; line-height: 38px;">Editar Ordem de Serviço #<?php echo $result->idOs; ?></h5>
+                </div>
                 <div class="buttons">
                     <?php if ($result->faturado == 0) { ?>
                         <a href="#modal-faturar" id="btn-faturar" role="button" data-toggle="modal" class="button btn btn-mini btn-danger">

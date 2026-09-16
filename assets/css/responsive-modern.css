@@ -36,6 +36,34 @@ img {
   -webkit-overflow-scrolling: touch;
 }
 
+/* 3.1 Prevenção definitiva de corte de cabeçalhos (.widget-title) em todas as telas */
+.widget-title {
+  margin-top: 0 !important;
+  min-height: 42px !important;
+  overflow: visible !important;
+}
+
+.widget-title h5 {
+  margin: 0 !important;
+  line-height: 38px !important;
+}
+
+.widget-title .buttons {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  align-items: center;
+}
+
+.row-fluid[style*="margin-top:0"],
+.row-fluid[style*="margin-top: 0"],
+.row-fluid[style*="margin-top: -"] {
+  margin-top: 15px !important;
+}
+
+.new122 {
+  margin-top: 15px !important;
+}
+
 .accordion,
 .accordion .widget-box,
 .accordion-group,

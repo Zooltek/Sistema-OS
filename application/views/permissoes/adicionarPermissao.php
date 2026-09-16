@@ -1,15 +1,40 @@
 <style>
+    .accordion,
+    .accordion .widget-box,
+    .accordion-group,
+    .accordion-heading,
+    .accordion-heading .widget-title,
+    .accordion-heading .widget-title a {
+        overflow: hidden !important;
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+    }
+
+    .accordion-heading .widget-title::-webkit-scrollbar,
+    .accordion-heading .widget-title a::-webkit-scrollbar,
+    .accordion-group::-webkit-scrollbar,
+    .accordion .widget-box::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
     .accordion-heading .widget-title {
         position: relative;
         padding: 0 !important;
-        min-height: 40px;
+        height: 40px !important;
+        min-height: 40px !important;
+        line-height: 40px !important;
     }
 
     .accordion-heading .widget-title a {
         display: flex;
         align-items: center;
         width: 100%;
-        min-height: 40px;
+        height: 40px !important;
+        min-height: 40px !important;
         box-sizing: border-box;
         text-decoration: none;
         position: relative;

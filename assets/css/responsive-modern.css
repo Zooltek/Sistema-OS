@@ -28,12 +28,23 @@ img {
 
 /* 3. Tabelas Responsivas Globais */
 .widget-content,
-.widget-box,
+.widget-box:not(.accordion-group),
 .table-responsive,
 .dataTables_wrapper {
   max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+.accordion,
+.accordion .widget-box,
+.accordion-group,
+.accordion-heading,
+.accordion-heading .widget-title,
+.accordion-heading .widget-title a {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
 }
 
 table.table {

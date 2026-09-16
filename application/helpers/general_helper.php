@@ -102,11 +102,15 @@ if (! function_exists('printSafeHtml')) {
     {
         static $purifier = null;
 
-        if ($purifier === null) {
+        if ($purifier === null && class_exists('HTMLPurifier_Config') && class_exists('HTMLPurifier')) {
             $config = HTMLPurifier_Config::createDefault();
             $purifier = new HTMLPurifier($config);
         }
 
-        return $purifier->purify($html);
+        if ($purifier !== null) {
+            return $purifier->purify($html);
+        }
+
+        return strip_tags($html, '<p><br><b><strong><i><em><u><ul><ol><li><a><span><div><table><thead><tbody><tr><th><td>');
     }
 }

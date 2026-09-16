@@ -5,14 +5,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = true;
 $db['default'] = [
-    'dsn' => $_ENV['DB_DSN'] ?? getenv('DB_DSN') ?: '',
-    'hostname' => $_ENV['DB_HOSTNAME'] ?? getenv('DB_HOSTNAME') ?: '127.0.0.1',
-    'port' => (int)($_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: 3306),
-    'username' => $_ENV['DB_USERNAME'] ?? getenv('DB_USERNAME') ?: 'root',
-    'password' => $_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?: '',
-    'database' => $_ENV['DB_DATABASE'] ?? getenv('DB_DATABASE') ?: 'amura_os',
-    'dbdriver' => $_ENV['DB_DRIVER'] ?? getenv('DB_DRIVER') ?: 'mysqli',
-    'dbprefix' => $_ENV['DB_PREFIX'] ?? getenv('DB_PREFIX') ?: '',
+    'dsn' => getenv('DB_DSN') ?: ($_ENV['DB_DSN'] ?? ''),
+    'hostname' => getenv('DB_HOSTNAME') ?: ($_ENV['DB_HOSTNAME'] ?? '127.0.0.1'),
+    'port' => (int)(getenv('DB_PORT') ?: ($_ENV['DB_PORT'] ?? 3306)),
+    'username' => getenv('DB_USERNAME') ?: ($_ENV['DB_USERNAME'] ?? 'root'),
+    'password' => (getenv('DB_PASSWORD') !== false && getenv('DB_PASSWORD') !== null) ? getenv('DB_PASSWORD') : ($_ENV['DB_PASSWORD'] ?? ''),
+    'database' => getenv('DB_DATABASE') ?: ($_ENV['DB_DATABASE'] ?? 'amura_os'),
+    'dbdriver' => getenv('DB_DRIVER') ?: ($_ENV['DB_DRIVER'] ?? 'mysqli'),
+    'dbprefix' => getenv('DB_PREFIX') ?: ($_ENV['DB_PREFIX'] ?? ''),
     'pconnect' => false,
     'db_debug' => (ENVIRONMENT !== 'production'),
     'cache_on' => false,

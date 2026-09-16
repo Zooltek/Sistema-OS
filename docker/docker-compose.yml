@@ -23,6 +23,12 @@ services:
       context: ./etc/php
       dockerfile: Dockerfile
     restart: always
+    environment:
+      - DB_HOSTNAME=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - DB_DATABASE=amura_os
     volumes:
       - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"

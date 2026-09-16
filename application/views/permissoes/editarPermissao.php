@@ -1,32 +1,52 @@
 
 <style>
+    .accordion-heading .widget-title {
+        position: relative;
+        padding: 0 !important;
+        min-height: 40px;
+    }
+
+    .accordion-heading .widget-title a {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 40px;
+        box-sizing: border-box;
+        text-decoration: none;
+        position: relative;
+    }
+
     .accordion-heading .widget-title h5 {
-        font-weight : 500;
-        padding     : 5px;
-        padding-left: 36px !important;
-        line-height : 12px;
-        margin      : 5px 0 !important;
-        font-size   : 1.3em;
+        font-weight : 600;
+        padding     : 0 !important;
+        padding-left: 38px !important;
+        line-height : 1.4 !important;
+        margin      : 0 !important;
+        font-size   : 14px;
         color       : var(--violeta1);
+        white-space : nowrap !important;
+        width       : auto !important;
     }
 
-    .icon-cli {
+    .accordion-heading .icon-cli {
         color: #239683;
-        margin-top : 3px;
-        margin-left: 8px;
-        position   : absolute;
-        font-size  : 18px;
-    }
-
-    .icon-clic {
-        color: #9faab7;
-        top: 4px;
-        right: 10px;
+        font-size: 19px;
         position: absolute;
-        font-size: 1.9em;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
-    .icon-clic:hover {
+    .accordion-heading .icon-clic {
+        color: #9faab7;
+        font-size: 1.6em;
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .accordion-heading a:hover .icon-clic {
         color: #3fadf6;
     }
 

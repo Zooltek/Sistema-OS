@@ -1,4 +1,54 @@
 <style>
+    .accordion-heading .widget-title {
+        position: relative;
+        padding: 0 !important;
+        min-height: 40px;
+    }
+
+    .accordion-heading .widget-title a {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 40px;
+        box-sizing: border-box;
+        text-decoration: none;
+        position: relative;
+    }
+
+    .accordion-heading .widget-title h5 {
+        font-weight : 600;
+        padding     : 0 !important;
+        padding-left: 38px !important;
+        line-height : 1.4 !important;
+        margin      : 0 !important;
+        font-size   : 14px;
+        color       : var(--violeta1);
+        white-space : nowrap !important;
+        width       : auto !important;
+    }
+
+    .accordion-heading .icon-cli {
+        color: #239683;
+        font-size: 19px;
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .accordion-heading .icon-clic {
+        color: #9faab7;
+        font-size: 1.6em;
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .accordion-heading a:hover .icon-clic {
+        color: #3fadf6;
+    }
+
     .accordion table {
         width: 100%;
         table-layout: fixed;

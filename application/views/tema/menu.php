@@ -2,10 +2,10 @@
 <nav id="sidebar">
     <div id="newlog">
         <div class="icon2">
-            <img src="<?php echo base_url() ?>assets/img/amura-os-logo-v2.png" alt="Amura OS">
+            <img src="<?php echo base_url() ?>assets/img/favicon.png" alt="Amura OS">
         </div>
         <div class="title1">
-            <img src="<?php echo base_url() ?>assets/img/logo-amura.png" alt="Amura OS">
+            <img src="<?php echo base_url() ?>assets/img/Logo-Claro2.png" alt="Amura OS">
         </div>
     </div>
     <a href="#" class="visible-phone">

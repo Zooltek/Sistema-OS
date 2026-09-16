@@ -8,20 +8,37 @@
 
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css" />
 
-<div class="row-fluid" style="margin-top:0">
+<div class="row-fluid" style="margin-top: 15px">
     <div class="span12">
         <div class="widget-box">
-            <div class="widget-title" style="margin: -20px 0 0">
-                <span class="icon">
-                    <i class="fas fa-cash-register"></i>
-                </span>
-                <h5>Editar Venda</h5>
+            <div class="widget-title" style="margin: 0; padding: 0 15px; display: flex; align-items: center; justify-content: space-between; height: auto; min-height: 40px;">
+                <div style="display: flex; align-items: center;">
+                    <span class="icon" style="padding: 9px 10px 7px 11px;">
+                        <i class="fas fa-cash-register"></i>
+                    </span>
+                    <h5 style="margin: 0; line-height: 38px;">Editar Venda #<?php echo $result->idVendas; ?></h5>
+                </div>
+                <div class="buttons" style="margin: 0; display: flex; gap: 8px; align-items: center; float: none; padding-top: 4px; padding-bottom: 4px;">
+                    <?php if ($result->faturado == 0) { ?>
+                        <a href="#modal-faturar" id="btn-faturar-header" role="button" data-toggle="modal" class="button btn btn-mini btn-danger" style="margin: 0;">
+                            <span class="button__icon"><i class='bx bx-dollar'></i></span> <span class="button__text">Faturar</span>
+                        </a>
+                    <?php } else { ?>
+                        <span class="badge badge-success" style="margin: 0;"><i class="fas fa-check"></i> Faturada</span>
+                    <?php } ?>
+                    <a title="Visualizar Venda" class="button btn btn-mini btn-primary" href="<?php echo site_url() ?>/vendas/visualizar/<?php echo $result->idVendas; ?>" style="margin: 0;">
+                        <span class="button__icon"><i class="bx bx-show"></i></span><span class="button__text">Visualizar</span>
+                    </a>
+                    <a title="Voltar para Vendas" class="button btn btn-mini btn-warning" href="<?php echo site_url() ?>/vendas" style="margin: 0;">
+                        <span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text">Voltar</span>
+                    </a>
+                </div>
             </div>
             <div class="widget-content nopadding tab-content">
                 <div class="span12" id="divProdutosServicos" style=" margin-left: 0">
                     <ul class="nav nav-tabs">
-                        <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Detalhes da Venda</a></li>
-                        <li id="tabProdutos"><a href="#tab2" data-toggle="tab">Produtos</a></li>
+                        <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab"><i class="fas fa-file-invoice"></i> Detalhes da Venda</a></li>
+                        <li id="tabProdutos"><a href="#tab2" data-toggle="tab"><i class="fas fa-boxes"></i> Produtos <span class="badge <?= count($produtos) > 0 ? 'badge-success' : 'badge-important' ?>" id="badgeQtdProdutos"><?php echo count($produtos); ?></span></a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1">
@@ -110,33 +127,45 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="tab2">
-                            <div class="span12 well" style="padding: 1%; margin-left: 0">
-                                <div class="span11">
-                                    <form id="formProdutos" action="<?php echo base_url(); ?>index.php/vendas/adicionarProduto" method="post">
-                                        <div class="span6">
+                            <div class="span12 well" style="padding: 1.5%; margin-left: 0; background: #fdfdfd; border: 1px solid #e0e0e0; border-radius: 6px;">
+                                <div class="span12" style="margin-left: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                    <h4 style="margin: 0; color: #2c3e50;"><i class="fas fa-barcode"></i> Inserir Produtos na Venda</h4>
+                                    <button type="button" class="btn btn-info" id="btnAbrirCatalogo" style="font-weight: 600; padding: 6px 14px; border-radius: 4px;">
+                                        <i class="fas fa-search-plus"></i> Abrir Catálogo de Produtos
+                                    </button>
+                                </div>
+                                <div class="span12" style="margin-left: 0;">
+                                    <form id="formProdutos" action="<?php echo base_url(); ?>index.php/vendas/adicionarProduto" method="post" style="margin-bottom: 6px;">
+                                        <div class="span6" style="margin-left: 0;">
                                             <input type="hidden" name="idProduto" id="idProduto" />
                                             <input type="hidden" name="idVendasProduto" id="idVendasProduto" value="<?php echo $result->idVendas ?>" />
                                             <input type="hidden" name="estoque" id="estoque" value="" />
-                                            <label for="">Produto</label>
-                                            <input type="text" class="span12" name="produto" id="produto" placeholder="Digite o nome do produto" />
+                                            <label for="produto"><strong>Produto (Nome ou Código de Barras)</strong></label>
+                                            <div style="position: relative;">
+                                                <input type="text" class="span12" name="produto" id="produto" placeholder="Digite o nome ou bipe o código de barras..." autocomplete="off" style="padding-right: 32px;" />
+                                                <span id="barcodeIcon" style="position: absolute; right: 10px; top: 7px; color: #888; pointer-events: none;"><i class="fas fa-barcode"></i></span>
+                                            </div>
                                         </div>
                                         <div class="span2">
-                                            <label for="">Preço</label>
+                                            <label for="preco">Preço Unitário</label>
                                             <input type="text" placeholder="Preço" id="preco" name="preco" class="span12 money" />
                                         </div>
                                         <div class="span2">
-                                            <label for="">Quantidade</label>
-                                            <input type="text" placeholder="Quantidade" id="quantidade" name="quantidade" class="span12" />
+                                            <label for="quantidade">Quantidade</label>
+                                            <input type="text" placeholder="Qtd" id="quantidade" name="quantidade" value="1" class="span12" />
                                         </div>
-                                        <div class="span2">
-                                            <label for="">&nbsp</label>
-                                            <button class="button btn btn-success" id="btnAdicionarProduto">
-                                                <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Adicionar</span></button>
+                                        <div class="span2" style="margin-top: 25px;">
+                                            <button class="button btn btn-success span12" id="btnAdicionarProduto" style="margin: 0; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                                <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Adicionar</span>
+                                            </button>
                                         </div>
                                     </form>
+                                    <div class="span12" style="margin-left: 0; font-size: 12px; color: #666; margin-bottom: 10px;">
+                                        <i class="fas fa-info-circle" style="color: #0088cc;"></i> <strong>Dica rápida:</strong> Você pode digitar para autocompletar, abrir o <strong>Catálogo</strong> para buscar e inserir com 1 clique, ou usar o <strong>leitor de código de barras</strong> e teclar <kbd>Enter</kbd>.
+                                    </div>
                                 </div>
-                                <div class="span11">
-                                    <form id="formDesconto" action="<?php echo base_url(); ?>index.php/vendas/adicionarDesconto" method="POST">
+                                <div class="span12" style="margin-left: 0; border-top: 1px dashed #e0e0e0; padding-top: 10px;">
+                                    <form id="formDesconto" action="<?php echo base_url(); ?>index.php/vendas/adicionarDesconto" method="POST" style="margin-bottom: 0;">
                                         <div class="span1">
                                             <input type="hidden" name="idVendas" id="idVendas" value="<?php echo $result->idVendas; ?>" />
                                             <label for="">Desconto</label>
@@ -177,17 +206,27 @@
                                     <tbody>
                                         <?php
                                         $total = 0;
-foreach ($produtos as $p) {
-    $preco = $p->preco ?: $p->precoVenda;
-    $total = $total + $p->subTotal;
-    echo '<tr>';
-    echo '<td>' . $p->descricao . '</td>';
-    echo '<td><div align="center">' . $p->quantidade . '</td>';
-    echo '<td><div align="center">R$: ' . $preco . '</td>';
-    echo '<td><div align="center"><a href="" idAcao="' . $p->idItens . '" prodAcao="' . $p->idProdutos . '" quantAcao="' . $p->quantidade . '" title="Excluir Produto" class="btn-nwe4"><i class="bx bx-trash-alt"></i></a></td>';
-    echo '<td><div align="center">R$: ' . number_format($p->subTotal, 2, '.', '') . '</td>';
-    echo '</tr>';
-} ?>
+                                        if (empty($produtos)) { ?>
+                                            <tr id="linhaSemProdutos">
+                                                <td colspan="5" style="text-align: center; padding: 25px; color: #666; background-color: #fbfbfb;">
+                                                    <i class="fas fa-shopping-basket" style="font-size: 32px; color: #b0bec5; display: block; margin-bottom: 8px;"></i>
+                                                    <strong>Nenhum produto adicionado nesta venda ainda.</strong><br>
+                                                    <span style="font-size: 13px; color: #888;">Digite o nome ou bipe o código de barras acima, ou clique no botão <strong>Abrir Catálogo de Produtos</strong> para incluir itens.</span>
+                                                </td>
+                                            </tr>
+                                        <?php } else {
+                                            foreach ($produtos as $p) {
+                                                $preco = $p->preco ?: $p->precoVenda;
+                                                $total = $total + $p->subTotal;
+                                                echo '<tr>';
+                                                echo '<td>' . $p->descricao . '</td>';
+                                                echo '<td><div align="center">' . $p->quantidade . '</td>';
+                                                echo '<td><div align="center">R$: ' . $preco . '</td>';
+                                                echo '<td><div align="center"><a href="" idAcao="' . $p->idItens . '" prodAcao="' . $p->idProdutos . '" quantAcao="' . $p->quantidade . '" title="Excluir Produto" class="btn-nwe4"><i class="bx bx-trash-alt"></i></a></td>';
+                                                echo '<td><div align="center">R$: ' . number_format($p->subTotal, 2, '.', '') . '</td>';
+                                                echo '</tr>';
+                                            }
+                                        } ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -214,6 +253,33 @@ foreach ($produtos as $p) {
                                         } ?>
                                     </tfoot>
                                 </table>
+
+                                <div class="span12" style="margin-left: 0; margin-top: 15px; margin-bottom: 25px; padding: 16px 20px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.06);">
+                                    <div>
+                                        <h5 style="margin: 0 0 4px 0; color: #1e293b; font-size: 15px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Produtos Lançados</h5>
+                                        <span style="font-size: 13px; color: #64748b;">
+                                            Os produtos e descontos já foram salvos nesta venda. Escolha o próximo passo:
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                        <?php if ($result->faturado == 0) { ?>
+                                            <a href="#modal-faturar" id="btn-faturar-tab2" role="button" data-toggle="modal" class="button btn btn-success" style="padding: 9px 20px; font-size: 14px; font-weight: bold; border-radius: 5px;">
+                                                <span class="button__icon"><i class='bx bx-dollar'></i></span> 
+                                                <span class="button__text2">Faturar Venda / Pagamento</span>
+                                            </a>
+                                        <?php } else { ?>
+                                            <span class="badge badge-success" style="padding: 8px 14px; font-size: 13px;"><i class="fas fa-check"></i> Venda Faturada</span>
+                                        <?php } ?>
+                                        <a href="<?php echo base_url() ?>index.php/vendas/visualizar/<?php echo $result->idVendas; ?>" class="button btn btn-primary" style="padding: 9px 18px; border-radius: 5px;">
+                                            <span class="button__icon"><i class="bx bx-show"></i></span>
+                                            <span class="button__text2">Visualizar / Imprimir</span>
+                                        </a>
+                                        <a href="<?php echo base_url() ?>index.php/vendas" class="button btn btn-warning" style="padding: 9px 18px; border-radius: 5px;">
+                                            <span class="button__icon"><i class="bx bx-undo"></i></span>
+                                            <span class="button__text2">Voltar para Vendas</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -221,6 +287,43 @@ foreach ($produtos as $p) {
                 &nbsp
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Catálogo de Produtos -->
+<div id="modal-catalogo-produtos" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" style="width: 860px; margin-left: -430px; border-radius: 8px;">
+    <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; border-bottom: 1px solid #e9ecef; padding: 12px 20px;">
+        <h4 style="margin: 0; color: #2c3e50;"><i class="fas fa-boxes" style="color: #0088cc;"></i> Catálogo de Produtos</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top: -2px;">×</button>
+    </div>
+    <div class="modal-body" style="padding: 15px 20px; max-height: 480px;">
+        <div style="margin-bottom: 12px; position: relative;">
+            <input type="text" id="filtroCatalogo" class="span12" placeholder="Digite o nome ou código de barras para filtrar..." autocomplete="off" style="padding: 10px 35px 10px 12px; font-size: 14px; border-radius: 6px; box-shadow: none; border: 1px solid #ccc; margin-bottom: 0;">
+            <i class="fas fa-search" style="position: absolute; right: 12px; top: 12px; color: #888;"></i>
+        </div>
+        <div style="overflow-y: auto; max-height: 380px; border: 1px solid #e0e0e0; border-radius: 4px;">
+            <table class="table table-bordered table-striped table-hover" id="tblCatalogoProdutos" style="margin-bottom: 0;">
+                <thead>
+                    <tr style="background: #f1f5f9;">
+                        <th width="18%">Cód. Barras</th>
+                        <th>Descrição</th>
+                        <th width="14%">Estoque</th>
+                        <th width="16%">Preço Venda</th>
+                        <th width="14%" style="text-align: center;">Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="listaCatalogoCorpo">
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 20px; color: #888;">
+                            <i class="fas fa-spinner fa-spin"></i> Carregando produtos do catálogo...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer" style="background: #f8f9fa; padding: 10px 20px;">
+        <button class="btn btn-default" data-dismiss="modal"><i class="fas fa-times"></i> Fechar</button>
     </div>
 </div>
 
@@ -383,13 +486,14 @@ foreach ($produtos as $p) {
                 $('#divRecebimento').hide();
             }
         });
-        $(document).on('click', '#btn-faturar', function(event) {
+        $(document).on('click', '#btn-faturar, #btn-faturar-header, #btn-faturar-tab2', function(event) {
             event.preventDefault();
-            valor = $('#total-venda').val();
-            valor_desconto = $('#total-desconto').val();
+            valor = $('#total-venda').val() || '0.00';
+            valor_desconto = $('#total-desconto').val() || '0.00';
             valor_desconto != 0.00 || valor_desconto ? $('#valor').attr('readonly', false) : $('#faturar-desconto').attr('readonly', false);
             valor = valor.replace(',', '');
             $('#valor').val(valor);
+            $('#modal-faturar').modal('show');
         });
         $('#formDesconto').submit(function(e) {
             e.preventDefault();
@@ -513,15 +617,149 @@ foreach ($produtos as $p) {
             }
         });
         $("#produto").autocomplete({
-            source: "<?php echo base_url(); ?>index.php/os/autoCompleteProdutoSaida",
-            minLength: 2,
+            source: "<?php echo base_url(); ?>index.php/vendas/autoCompleteProduto",
+            minLength: 1,
             select: function(event, ui) {
                 $("#idProduto").val(ui.item.id);
                 $("#estoque").val(ui.item.estoque);
                 $("#preco").val(ui.item.preco);
-                $("#quantidade").focus();
+                $("#quantidade").val('1').focus().select();
             }
         });
+
+        // Suporte para leitor de código de barras ou Enter direto no campo de produto
+        $("#produto").on("keypress", function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                var val = $(this).val().trim();
+                if (!val) return;
+
+                if ($("#idProduto").val() && $("#preco").val()) {
+                    $("#formProdutos").submit();
+                    return;
+                }
+
+                $.ajax({
+                    url: "<?php echo base_url(); ?>index.php/vendas/getProdutoPorCodigo",
+                    type: "GET",
+                    data: { codigo: val },
+                    dataType: "json",
+                    success: function(res) {
+                        if (res.result && res.produto) {
+                            $("#idProduto").val(res.produto.id);
+                            $("#estoque").val(res.produto.estoque);
+                            $("#preco").val(res.produto.preco);
+                            $("#produto").val(res.produto.descricao);
+                            $("#quantidade").val('1');
+                            $("#formProdutos").submit();
+                        } else {
+                            $("#produto").autocomplete("search", val);
+                        }
+                    }
+                });
+            }
+        });
+
+        // Catálogo de Produtos
+        function carregarCatalogo(termo) {
+            $("#listaCatalogoCorpo").html('<tr><td colspan="5" style="text-align: center; padding: 20px; color: #888;"><i class="fas fa-spinner fa-spin"></i> Carregando produtos...</td></tr>');
+            $.ajax({
+                url: "<?php echo base_url(); ?>index.php/vendas/catalogoProdutos",
+                type: "GET",
+                data: { termo: termo || '' },
+                dataType: "json",
+                success: function(res) {
+                    if (res.result && res.produtos && res.produtos.length > 0) {
+                        var html = '';
+                        $.each(res.produtos, function(i, prod) {
+                            var precoNum = parseFloat(prod.precoVenda);
+                            var precoFmt = isNaN(precoNum) ? 'R$ 0,00' : precoNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                            var cod = prod.codDeBarra ? prod.codDeBarra : '<span style="color: #bbb;">S/ Cód</span>';
+                            html += '<tr>';
+                            html += '<td><code>' + cod + '</code></td>';
+                            html += '<td><strong>' + prod.descricao + '</strong></td>';
+                            html += '<td>' + prod.estoque + ' ' + (prod.unidade || 'UN') + '</td>';
+                            html += '<td style="color: #2e7d32; font-weight: bold;">' + precoFmt + '</td>';
+                            html += '<td style="text-align: center;">';
+                            html += '<button type="button" class="btn btn-mini btn-success btnInserirDoCatalogo" data-id="' + prod.idProdutos + '" data-nome="' + prod.descricao + '" data-preco="' + prod.precoVenda + '" data-estoque="' + prod.estoque + '"><i class="fas fa-plus"></i> Inserir</button>';
+                            html += '</td>';
+                            html += '</tr>';
+                        });
+                        $("#listaCatalogoCorpo").html(html);
+                    } else {
+                        $("#listaCatalogoCorpo").html('<tr><td colspan="5" style="text-align: center; padding: 20px; color: #888;">Nenhum produto encontrado.</td></tr>');
+                    }
+                },
+                error: function() {
+                    $("#listaCatalogoCorpo").html('<tr><td colspan="5" style="text-align: center; padding: 20px; color: #c00;">Erro ao consultar catálogo.</td></tr>');
+                }
+            });
+        }
+
+        $("#btnAbrirCatalogo").on("click", function(e) {
+            e.preventDefault();
+            $("#modal-catalogo-produtos").modal("show");
+            $("#filtroCatalogo").val('');
+            carregarCatalogo('');
+            setTimeout(function() {
+                $("#filtroCatalogo").focus();
+            }, 400);
+        });
+
+        var timerFiltro = null;
+        $("#filtroCatalogo").on("keyup", function() {
+            var t = $(this).val();
+            clearTimeout(timerFiltro);
+            timerFiltro = setTimeout(function() {
+                carregarCatalogo(t);
+            }, 300);
+        });
+
+        $(document).on("click", ".btnInserirDoCatalogo", function() {
+            var id = $(this).data("id");
+            var nome = $(this).data("nome");
+            var preco = $(this).data("preco");
+            var estoque = $(this).data("estoque");
+
+            $("#idProduto").val(id);
+            $("#produto").val(nome);
+            $("#preco").val(preco);
+            $("#estoque").val(estoque);
+            $("#quantidade").val("1");
+
+            $("#modal-catalogo-produtos").modal("hide");
+            $("#quantidade").focus().select();
+        });
+
+        function atualizarBadgeProdutos() {
+            setTimeout(function() {
+                var count = $("#tblProdutos tbody tr").not("#linhaSemProdutos").length;
+                $("#badgeQtdProdutos").text(count);
+                if (count > 0) {
+                    $("#badgeQtdProdutos").removeClass("badge-important").addClass("badge-success");
+                } else {
+                    $("#badgeQtdProdutos").removeClass("badge-success").addClass("badge-important");
+                }
+            }, 300);
+        }
+
+        // Abertura automática na aba de produtos se não houver produtos ou com hash #tab2
+        var totalItensAtuais = <?php echo count($produtos); ?>;
+        if (window.location.hash === '#tab2' || totalItensAtuais === 0) {
+            $('.nav-tabs a[href="#tab2"]').tab('show');
+            setTimeout(function() {
+                $("#produto").focus();
+            }, 200);
+        }
+
+        $('a[data-toggle="tab"]').on('shown', function (e) {
+            if ($(e.target).attr('href') === '#tab2') {
+                setTimeout(function() {
+                    $("#produto").focus();
+                }, 100);
+            }
+        });
+
         $("#cliente").autocomplete({
             source: "<?php echo base_url(); ?>index.php/os/autoCompleteCliente",
             minLength: 2,
@@ -610,8 +848,11 @@ foreach ($produtos as $p) {
                         dataType: 'json',
                         success: function(data) {
                             if (data.result == true) {
-                                $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos");
-                                $("#quantidade").val('');
+                                $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos", function() {
+                                    atualizarBadgeProdutos();
+                                });
+                                $("#idProduto").val('');
+                                $("#quantidade").val('1');
                                 $("#preco").val('');
                                 $("#produto").val('').focus();
                                 $("#resultado").val("");
@@ -622,8 +863,11 @@ foreach ($produtos as $p) {
                                     title: "Atenção",
                                     html: "Ocorreu um erro ao tentar adicionar produto. <br /><br />Error: " + data.messages
                                 });
-                                $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos");
+                                $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos", function() {
+                                    atualizarBadgeProdutos();
+                                });
                                 $('#formProdutos')[0].reset();
+                                $("#quantidade").val('1');
                             }
                         }
                     });
@@ -644,7 +888,9 @@ foreach ($produtos as $p) {
                     dataType: 'json',
                     success: function(data) {
                         if (data.result == true) {
-                            $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos");
+                            $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos", function() {
+                                atualizarBadgeProdutos();
+                            });
                             $("#resultado").val("");
                             $("#desconto").val("");
                         } else {
@@ -653,7 +899,9 @@ foreach ($produtos as $p) {
                                 title: "Atenção",
                                 html: "Ocorreu um erro ao tentar excluir produto." + data.messages
                             });
-                            $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos");
+                            $("#divProdutos").load("<?php echo current_url(); ?> #divProdutos", function() {
+                                atualizarBadgeProdutos();
+                            });
                         }
                     }
                 });

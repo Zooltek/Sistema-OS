@@ -225,15 +225,53 @@ class Vendas_model extends CI_Model
     public function autoCompleteProduto($q)
     {
         $this->db->select('*');
-        $this->db->limit(25);
+        $this->db->limit(30);
+        $this->db->group_start();
         $this->db->like('descricao', $q);
+        $this->db->or_like('codDeBarra', $q);
+        $this->db->group_end();
         $query = $this->db->get('produtos');
+        $row_set = [];
         if ($query->num_rows() > 0) {
             foreach ($query->result_array() as $row) {
-                $row_set[] = ['label' => $row['descricao'] . ' | Preço: R$ ' . $row['precoVenda'] . ' | Estoque: ' . $row['estoque'], 'estoque' => $row['estoque'], 'id' => $row['idProdutos'], 'preco' => $row['precoVenda']];
+                $code = !empty($row['codDeBarra']) ? ' [' . $row['codDeBarra'] . ']' : '';
+                $row_set[] = [
+                    'label' => $row['descricao'] . $code . ' | Preço: R$ ' . number_format($row['precoVenda'], 2, ',', '.') . ' | Estoque: ' . $row['estoque'],
+                    'value' => $row['descricao'],
+                    'descricao' => $row['descricao'],
+                    'codDeBarra' => $row['codDeBarra'],
+                    'estoque' => $row['estoque'],
+                    'id' => $row['idProdutos'],
+                    'preco' => $row['precoVenda']
+                ];
             }
-            echo json_encode($row_set);
         }
+        echo json_encode($row_set);
+    }
+
+    public function getProdutoPorCodigo($codigo)
+    {
+        $this->db->select('*');
+        $this->db->where('codDeBarra', $codigo);
+        $query = $this->db->get('produtos', 1);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }
+        return null;
+    }
+
+    public function getProdutosCatalogo($termo = null, $limit = 50)
+    {
+        $this->db->select('idProdutos, codDeBarra, descricao, unidade, precoVenda, estoque');
+        if (!empty($termo)) {
+            $this->db->group_start();
+            $this->db->like('descricao', $termo);
+            $this->db->or_like('codDeBarra', $termo);
+            $this->db->group_end();
+        }
+        $this->db->order_by('descricao', 'ASC');
+        $this->db->limit($limit);
+        return $this->db->get('produtos')->result();
     }
 
     public function autoCompleteCliente($q)

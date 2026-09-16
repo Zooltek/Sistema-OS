@@ -24,6 +24,12 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1">
                             <div class="span12" id="divCadastrarOs">
+                                <div class="alert alert-info" style="margin: 10px 1% 15px 1%; border-radius: 6px; display: flex; align-items: center; gap: 12px; background-color: #e8f4fd; border: 1px solid #b8daff; color: #004085; padding: 12px;">
+                                    <i class="fas fa-info-circle" style="font-size: 22px; color: #0056b3;"></i>
+                                    <div>
+                                        <strong>Etapa 1 de 2:</strong> Preencha o cliente e dados iniciais da venda. Em seguida, clique em <strong>"Continuar para Adicionar Produtos"</strong> para incluir, bipar ou consultar os itens da venda.
+                                    </div>
+                                </div>
                                 <?php if ($custom_error == true) { ?>
                                     <div class="span12 alert alert-danger" id="divInfo" style="padding: 1%;">Dados incompletos, verifique os campos com asterisco ou se selecionou corretamente cliente e responsável.</div>
                                 <?php } ?>
@@ -79,8 +85,8 @@
                                     </div>
 
                                     <div class="span12" style="padding: 1%; margin-left: 0">
-                                        <div class="span6 offset3" style="display:flex;justify-content: center">
-                                          <button class="button btn btn-success" id="btnContinuar"><span class="button__icon"><i class='bx bx-chevrons-right'></i></span><span class="button__text2">Continuar</span></button>
+                                        <div class="span8 offset2" style="display:flex;justify-content: center; gap: 10px;">
+                                          <button class="button btn btn-success" id="btnContinuar"><span class="button__icon"><i class='bx bx-chevrons-right'></i></span><span class="button__text2">Continuar para Adicionar Produtos</span></button>
                                             <a href="<?php echo base_url() ?>index.php/vendas" class="button btn btn-mini btn-warning"><span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
                                         </div>
                                     </div>

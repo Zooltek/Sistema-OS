@@ -106,9 +106,9 @@ class Vendas extends MY_Controller
             $id = $this->vendas_model->add('vendas', $data, true);
 
             if (is_numeric($id)) {
-                $this->session->set_flashdata('success', 'Venda iniciada com sucesso, adicione os produtos.');
+                $this->session->set_flashdata('success', 'Venda iniciada com sucesso! Adicione os produtos abaixo.');
                 log_info('Adicionou uma venda. ID: ' . $id);
-                redirect(site_url('vendas/editar/') . $id);
+                redirect(site_url('vendas/editar/') . $id . '#tab2');
             } else {
                 $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
             }
@@ -357,6 +357,38 @@ class Vendas extends MY_Controller
             $q = strtolower($_GET['term']);
             $this->vendas_model->autoCompleteProduto($q);
         }
+    }
+
+    public function getProdutoPorCodigo()
+    {
+        $codigo = trim($this->input->get('codigo'));
+        if (!$codigo) {
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['result' => false]));
+        }
+        $produto = $this->vendas_model->getProdutoPorCodigo($codigo);
+        if ($produto) {
+            return $this->output->set_content_type('application/json')->set_output(json_encode([
+                'result' => true,
+                'produto' => [
+                    'id' => $produto->idProdutos,
+                    'descricao' => $produto->descricao,
+                    'codDeBarra' => $produto->codDeBarra,
+                    'preco' => $produto->precoVenda,
+                    'estoque' => $produto->estoque
+                ]
+            ]));
+        }
+        return $this->output->set_content_type('application/json')->set_output(json_encode(['result' => false]));
+    }
+
+    public function catalogoProdutos()
+    {
+        $termo = $this->input->get('termo');
+        $produtos = $this->vendas_model->getProdutosCatalogo($termo, 50);
+        return $this->output->set_content_type('application/json')->set_output(json_encode([
+            'result' => true,
+            'produtos' => $produtos
+        ]));
     }
 
     public function autoCompleteCliente()

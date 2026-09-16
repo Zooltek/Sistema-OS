@@ -1,27 +1,38 @@
+<style>
+    .accordion table {
+        width: 100%;
+        table-layout: fixed;
+        margin-bottom: 0;
+    }
+    .accordion .widget-box {
+        margin-top: 8px;
+        margin-bottom: 0;
+        border-radius: 6px;
+    }
+</style>
 <div class="span12" style="margin-left: 0">
     <form action="<?php echo base_url(); ?>index.php/permissoes/adicionar" id="formPermissao" method="post">
         <div class="span12" style="margin-left: 0">
             <div class="widget-box">
-                <div class="widget-title" style="margin: -20px 0 0">
-               <span class="icon">
-               <i class="fas fa-lock"></i>
-               </span>
-                    <h5>Cadastro de Permissão</h5>
+                <div class="widget-title" style="display: flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 0 12px; min-height: 40px;">
+                    <span class="icon"><i class="fas fa-lock"></i></span>
+                    <h5 style="margin: 0; font-size: 14px; font-weight: 600;">Cadastro de Permissão</h5>
                 </div>
-                <div class="widget-content">
-                    <div class="span6">
-                        <label>Nome da Permissão</label>
-                        <input name="nome" type="text" id="nome" class="span12" />
+                <div class="widget-content" style="padding: 15px;">
+                    <div class="row-fluid" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 15px; margin-bottom: 20px;">
+                        <div style="flex: 2; min-width: 250px;">
+                            <label for="nome" style="font-weight: 600; margin-bottom: 6px;">Nome da Permissão</label>
+                            <input name="nome" type="text" id="nome" class="span12" style="margin-bottom: 0;" />
+                        </div>
+                        <div style="flex: 1; min-width: 150px; padding-bottom: 8px;">
+                            <label style="cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 0;">
+                                <input name="marcarTodos" type="checkbox" value="1" id="marcarTodos" style="margin: 0;" />
+                                <span class="lbl" style="font-weight: 600;"> Marcar Todos</span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="span6">
-                        <br />
-                        <label>
-                            <input name="marcarTodos" type="checkbox" value="1" id="marcarTodos" />
-                            <span class="lbl"> Marcar Todos</span>
-                        </label>
-                        <br />
-                    </div>
-                    <div class="accordion" id="collapse-group">
+                    <div class="clearfix"></div>
+                    <div class="accordion" id="collapse-group" style="width: 100%;">
                         <div class="accordion-group widget-box">
                             <div class="accordion-heading">
                                 <div class="widget-title">

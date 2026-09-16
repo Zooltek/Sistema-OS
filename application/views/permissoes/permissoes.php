@@ -4,11 +4,11 @@
   }
 </style>
 <div class="new122" style="margin-top: 0; min-height: 100vh">
-<div class="widget-title" style="margin: -20px 0 0">
+<div class="widget-title" style="display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin: -20px 0 10px; min-height: 40px; padding: 0 10px;">
         <span class="icon">
             <i class="fas fa-lock"></i>
         </span>
-        <h5>Permissões</h5>
+        <h5 style="margin: 0; font-size: 14px; font-weight: 600;">Permissões</h5>
     </div>
 
   <a href="<?php echo base_url(); ?>index.php/permissoes/adicionar" class="button btn btn-success"style="max-width: 150px">

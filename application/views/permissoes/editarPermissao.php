@@ -1,6 +1,6 @@
 
 <style>
-    .widget-title h5 {
+    .accordion-heading .widget-title h5 {
         font-weight : 500;
         padding     : 5px;
         padding-left: 36px !important;
@@ -31,41 +31,35 @@
     }
 
     .widget-content {
-        padding: 8px 12px 0;
+        padding: 12px 15px;
     }
 
     .table td {
-        padding: 5px;
+        padding: 8px;
     }
 
-    .table {
+    .accordion table {
+        width: 100%;
+        table-layout: fixed;
         margin-bottom: 0;
     }
 
     .accordion .widget-box {
-        margin-top   : 10px;
+        margin-top   : 8px;
         margin-bottom: 0;
         border-radius: 6px;
     }
 
-    .accordion {
-        margin-top: -25px;
-    }
-
-    .collapse.in {
-        top: -15px
-    }
-
     .button {
-    min-width: 130px;
+        min-width: 130px;
     }
 
     .form-actions {
-        padding: 0;
+        padding: 15px 0 5px;
         margin-top: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         background-color: transparent;
-        border-top: 0px;
+        border-top: 1px solid #e5e5e5;
     }
 
     .widget-content table tbody tr:hover {
@@ -74,11 +68,9 @@
 
 @media (max-width: 480px) {
     .widget-content {
-        padding      : 10px 7px !important;
-        margin-bottom: -15px;
+        padding: 10px 7px !important;
     }
 }
-
 </style>
 
 <?php $permissoes = json_decode_legacy($result->permissoes); ?>
@@ -86,46 +78,34 @@
     <form action="<?php echo base_url();?>index.php/permissoes/editar" id="formPermissao" method="post">
         <div class="span12" style="margin-left: 0">
             <div class="widget-box">
-                <div class="widget-title">
-               <span class="icon">
-               <i class="fas fa-lock"></i>
-               </span>
-                    <h5 style="padding:12px;padding-left:18px!important;margin:-10px 0 0!important;font-size:1.7em;">Editar Permissão</h5>
+                <div class="widget-title" style="display: flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 0 12px; min-height: 40px;">
+                    <span class="icon"><i class="fas fa-lock"></i></span>
+                    <h5 style="margin: 0; font-size: 14px; font-weight: 600;">Editar Permissão</h5>
                 </div>
                 <div class="widget-content">
-                    <div class="span4">
-                        <label>Nome da Permissão</label>
-                        <input name="nome" type="text" id="nome" class="span12" value="<?php echo $result->nome; ?>" />
-                        <input type="hidden" name="idPermissao" value="<?php echo $result->idPermissao; ?>">
+                    <div class="row-fluid" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 15px; margin-bottom: 20px;">
+                        <div style="flex: 2; min-width: 240px;">
+                            <label for="nome" style="font-weight: 600; margin-bottom: 6px;">Nome da Permissão</label>
+                            <input name="nome" type="text" id="nome" class="span12" style="margin-bottom: 0;" value="<?php echo $result->nome; ?>" />
+                            <input type="hidden" name="idPermissao" value="<?php echo $result->idPermissao; ?>">
+                        </div>
+                        <div style="flex: 1; min-width: 160px;">
+                            <label for="situacao" style="font-weight: 600; margin-bottom: 6px;">Situação</label>
+                            <select name="situacao" id="situacao" class="span12" style="margin-bottom: 0;">
+                                <option value="1" <?php echo $result->situacao == 1 ? 'selected' : ''; ?>>Ativo</option>
+                                <option value="0" <?php echo $result->situacao == 0 ? 'selected' : ''; ?>>Inativo</option>
+                            </select>
+                        </div>
+                        <div style="flex: 1; min-width: 150px; padding-bottom: 8px;">
+                            <label style="cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 0;">
+                                <input name="" type="checkbox" value="1" id="marcarTodos" style="margin: 0;" />
+                                <span class="lbl" style="font-weight: 600;"> Marcar Todos</span>
+                            </label>
+                        </div>
                     </div>
-                    <div class="span3">
-                        <label>Situação</label>
-                        <select name="situacao" id="situacao" class="span12">
-                            <?php if ($result->situacao == 1) {
-                                $sim = 'selected';
-                                $nao ='';
-                            } else {
-                                $sim = '';
-                                $nao ='selected';
-                            }?>
-                            <option value="1" <?php echo $sim;?>>Ativo</option>
-                            <option value="0" <?php echo $nao;?>>Inativo</option>
-                        </select>
-                    </div>
-                    <div class="span4">
-                        <label>
-                            <input name="" type="checkbox" value="1" id="marcarTodos" />
-                            <span class="lbl"> Marcar Todos</span>
-                        </label>
-                    </div>
+                    <div class="clearfix"></div>
 
-                    <div class="control-group">
-                        <label for="documento" class="control-label"></label>
-                        <div class="controls">
-
-                    <div class="widget-content" style="padding: 5px 0 !important">
-        <div id="tab1" class="tab-pane active" style="min-height: 300px">
-            <div class="accordion" id="collapse-group">
+                    <div class="accordion" id="collapse-group" style="width: 100%;">
                 <div class="accordion-group widget-box">
                     <div class="accordion-heading">
                         <div class="widget-title">
@@ -862,21 +842,22 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                    <div class="form-actions">
-                        <div class="span12">
-                            <div class="span6 offset3" style="display:flex;justify-content: center">
-                              <button type="submit" class="button btn btn-primary">
-                              <span class="button__icon"><i class='bx bx-save'></i></span><span class="button__text2">Salvar</span></button>
-                                <a title="Voltar" class="button btn btn-mini btn-warning" href="<?php echo site_url() ?>/permissoes">
-                                  <span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-actions">
+                <div class="span12" style="display: flex; justify-content: center; gap: 12px; margin: 0;">
+                    <button type="submit" class="button btn btn-primary">
+                        <span class="button__icon"><i class='bx bx-save'></i></span><span class="button__text2">Salvar</span>
+                    </button>
+                    <a title="Voltar" class="button btn btn-mini btn-warning" href="<?php echo site_url() ?>/permissoes">
+                        <span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span>
+                    </a>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+</div>
+</form>
 </div>
 
 

@@ -118,7 +118,7 @@ class ProcessManager {
   }
 
   async startMariaDB() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.log('Iniciando mysqld.exe na porta 3307...');
       const cleanDbPath = this.dbDataDir.replace(/\\/g, '/');
       const cleanMyIni = this.myIni.replace(/\\/g, '/');
@@ -139,18 +139,41 @@ class ProcessManager {
 
       let isResolved = false;
       let attempts = 0;
+      let lastStderr = '';
 
-      const finish = () => {
+      const finish = (success, errMsg) => {
         if (!isResolved) {
           isResolved = true;
           clearInterval(checkPing);
-          resolve();
+          if (success) {
+            resolve();
+          } else {
+            const detail = errMsg || lastStderr || 'Falha ao inicializar o banco de dados MariaDB na porta 3307.';
+            reject(new Error(detail));
+          }
         }
       };
 
       this.mysqlProcess.on('error', (err) => {
         this.log(`Erro no processo MariaDB: ${err.message}`, 'ERRO');
-        finish();
+        finish(false, `Não foi possível executar o MariaDB: ${err.message}`);
+      });
+
+      if (this.mysqlProcess.stderr) {
+        this.mysqlProcess.stderr.on('data', (data) => {
+          const msg = data.toString().trim();
+          if (msg) {
+            lastStderr = msg;
+            this.log(`[MariaDB STDERR] ${msg}`, 'AVISO');
+          }
+        });
+      }
+
+      this.mysqlProcess.on('exit', (code, signal) => {
+        if (!isResolved && code !== 0) {
+          this.log(`MariaDB encerrou prematuramente (code: ${code}, signal: ${signal}).`, 'ERRO');
+          finish(false, `O serviço de banco de dados encerrou inesperadamente (código ${code}).`);
+        }
       });
 
       const checkPing = setInterval(() => {
@@ -158,10 +181,10 @@ class ProcessManager {
         exec(`"${this.mysqladminExe}" -h 127.0.0.1 -P 3307 -u root ping`, (err, stdout) => {
           if (!err && stdout && stdout.includes('alive')) {
             this.log('MariaDB está pronto e respondendo (alive).');
-            finish();
+            finish(true);
           } else if (attempts >= 60) {
-            this.log('Atingiu limite de tentativas para MariaDB ping.', 'AVISO');
-            finish();
+            this.log('Atingiu limite de tentativas para MariaDB ping.', 'ERRO');
+            finish(false, 'Tempo limite excedido (9s) aguardando o banco de dados MariaDB na porta 3307.');
           }
         });
       }, 150);
@@ -220,7 +243,7 @@ class ProcessManager {
       DB_PASSWORD: '',
       DB_DATABASE: 'amura_os',
       DB_DRIVER: 'mysqli',
-      APP_BASEURL: 'http://localhost:8002/'
+      APP_BASEURL: 'http://127.0.0.1:8002/'
     });
 
     const cleanPhpErrorLog = this.phpErrorLog.replace(/\\/g, '/');

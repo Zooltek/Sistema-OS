@@ -529,6 +529,9 @@
             url: "<?= site_url('login/verificarLogin?ajax=true'); ?>",
             data: dados,
             dataType: 'json',
+            xhrFields: {
+              withCredentials: true
+            },
             success: function(data) {
               if (data.result == true) {
                 $('#btnText').text('Conectado! Entrando...');
@@ -545,10 +548,25 @@
                 }
               }
             },
-            error: function() {
+            error: function(xhr, status, error) {
               btn.removeClass('disabled').prop('disabled', false);
               $('#btnText').text('Acessar o sistema');
-              $('#message').text('Ocorreu uma falha de comunicação com o servidor local. Tente novamente.');
+
+              var errorMsg = 'Ocorreu uma falha de comunicação com o servidor local. Tente novamente.';
+              if (xhr.status === 500) {
+                errorMsg = 'Erro interno no servidor local (500). Verifique a integridade do banco de dados ou os logs em AmuraOS_Data/logs.';
+              } else if (xhr.status === 403) {
+                errorMsg = 'Sessão ou token expirado (403). Por favor, recarregue a página e tente novamente.';
+              } else if (xhr.status === 0) {
+                errorMsg = 'Não foi possível conectar ao servidor interno (127.0.0.1:8002). Verifique se o aplicativo foi bloqueado por antivírus ou firewall.';
+              }
+
+              if (xhr.responseText && xhr.responseText.indexOf('Unable to connect to your database') !== -1) {
+                errorMsg = 'Falha de conexão com o banco de dados MariaDB (127.0.0.1:3307). O serviço do banco não respondeu.';
+              }
+
+              console.error('Erro na autenticação Amura OS:', status, error, xhr.responseText);
+              $('#message').text(errorMsg);
               $('#call-modal').trigger('click');
             }
           });

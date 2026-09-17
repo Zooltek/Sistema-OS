@@ -44,7 +44,12 @@ date_default_timezone_set($_ENV['APP_TIMEZONE'] ?? 'America/Sao_Paulo');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = $_ENV['APP_BASEURL'] ?? 'http://localhost:8002/';
+if (!empty($_SERVER['HTTP_HOST'])) {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+    $config['base_url'] = $protocol . $_SERVER['HTTP_HOST'] . '/';
+} else {
+    $config['base_url'] = $_ENV['APP_BASEURL'] ?? 'http://127.0.0.1:8002/';
+}
 
 /*
 |--------------------------------------------------------------------------

@@ -269,6 +269,23 @@ async function main() {
     await setupMariaDB();
     await setupComposerAndDependencies();
 
+    // Copiar DLLs essenciais do Visual C++ Redistributable caso existam no sistema
+    console.log('[Runtime] Verificando e copiando DLLs de runtime C++ (VCRUNTIME/MSVCP)...');
+    const system32 = path.join(process.env.SystemRoot || 'C:\\Windows', 'System32');
+    const runtimeDlls = ['vcruntime140.dll', 'vcruntime140_1.dll', 'msvcp140.dll'];
+    runtimeDlls.forEach(dll => {
+      const src = path.join(system32, dll);
+      if (fs.existsSync(src)) {
+        try {
+          fs.copyFileSync(src, path.join(PHP_DIR, dll));
+          fs.copyFileSync(src, path.join(MARIADB_DIR, 'bin', dll));
+          console.log(`[Runtime] Copiado ${dll} para PHP e MariaDB.`);
+        } catch (copyErr) {
+          console.warn(`[Runtime] Aviso ao copiar ${dll}: ${copyErr.message}`);
+        }
+      }
+    });
+
     // Limpar temp_downloads
     console.log('[Clean] Limpando arquivos temporários de download...');
     try {

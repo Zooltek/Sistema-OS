@@ -35,7 +35,7 @@ $_ENV['DB_USERNAME'] = getenv('DB_USERNAME') ?: 'root';
 $_ENV['DB_PASSWORD'] = (getenv('DB_PASSWORD') !== false && getenv('DB_PASSWORD') !== '') ? getenv('DB_PASSWORD') : '';
 $_ENV['DB_DATABASE'] = getenv('DB_DATABASE') ?: 'amura_os';
 $_ENV['DB_DRIVER'] = getenv('DB_DRIVER') ?: 'mysqli';
-$_ENV['APP_BASEURL'] = getenv('APP_BASEURL') ?: 'http://localhost:8002/';
+$_ENV['APP_BASEURL'] = getenv('APP_BASEURL') ?: 'http://127.0.0.1:8002/';
 
 $_SERVER['DB_HOSTNAME'] = $_ENV['DB_HOSTNAME'];
 $_SERVER['DB_PORT'] = $_ENV['DB_PORT'];

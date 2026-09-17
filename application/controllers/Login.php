@@ -24,10 +24,25 @@ class Login extends CI_Controller
 
     public function verificarLogin()
     {
-        header('Access-Control-Allow-Origin: ' . base_url());
+        $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+        $allowedOrigins = [
+            rtrim(base_url(), '/'),
+            'http://127.0.0.1:8002',
+            'http://localhost:8002'
+        ];
+        if ($origin && in_array($origin, $allowedOrigins, true)) {
+            header('Access-Control-Allow-Origin: ' . $origin);
+            header('Access-Control-Allow-Credentials: true');
+        } else {
+            header('Access-Control-Allow-Origin: ' . rtrim(base_url(), '/'));
+        }
         header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
         header('Access-Control-Max-Age: 1000');
-        header('Access-Control-Allow-Headers: Content-Type');
+        header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            exit(0);
+        }
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('email', 'E-mail', 'valid_email|required|trim');

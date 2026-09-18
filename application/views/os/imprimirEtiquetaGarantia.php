@@ -386,6 +386,12 @@
                 <option value="large">Grande (48 x 24 mm - ~32 p/ folha)</option>
             </select>
 
+            <label for="modoPreenchimento">Marcação:</label>
+            <select id="modoPreenchimento" onchange="atualizarGradeA4()">
+                <option value="branco" selected>Em branco (Para furar/marcar na bancada)</option>
+                <option value="preenchido">Pré-marcar dados desta OS</option>
+            </select>
+
             <label for="qtdEtiquetas">Quantidade:</label>
             <input type="number" id="qtdEtiquetas" value="48" min="1" max="120" style="width: 65px;" onchange="atualizarGradeA4()">
         </div>
@@ -449,7 +455,7 @@
 
     <script>
         const meses = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-        const anos = [24, 25, 26, 27, 28];
+        const anos = [26, 27, 28];
         const osNumber = "<?= sprintf('%04d', $result->idOs) ?>";
         const empresa = "<?= html_escape($nomeEmpresa) ?>";
         const telefone = "<?= html_escape($telEmpresa) ?>";
@@ -462,8 +468,14 @@
         const anoAtualVal = <?= $anoAtual ?>;
         const diaAtualVal = <?= $diaAtual ?>;
 
-        function gerarHtmlSelo(modelo, tamanhoClass) {
+        function gerarHtmlSelo(modelo, tamanhoClass, modoPreenchimento) {
+            const preencher = (modoPreenchimento === 'preenchido');
+
             if (modelo === 'A001') {
+                const mark1M = preencher && (diasGarantia <= 30) ? 'checked' : '';
+                const mark3M = preencher && (diasGarantia > 30 && diasGarantia <= 90) ? 'checked' : '';
+                const mark6M = preencher && (diasGarantia > 90) ? 'checked' : '';
+
                 return `
                     <div class="seal-card ${tamanhoClass}">
                         <div class="seal-top">
@@ -478,17 +490,17 @@
 
                         <div class="warranty-choice-row">
                             <span class="seal-os-tag">OS #${osNumber}</span>
-                            <span class="warranty-choice-item"><span class="warranty-checkbox ${diasGarantia <= 30 ? 'checked' : ''}"></span> 1M</span>
-                            <span class="warranty-choice-item"><span class="warranty-checkbox ${diasGarantia > 30 && diasGarantia <= 90 ? 'checked' : ''}"></span> 3M</span>
-                            <span class="warranty-choice-item"><span class="warranty-checkbox ${diasGarantia > 90 ? 'checked' : ''}"></span> 6M</span>
+                            <span class="warranty-choice-item"><span class="warranty-checkbox ${mark1M}"></span> 1M</span>
+                            <span class="warranty-choice-item"><span class="warranty-checkbox ${mark3M}"></span> 3M</span>
+                            <span class="warranty-choice-item"><span class="warranty-checkbox ${mark6M}"></span> 6M</span>
                         </div>
 
                         <div style="display: flex;">
                             <div class="month-grid" style="flex: 1;">
-                                ${meses.map((m, idx) => `<div class="month-cell ${idx === mesAtualIdx ? 'active-mark' : ''}">${m}</div>`).join('')}
+                                ${meses.map((m, idx) => `<div class="month-cell ${preencher && idx === mesAtualIdx ? 'active-mark' : ''}">${m}</div>`).join('')}
                             </div>
                             <div class="year-grid">
-                                ${anos.map(a => `<div class="year-cell ${a === anoAtualVal ? 'active-year' : ''}">${a}</div>`).join('')}
+                                ${anos.map(a => `<div class="year-cell ${preencher && a === anoAtualVal ? 'active-year' : ''}">${a}</div>`).join('')}
                             </div>
                         </div>
                     </div>
@@ -497,7 +509,8 @@
                 // Modelo com Grid de 31 Dias + Meses
                 let diasHtml = '';
                 for (let d = 1; d <= 31; d++) {
-                    diasHtml += `<div class="day-cell ${d === diaAtualVal ? 'active-day' : ''}">${d}</div>`;
+                    const isDiaAtivo = preencher && (d === diaAtualVal) ? 'active-day' : '';
+                    diasHtml += `<div class="day-cell ${isDiaAtivo}">${d}</div>`;
                 }
                 return `
                     <div class="seal-card ${tamanhoClass}">
@@ -512,15 +525,19 @@
                         </div>
                         <div style="display: flex;">
                             <div class="month-grid" style="flex: 1;">
-                                ${meses.map((m, idx) => `<div class="month-cell ${idx === mesAtualIdx ? 'active-mark' : ''}">${m}</div>`).join('')}
+                                ${meses.map((m, idx) => `<div class="month-cell ${preencher && idx === mesAtualIdx ? 'active-mark' : ''}">${m}</div>`).join('')}
                             </div>
                             <div class="year-grid">
-                                ${anos.map(a => `<div class="year-cell ${a === anoAtualVal ? 'active-year' : ''}">${a}</div>`).join('')}
+                                ${anos.map(a => `<div class="year-cell ${preencher && a === anoAtualVal ? 'active-year' : ''}">${a}</div>`).join('')}
                             </div>
                         </div>
                     </div>
                 `;
             } else if (modelo === 'A004') {
+                const mark3M = preencher && (diasGarantia <= 90) ? 'checked' : '';
+                const mark6M = preencher && (diasGarantia > 90 && diasGarantia <= 180) ? 'checked' : '';
+                const mark12M = preencher && (diasGarantia > 180 && diasGarantia <= 365) ? 'checked' : '';
+
                 return `
                     <div class="seal-card ${tamanhoClass}">
                         <div class="seal-top">
@@ -530,16 +547,16 @@
                             </div>
                         </div>
                         <div class="warranty-choice-row">
-                            <span class="warranty-choice-item"><span class="warranty-checkbox ${diasGarantia <= 90 ? 'checked' : ''}"></span> 3M</span>
-                            <span class="warranty-choice-item"><span class="warranty-checkbox ${diasGarantia > 90 && diasGarantia <= 180 ? 'checked' : ''}"></span> 6M</span>
-                            <span class="warranty-choice-item"><span class="warranty-checkbox ${diasGarantia > 180 && diasGarantia <= 365 ? 'checked' : ''}"></span> 12M</span>
+                            <span class="warranty-choice-item"><span class="warranty-checkbox ${mark3M}"></span> 3M</span>
+                            <span class="warranty-choice-item"><span class="warranty-checkbox ${mark6M}"></span> 6M</span>
+                            <span class="warranty-choice-item"><span class="warranty-checkbox ${mark12M}"></span> 12M</span>
                         </div>
                         <div style="display: flex;">
                             <div class="month-grid" style="flex: 1;">
-                                ${[1,2,3,4,5,6,7,8,9,10,11,12].map(num => `<div class="month-cell ${num === (mesAtualIdx + 1) ? 'active-mark' : ''}">${num}</div>`).join('')}
+                                ${[1,2,3,4,5,6,7,8,9,10,11,12].map(num => `<div class="month-cell ${preencher && num === (mesAtualIdx + 1) ? 'active-mark' : ''}">${num}</div>`).join('')}
                             </div>
                             <div class="year-grid">
-                                ${anos.map(a => `<div class="year-cell ${a === anoAtualVal ? 'active-year' : ''}">${a}</div>`).join('')}
+                                ${anos.map(a => `<div class="year-cell ${preencher && a === anoAtualVal ? 'active-year' : ''}">${a}</div>`).join('')}
                             </div>
                         </div>
                     </div>
@@ -569,13 +586,14 @@
             const container = document.getElementById('a4Container');
             const modelo = document.getElementById('modeloA4').value;
             const tamanho = document.getElementById('tamanhoSelo').value;
+            const modoPreenchimento = document.getElementById('modoPreenchimento') ? document.getElementById('modoPreenchimento').value : 'branco';
             const qtd = parseInt(document.getElementById('qtdEtiquetas').value, 10) || 48;
 
             const tamanhoClass = tamanho === 'small' ? 'seal-size-small' : (tamanho === 'large' ? 'seal-size-large' : 'seal-size-medium');
 
             let html = '';
             for (let i = 0; i < qtd; i++) {
-                html += gerarHtmlSelo(modelo, tamanhoClass);
+                html += gerarHtmlSelo(modelo, tamanhoClass, modoPreenchimento);
             }
             container.innerHTML = html;
 

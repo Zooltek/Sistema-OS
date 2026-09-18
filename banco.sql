@@ -622,6 +622,22 @@ CREATE TABLE IF NOT EXISTS `anotacoes_os` (
 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 -- -----------------------------------------------------
+-- Table `compromissos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `compromissos` (
+  `idCompromisso` INT(11) NOT NULL AUTO_INCREMENT,
+  `titulo` VARCHAR(255) NOT NULL,
+  `descricao` TEXT NULL,
+  `data_inicio` DATETIME NOT NULL,
+  `data_fim` DATETIME NULL,
+  `cor` VARCHAR(30) DEFAULT '#ff9204',
+  `status` VARCHAR(50) DEFAULT 'Pendente',
+  `usuarios_id` INT(11) NULL,
+  `data_cadastro` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idCompromisso`)
+) ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+-- -----------------------------------------------------
 -- Table `configuracoes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `configuracoes` ( 

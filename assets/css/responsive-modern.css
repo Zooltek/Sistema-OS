@@ -396,3 +396,302 @@ table.table td {
     margin: 4px 0 !important;
   }
 }
+
+/* ==========================================================================
+   Header Top Actions (Perfil, Relatórios, Configurações) - Modern Premium Style
+   ========================================================================== */
+#user-nav {
+  margin: 0 !important;
+  padding: 0;
+}
+
+#user-nav > ul.nav {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none;
+}
+
+#user-nav > ul.nav > li.dropdown {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+#user-nav > ul.nav > li.dropdown > a.dropdown-toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  margin: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #caced8 !important;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+#user-nav > ul.nav > li.dropdown > a.dropdown-toggle .iconN {
+  font-size: 20px;
+  color: #a2a6ae;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: all 0.25s ease;
+}
+
+#user-nav > ul.nav > li.dropdown > a.dropdown-toggle:hover,
+#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 146, 4, 0.5) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(255, 146, 4, 0.2);
+}
+
+#user-nav > ul.nav > li.dropdown > a.dropdown-toggle:hover .iconN,
+#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle .iconN {
+  color: #ff9204 !important;
+  transform: scale(1.08);
+}
+
+#user-nav > ul.nav > li.dropdown:active > a.dropdown-toggle {
+  transform: translateY(0);
+}
+
+/* Dropdown Menu Flutuante Moderno */
+#user-nav .dropdown-menu {
+  top: calc(100% + 8px) !important;
+  right: 0 !important;
+  left: auto !important;
+  background: #1e1e2d !important;
+  border: 1px solid #323248 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 1px rgba(255, 255, 255, 0.1) !important;
+  padding: 6px 0 !important;
+  min-width: 190px !important;
+  animation: fadeInDownMenu 0.2s ease-out;
+}
+
+@keyframes fadeInDownMenu {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#user-nav .dropdown-menu > li > a {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px !important;
+  font-size: 13px !important;
+  color: #b5b5c3 !important;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+#user-nav .dropdown-menu > li > a:hover {
+  background: rgba(255, 146, 4, 0.1) !important;
+  color: #ff9204 !important;
+  padding-left: 18px !important;
+}
+
+#user-nav .dropdown-menu .divider {
+  height: 1px !important;
+  margin: 6px 0 !important;
+  background: #323248 !important;
+  border: none !important;
+}
+
+#user-nav .dropdown-menu > li > a i {
+  font-size: 16px;
+  color: #7e8299;
+  transition: color 0.2s ease;
+}
+
+#user-nav .dropdown-menu > li > a:hover i {
+  color: #ff9204;
+}
+
+/* ==========================================================================
+   Modern Dashboard Shortcut Cards (.cardBox .card) - Preservando Cores e Posições
+   ========================================================================== */
+.cardBox {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  gap: 16px !important;
+  padding: 0 !important;
+  margin: 0 0 22px 0 !important;
+  list-style: none !important;
+}
+
+.cardBox .card {
+  position: relative !important;
+  border-radius: 16px !important;
+  padding: 16px 18px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.25) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  cursor: pointer !important;
+}
+
+.cardBox .card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 40% !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 100%) !important;
+  pointer-events: none !important;
+}
+
+.cardBox .card .cardLink {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cardBox .card .grid-blak {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  z-index: 2 !important;
+}
+
+.cardBox .card .numbers.N-tittle {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #1a1e2d !important;
+  letter-spacing: -0.2px !important;
+  line-height: 1.2 !important;
+  margin-bottom: 8px !important;
+}
+
+.cardBox .card .cardName {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: fit-content !important;
+  padding: 2px 8px !important;
+  border-radius: 6px !important;
+  background: rgba(26, 30, 45, 0.12) !important;
+  border: 1px solid rgba(26, 30, 45, 0.15) !important;
+  color: #1a1e2d !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Ícones em Glassmorphism */
+.cardBox .card [class^="lord-icon"] {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.32) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 2 !important;
+  transition: transform 0.3s ease, background 0.3s ease !important;
+}
+
+.cardBox .card [class^="lord-icon"] i {
+  font-size: 22px !important;
+  color: #1a1e2d !important;
+  transition: transform 0.3s ease !important;
+}
+
+/* Cores e Posições Originais com Gradientes Refinados */
+/* 1. Clientes (Azul) */
+.cardBox .card:nth-child(1) {
+  background: linear-gradient(135deg, #5c75f4 0%, #8ec5fc 100%) !important;
+}
+.cardBox .card:nth-child(1):hover {
+  box-shadow: 0 14px 28px -4px rgba(92, 117, 244, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* 2. Produtos (Laranja) */
+.cardBox .card:nth-child(2) {
+  background: linear-gradient(135deg, #e88636 0%, #ffc985 100%) !important;
+}
+.cardBox .card:nth-child(2):hover {
+  box-shadow: 0 14px 28px -4px rgba(232, 134, 54, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* 3. Serviços (Ciano) */
+.cardBox .card:nth-child(3) {
+  background: linear-gradient(135deg, #0da3b3 0%, #4ee3de 100%) !important;
+}
+.cardBox .card:nth-child(3):hover {
+  box-shadow: 0 14px 28px -4px rgba(13, 163, 179, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* 4. OS (Rosa) */
+.cardBox .card:nth-child(4) {
+  background: linear-gradient(135deg, #e4266e 0%, #fc92a8 100%) !important;
+}
+.cardBox .card:nth-child(4):hover {
+  box-shadow: 0 14px 28px -4px rgba(228, 38, 110, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* 5. Vendas (Verde) */
+.cardBox .card:nth-child(5) {
+  background: linear-gradient(135deg, #11b093 0%, #5ce5a1 100%) !important;
+}
+.cardBox .card:nth-child(5):hover {
+  box-shadow: 0 14px 28px -4px rgba(17, 176, 147, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* 6. Lançamentos (Amarelo) */
+.cardBox .card:nth-child(6) {
+  background: linear-gradient(135deg, #e6a806 0%, #fbd64e 100%) !important;
+}
+.cardBox .card:nth-child(6):hover {
+  box-shadow: 0 14px 28px -4px rgba(230, 168, 6, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Efeito Hover Geral nos Cards */
+.cardBox .card:hover {
+  transform: translateY(-4px) scale(1.015) !important;
+  opacity: 1 !important;
+}
+
+.cardBox .card:hover [class^="lord-icon"] {
+  background: rgba(255, 255, 255, 0.48) !important;
+  transform: scale(1.08) rotate(3deg) !important;
+}
+
+.cardBox .card:hover .cardName {
+  background: rgba(26, 30, 45, 0.2) !important;
+}
+
+.cardBox .card:active {
+  transform: translateY(-1px) scale(1) !important;
+}

@@ -668,77 +668,225 @@ class AmuraOS extends MY_Controller
             redirect(base_url());
         }
         $this->load->model('os_model');
+        $tipoFiltro = $this->input->get('tipo') ?: 'todos';
         $status = $this->input->get('status') ?: null;
-        $start = $this->input->get('start') ?: null;
-        $end = $this->input->get('end') ?: null;
+        $start = $this->input->get('start') ?: date('Y-m-01');
+        $end = $this->input->get('end') ?: date('Y-m-t');
 
-        $allOs = $this->mapos_model->calendario(
-            $start,
-            $end,
-            $status
-        );
-        $events = array_map(function ($os) {
-            switch ($os->status) {
-                case 'Aberto':
-                    $cor = '#00cd00';
-                    break;
-                case 'Negociação':
-                    $cor = '#AEB404';
-                    break;
-                case 'Em Andamento':
-                    $cor = '#436eee';
-                    break;
-                case 'Orçamento':
-                    $cor = '#CDB380';
-                    break;
-                case 'Cancelado':
-                    $cor = '#CD0000';
-                    break;
-                case 'Finalizado':
-                    $cor = '#256';
-                    break;
-                case 'Faturado':
-                    $cor = '#B266FF';
-                    break;
-                case 'Aguardando Peças':
-                    $cor = '#FF7F00';
-                    break;
-                case 'Aprovado':
-                    $cor = '#808080';
-                    break;
-                default:
-                    $cor = '#E0E4CC';
-                    break;
+        $events = [];
+
+        // 1. Ordens de Serviço
+        if ($tipoFiltro === 'todos' || $tipoFiltro === 'os') {
+            $allOs = $this->mapos_model->calendario($start, $end, $status);
+            foreach ($allOs as $os) {
+                switch ($os->status) {
+                    case 'Aberto':
+                        $cor = '#00cd00';
+                        break;
+                    case 'Negociação':
+                        $cor = '#AEB404';
+                        break;
+                    case 'Em Andamento':
+                        $cor = '#436eee';
+                        break;
+                    case 'Orçamento':
+                        $cor = '#CDB380';
+                        break;
+                    case 'Cancelado':
+                        $cor = '#CD0000';
+                        break;
+                    case 'Finalizado':
+                        $cor = '#256';
+                        break;
+                    case 'Faturado':
+                        $cor = '#B266FF';
+                        break;
+                    case 'Aguardando Peças':
+                        $cor = '#FF7F00';
+                        break;
+                    case 'Aprovado':
+                        $cor = '#808080';
+                        break;
+                    default:
+                        $cor = '#E0E4CC';
+                        break;
+                }
+
+                $events[] = [
+                    'id' => 'os_' . $os->idOs,
+                    'title' => "OS #{$os->idOs} - {$os->nomeCliente}",
+                    'start' => $os->dataFinal,
+                    'end' => $os->dataFinal,
+                    'color' => $cor,
+                    'editable' => true,
+                    'extendedProps' => [
+                        'tipo' => 'os',
+                        'rawId' => $os->idOs,
+                        'id' => $os->idOs,
+                        'cliente' => '<b>Cliente:</b> ' . $os->nomeCliente,
+                        'dataInicial' => '<b>Data Inicial:</b> ' . date('d/m/Y', strtotime($os->dataInicial)),
+                        'dataFinal' => '<b>Data Final:</b> ' . date('d/m/Y', strtotime($os->dataFinal)),
+                        'garantia' => '<b>Garantia:</b> ' . $os->garantia . ' dias',
+                        'status' => '<b>Status da OS:</b> ' . $os->status,
+                        'description' => '<b>Descrição/Produto:</b> ' . strip_tags(html_entity_decode($os->descricaoProduto)),
+                        'defeito' => '<b>Defeito:</b> ' . strip_tags(html_entity_decode($os->defeito)),
+                        'observacoes' => '<b>Observações:</b> ' . strip_tags(html_entity_decode($os->observacoes)),
+                        'subtotal' => '<br><b>Subtotal:</b> R$ ' . number_format($os->totalProdutos + $os->totalServicos, 2, ',', '.'),
+                        'desconto' => '<b>Desconto:</b> -R$ ' . ($os->desconto > 0 ? number_format(($os->totalProdutos + $os->totalServicos) - $os->valor_desconto, 2, ',', '.') : number_format($os->desconto, 2, ',', '.')),
+                        'total' => '<b>Total:</b> R$ ' . ($os->valor_desconto == 0 ? number_format($os->totalProdutos + $os->totalServicos, 2, ',', '.') : number_format($os->valor_desconto, 2, ',', '.')),
+                        'faturado' => '<br><b>Faturado:</b> ' . ($os->faturado ? 'SIM' : 'PENDENTE'),
+                        'editar' => $this->os_model->isEditable($os->idOs),
+                    ],
+                ];
             }
+        }
 
-            return [
-                'title' => "OS: {$os->idOs}, Cliente: {$os->nomeCliente}",
-                'start' => $os->dataFinal,
-                'end' => $os->dataFinal,
-                'color' => $cor,
-                'extendedProps' => [
-                    'id' => $os->idOs,
-                    'cliente' => '<b>Cliente:</b> ' . $os->nomeCliente,
-                    'dataInicial' => '<b>Data Inicial:</b> ' . date('d/m/Y', strtotime($os->dataInicial)),
-                    'dataFinal' => '<b>Data Final:</b> ' . date('d/m/Y', strtotime($os->dataFinal)),
-                    'garantia' => '<b>Garantia:</b> ' . $os->garantia . ' dias',
-                    'status' => '<b>Status da OS:</b> ' . $os->status,
-                    'description' => '<b>Descrição/Produto:</b> ' . strip_tags(html_entity_decode($os->descricaoProduto)),
-                    'defeito' => '<b>Defeito:</b> ' . strip_tags(html_entity_decode($os->defeito)),
-                    'observacoes' => '<b>Observações:</b> ' . strip_tags(html_entity_decode($os->observacoes)),
-                    'subtotal' => '<br><b>Subtotal:</b> R$ ' . number_format($os->totalProdutos + $os->totalServicos, 2, ',', '.'),
-                    'desconto' => '<b>Desconto:</b> -R$ ' . ($os->desconto > 0 ? number_format(($os->totalProdutos + $os->totalServicos) - $os->valor_desconto, 2, ',', '.') : number_format($os->desconto, 2, ',', '.')),
-                    'total' => '<b>Total:</b> R$ ' . ($os->valor_desconto == 0 ? number_format($os->totalProdutos + $os->totalServicos, 2, ',', '.') : number_format($os->valor_desconto, 2, ',', '.')),
-                    'faturado' => '<br><b>Faturado:</b> ' . ($os->faturado ? 'SIM' : 'PENDENTE'),
-                    'editar' => $this->os_model->isEditable($os->idOs),
-                ],
-            ];
-        }, $allOs);
+        // 2. Compromissos e Lembretes
+        if ($tipoFiltro === 'todos' || $tipoFiltro === 'compromissos') {
+            $compromissos = $this->mapos_model->getCompromissosCalendario($start, $end);
+            foreach ($compromissos as $comp) {
+                $events[] = [
+                    'id' => 'comp_' . $comp->idCompromisso,
+                    'title' => "📌 {$comp->titulo}",
+                    'start' => $comp->data_inicio,
+                    'end' => $comp->data_fim ?: $comp->data_inicio,
+                    'color' => $comp->cor ?: '#ff9204',
+                    'editable' => true,
+                    'extendedProps' => [
+                        'tipo' => 'compromisso',
+                        'rawId' => $comp->idCompromisso,
+                        'titulo' => $comp->titulo,
+                        'descricao' => $comp->descricao,
+                        'data_inicio' => date('d/m/Y H:i', strtotime($comp->data_inicio)),
+                        'status' => $comp->status,
+                        'usuario' => $comp->nomeUsuario ?: 'Equipe',
+                    ],
+                ];
+            }
+        }
+
+        // 3. Vencimentos Financeiros (Contas a Pagar e Receber)
+        if ($tipoFiltro === 'todos' || $tipoFiltro === 'financeiro') {
+            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) {
+                $lancamentos = $this->mapos_model->getLancamentosCalendario($start, $end);
+                foreach ($lancamentos as $lanc) {
+                    $isReceita = ($lanc->tipo === 'receita');
+                    $isPago = (bool)$lanc->baixado;
+                    $corFin = $isReceita ? '#10b981' : '#ef4444';
+                    $prefixo = $isReceita ? '💰 REC: ' : '💸 PAG: ';
+                    $statusTxt = $isPago ? 'Baixado' : 'Pendente';
+                    $valorFmt = number_format($lanc->valor_desconto > 0 ? $lanc->valor_desconto : $lanc->valor, 2, ',', '.');
+
+                    $events[] = [
+                        'id' => 'fin_' . $lanc->idLancamentos,
+                        'title' => "{$prefixo}{$lanc->cliente_fornecedor} (R$ {$valorFmt})",
+                        'start' => $lanc->data_vencimento,
+                        'end' => $lanc->data_vencimento,
+                        'color' => $corFin,
+                        'editable' => false,
+                        'extendedProps' => [
+                            'tipo' => 'financeiro',
+                            'rawId' => $lanc->idLancamentos,
+                            'tipoFin' => ucfirst($lanc->tipo),
+                            'cliente_fornecedor' => $lanc->cliente_fornecedor,
+                            'descricao' => $lanc->descricao,
+                            'vencimento' => date('d/m/Y', strtotime($lanc->data_vencimento)),
+                            'valor' => 'R$ ' . $valorFmt,
+                            'statusFin' => $statusTxt,
+                        ],
+                    ];
+                }
+            }
+        }
 
         return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)
             ->set_output(json_encode($events));
+    }
+
+    public function reprogramarDataAjax()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['success' => false, 'message' => 'Sem permissão.']));
+        }
+
+        $tipo = $this->input->post('tipo');
+        $id = (int)$this->input->post('id');
+        $novaData = $this->input->post('novaData');
+
+        if (!$id || !$novaData) {
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['success' => false, 'message' => 'Dados inválidos.']));
+        }
+
+        if ($tipo === 'os') {
+            $dataFormatted = date('Y-m-d', strtotime($novaData));
+            $this->mapos_model->atualizarDataOs($id, $dataFormatted);
+            return $this->output->set_content_type('application/json')->set_output(json_encode([
+                'success' => true,
+                'message' => "Prazo da OS #{$id} reprogramado para " . date('d/m/Y', strtotime($dataFormatted)) . "!"
+            ]));
+        } elseif ($tipo === 'compromisso') {
+            $dataFormatted = date('Y-m-d H:i:s', strtotime($novaData));
+            $this->mapos_model->atualizarDataCompromisso($id, $dataFormatted);
+            return $this->output->set_content_type('application/json')->set_output(json_encode([
+                'success' => true,
+                'message' => "Compromisso reprogramado com sucesso!"
+            ]));
+        }
+
+        return $this->output->set_content_type('application/json')->set_output(json_encode(['success' => false, 'message' => 'Tipo não suporta reprogramação por arrasto.']));
+    }
+
+    public function adicionarCompromissoAjax()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['success' => false, 'message' => 'Sem permissão.']));
+        }
+
+        $titulo = trim($this->input->post('titulo'));
+        $dataInicio = $this->input->post('data_inicio');
+        $horaInicio = $this->input->post('hora_inicio') ?: '09:00';
+        $descricao = trim($this->input->post('descricao'));
+        $cor = $this->input->post('cor') ?: '#ff9204';
+
+        if (empty($titulo) || empty($dataInicio)) {
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['success' => false, 'message' => 'Título e Data são obrigatórios.']));
+        }
+
+        $dataCompleta = date('Y-m-d H:i:s', strtotime($dataInicio . ' ' . $horaInicio));
+
+        $data = [
+            'titulo' => $titulo,
+            'descricao' => $descricao,
+            'data_inicio' => $dataCompleta,
+            'cor' => $cor,
+            'status' => 'Pendente',
+            'usuarios_id' => $this->session->userdata('id_admin') ?: $this->session->userdata('id'),
+            'data_cadastro' => date('Y-m-d H:i:s')
+        ];
+
+        $res = $this->mapos_model->adicionarCompromisso($data);
+
+        return $this->output->set_content_type('application/json')->set_output(json_encode([
+            'success' => (bool)$res,
+            'message' => $res ? 'Compromisso agendado com sucesso!' : 'Erro ao agendar compromisso.'
+        ]));
+    }
+
+    public function excluirCompromissoAjax()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['success' => false, 'message' => 'Sem permissão.']));
+        }
+
+        $id = (int)$this->input->post('id');
+        if ($id) {
+            $this->mapos_model->excluirCompromisso($id);
+            return $this->output->set_content_type('application/json')->set_output(json_encode(['success' => true]));
+        }
+
+        return $this->output->set_content_type('application/json')->set_output(json_encode(['success' => false]));
     }
 
     private function editDontEnv(array $data)

@@ -219,6 +219,22 @@ class Mapos_model extends CI_Model
         return $query->result();
     }
 
+    private function checkCompromissosTable()
+    {
+        $this->db->query("CREATE TABLE IF NOT EXISTS `compromissos` (
+          `idCompromisso` INT(11) NOT NULL AUTO_INCREMENT,
+          `titulo` VARCHAR(255) NOT NULL,
+          `descricao` TEXT NULL,
+          `data_inicio` DATETIME NOT NULL,
+          `data_fim` DATETIME NULL,
+          `cor` VARCHAR(30) DEFAULT '#ff9204',
+          `status` VARCHAR(50) DEFAULT 'Pendente',
+          `usuarios_id` INT(11) NULL,
+          `data_cadastro` DATETIME DEFAULT CURRENT_TIMESTAMP,
+          PRIMARY KEY (`idCompromisso`)
+        ) ENGINE = InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;");
+    }
+
     public function calendario($start, $end, $status = null)
     {
         $this->db->select(
@@ -240,6 +256,56 @@ class Mapos_model extends CI_Model
         }
 
         return $this->db->get()->result();
+    }
+
+    public function getCompromissosCalendario($start, $end)
+    {
+        $this->checkCompromissosTable();
+        $this->db->select('compromissos.*, usuarios.nome as nomeUsuario');
+        $this->db->from('compromissos');
+        $this->db->join('usuarios', 'usuarios.idUsuarios = compromissos.usuarios_id', 'left');
+        $this->db->where('data_inicio >=', $start);
+        $this->db->where('data_inicio <=', $end);
+        $this->db->order_by('data_inicio', 'ASC');
+
+        return $this->db->get()->result();
+    }
+
+    public function getLancamentosCalendario($start, $end)
+    {
+        $this->db->select('idLancamentos, tipo, cliente_fornecedor, descricao, data_vencimento, forma_pgto, valor_desconto, valor, baixado');
+        $this->db->from('lancamentos');
+        $this->db->where('data_vencimento >=', $start);
+        $this->db->where('data_vencimento <=', $end);
+        $this->db->order_by('data_vencimento', 'ASC');
+
+        return $this->db->get()->result();
+    }
+
+    public function adicionarCompromisso($data)
+    {
+        $this->checkCompromissosTable();
+        return $this->db->insert('compromissos', $data);
+    }
+
+    public function atualizarDataCompromisso($id, $novaData)
+    {
+        $this->checkCompromissosTable();
+        $this->db->where('idCompromisso', $id);
+        return $this->db->update('compromissos', ['data_inicio' => $novaData]);
+    }
+
+    public function atualizarDataOs($idOs, $novaDataFinal)
+    {
+        $this->db->where('idOs', $idOs);
+        return $this->db->update('os', ['dataFinal' => $novaDataFinal]);
+    }
+
+    public function excluirCompromisso($id)
+    {
+        $this->checkCompromissosTable();
+        $this->db->where('idCompromisso', $id);
+        return $this->db->delete('compromissos');
     }
 
     public function getProdutosMinimo()

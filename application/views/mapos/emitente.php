@@ -134,7 +134,10 @@
                 <div class="control-group">
                     <label for="descricao" class="control-label"><span class="required"></span></label>
                     <div class="controls">
-                        <input id="telefone" type="text" placeholder="Telefone*" name="telefone" value="" />
+                        <input id="telefone" type="text" placeholder="Telefone / WhatsApp*" name="telefone" value="" title="Este número será utilizado para envio de mensagens do WhatsApp" />
+                        <span class="help-block" style="color: #25d366; font-size: 11px; margin-top: 2px; display: flex; align-items: center; gap: 4px;">
+                            <i class="bx bxl-whatsapp" style="font-size: 14px;"></i> Este número será utilizado para envio de mensagens do WhatsApp.
+                        </span>
                     </div>
                 </div>
                 <div class="control-group">
@@ -265,7 +268,10 @@
                     <label for="descricao" class="control-label"><span class="required"></span></label>
                     <div class="controls">
                         <input type="text" id="telefone" name="telefone" value="<?= $dados->telefone; ?>"
-                            placeholder="Telefone*" />
+                            placeholder="Telefone / WhatsApp*" title="Este número será utilizado para envio de mensagens do WhatsApp" />
+                        <span class="help-block" style="color: #25d366; font-size: 11px; margin-top: 2px; display: flex; align-items: center; gap: 4px;">
+                            <i class="bx bxl-whatsapp" style="font-size: 14px;"></i> Este número será utilizado para envio de mensagens do WhatsApp.
+                        </span>
                     </div>
                 </div>
                 <div class="control-group">

@@ -317,7 +317,7 @@ function buildApplicationMenu() {
               title: 'Sobre a Amura OS',
               message: 'Amura OS - Sistema de Gestão de Ordens de Serviço',
               detail: `Versão: 1.0.1\n` +
-                      `Desenvolvido por: Amura Tecnologias\n` +
+                      `Desenvolvido por: Fabricio Castro\n` +
                       `Servidor Web: PHP 8.2 (127.0.0.1:8002)\n` +
                       `Banco de Dados: MariaDB (127.0.0.1:3307)\n` +
                       `Dados: ${processManager ? processManager.dataDir : 'AmuraOS_Data'}`

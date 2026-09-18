@@ -114,29 +114,61 @@
 <div class="row-fluid" style="margin-top: 0; display: flex">
     <div class="Sspan12">
         <div class="widget-box2">
-            <div>
-                <h5 class="cardHeader">Agenda</h5>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #323248;">
+                <h5 class="cardHeader" style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="bx bx-calendar-event" style="color: #ff9204; font-size: 20px;"></i>
+                    <span>Agenda & Operações</span>
+                </h5>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button type="button" class="btn btn-mini btn-primary" id="btn-novo-compromisso" style="display: flex; align-items: center; gap: 4px; border-radius: 6px;">
+                        <i class="bx bx-plus-circle"></i> <span>Novo Compromisso</span>
+                    </button>
+                </div>
             </div>
-            <div class="widget-content">
-                <table>
-                    <div id='source-calendar'>
-                        <form method="post">
-                            <select style="padding-left: 30px" class="span12" name="statusOsGet" id="statusOsGet" value="">
-                                <option value="">Todos os Status</option>
-                                <option value="Aberto">Aberto</option>
-                                <option value="Faturado">Faturado</option>
-                                <option value="Negociação">Negociação</option>
-                                <option value="Orçamento">Orçamento</option>
-                                <option value="Em Andamento">Em Andamento</option>
-                                <option value="Finalizado">Finalizado</option>
-                                <option value="Cancelado">Cancelado</option>
-                                <option value="Aguardando Peças">Aguardando Peças</option>
-                                <option value="Aprovado">Aprovado</option>
-                            </select>
-                            <button type="button" class="btn-xs" id="btn-calendar"><i class="bx bx-search iconX2"></i></button>
-                        </form>
+            <div class="widget-content" style="padding: 12px;">
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 8px; border: 1px solid #2e2e42;">
+                    <!-- Filtro Tipo de Exibição -->
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 11.5px; color: #a2a3b7; font-weight: 600;">Exibir:</span>
+                        <select id="filtroTipoAgenda" class="span12" style="margin-bottom: 0; height: 30px; font-size: 12px; width: 155px; border-radius: 6px; background: #1a1a27; color: #fff; border-color: #3b3b54;">
+                            <option value="todos">⚡ Todos os Eventos</option>
+                            <option value="os">🛠️ Apenas OS</option>
+                            <option value="financeiro">💳 Vencimentos (Contas)</option>
+                            <option value="compromissos">📌 Compromissos</option>
+                        </select>
                     </div>
-                </table>
+
+                    <!-- Filtro Status OS -->
+                    <div id="wrapperFiltroStatus" style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 11.5px; color: #a2a3b7; font-weight: 600;">Status OS:</span>
+                        <select id="statusOsGet" class="span12" style="margin-bottom: 0; height: 30px; font-size: 12px; width: 160px; border-radius: 6px; background: #1a1a27; color: #fff; border-color: #3b3b54;">
+                            <option value="">Todos os Status</option>
+                            <option value="Aberto">Aberto</option>
+                            <option value="Faturado">Faturado</option>
+                            <option value="Negociação">Negociação</option>
+                            <option value="Orçamento">Orçamento</option>
+                            <option value="Em Andamento">Em Andamento</option>
+                            <option value="Finalizado">Finalizado</option>
+                            <option value="Cancelado">Cancelado</option>
+                            <option value="Aguardando Peças">Aguardando Peças</option>
+                            <option value="Aprovado">Aprovado</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn btn-mini btn-info" id="btn-calendar" style="height: 30px; border-radius: 6px; display: flex; align-items: center; gap: 4px;">
+                        <i class="bx bx-sync"></i> <span>Atualizar</span>
+                    </button>
+
+                    <div style="margin-left: auto; font-size: 11px; color: #8c8c9e; display: flex; gap: 10px; align-items: center;">
+                        <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #436eee;"></span> OS</span>
+                        <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span> Receita</span>
+                        <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span> Despesa</span>
+                        <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #ff9204;"></span> Compromisso</span>
+                        <span title="Dica: Você pode arrastar eventos para reagendar datas!" style="cursor: help;"><i class="bx bx-help-circle" style="font-size: 14px; color: #a2a3b7;"></i></span>
+                    </div>
+                </div>
+
+                <div id='source-calendar'></div>
             </div>
         </div>
 
@@ -1140,40 +1172,150 @@
 </div>
 <!-- Fim Staus OS -->
 
-<!-- Modal Status OS Calendar -->
-<div id="calendarModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Status OS Detalhada</h3>
+<!-- Modal Opções ao Clicar no Dia -->
+<div id="modalAcaoDia" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" style="max-width: 440px; border-radius: 10px; background: #1e1e2d;">
+    <div class="modal-header" style="border-bottom: 1px solid #323248;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">×</button>
+        <h4 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="bx bx-calendar-plus" style="color: #ff9204;"></i> <span id="labelDataSelecionada">Dia Selecionado</span>
+        </h4>
     </div>
-    <div class="modal-body">
-        <div class="span5" id="divFormStatusOS" style="margin-left: 0"></div>
-        <h4><b>OS:</b> <span id="modalId" class="modal-id"></span></h4>
-        <h5 id="modalCliente" class="modal-cliente"></h5>
-        <div id="modalDataInicial" class="modal-DataInicial"></div>
-        <div id="modalDataFinal" class="modal-DataFinal"></div>
-        <div id="modalGarantia" class="modal-Garantia"></div>
-        <div id="modalStatus" class="modal-Status"></div>
-        <div id="modalDescription" class="modal-Description"></div>
-        <div id="modalDefeito" class="modal-Defeito"></div>
-        <div id="modalObservacoes" class="modal-Observacoes"></div>
-        <div id="modalSubtotal" class="modal-Subtotal"></div>
-        <div id="modalDesconto" class="modal-Desconto"></div>
-        <div id="modalTotal" class="modal-Total"></div>
-        <div id="modalFaturado" class="modal-Faturado"></div>
+    <div class="modal-body" style="padding: 20px; text-align: center;">
+        <p style="color: #a2a3b7; font-size: 13px; margin-bottom: 20px;">O que você deseja registrar para esta data?</p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="#" id="btnAcaoCriarOs" class="button btn btn-primary btn-large" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 8px;">
+                <i class="bx bx-wrench" style="font-size: 20px;"></i>
+                <span style="font-size: 14px; font-weight: 600;">Abrir Nova Ordem de Serviço</span>
+            </a>
+            <button type="button" id="btnAcaoCriarCompromisso" class="button btn btn-warning btn-large" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 8px;">
+                <i class="bx bx-pin" style="font-size: 20px;"></i>
+                <span style="font-size: 14px; font-weight: 600;">Agendar Compromisso / Lembrete</span>
+            </button>
+        </div>
     </div>
-    <div class="modal-footer">
-        <?php
-            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
-                echo '<a id="modalIdVisualizar" style="margin-right: 1%" href="" class="btn tip-top" title="Ver mais detalhes"><i class="fas fa-eye"></i></a>';
-            }
-if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
-    echo '<a id="modalIdEditar" style="margin-right: 1%" href="" class="btn btn-info tip-top" title="Editar OS"><i class="fas fa-edit"></i></a>';
-}
-if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dOs')) {
-    echo '<a id="linkExcluir" href="#modal-excluir-os" role="button" data-toggle="modal" os="" class="btn btn-danger tip-top" title="Excluir OS"><i class="fas fa-trash-alt"></i></a>  ';
-}
-?>
+</div>
+
+<!-- Modal Novo Compromisso -->
+<div id="modalNovoCompromisso" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" style="max-width: 500px; border-radius: 10px; background: #1e1e2d;">
+    <form id="formNovoCompromisso" style="margin: 0;">
+        <div class="modal-header" style="border-bottom: 1px solid #323248;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">×</button>
+            <h4 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+                <i class="bx bx-calendar-plus" style="color: #ff9204;"></i> Agendar Compromisso / Lembrete
+            </h4>
+        </div>
+        <div class="modal-body" style="padding: 20px;">
+            <div class="control-group" style="margin-bottom: 14px;">
+                <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Título do Compromisso / Lembrete *</label>
+                <input type="text" id="comp_titulo" name="titulo" required placeholder="Ex: Visita técnica, Entrega do aparelho, etc." class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px; padding: 8px 10px; height: auto;">
+            </div>
+
+            <div class="row-fluid" style="margin-bottom: 14px;">
+                <div class="span6">
+                    <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Data *</label>
+                    <input type="date" id="comp_data" name="data_inicio" required class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px; padding: 6px 10px; height: auto;">
+                </div>
+                <div class="span6">
+                    <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Horário</label>
+                    <input type="time" id="comp_hora" name="hora_inicio" value="09:00" class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px; padding: 6px 10px; height: auto;">
+                </div>
+            </div>
+
+            <div class="control-group" style="margin-bottom: 14px;">
+                <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Cor de Destaque</label>
+                <select id="comp_cor" name="cor" class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px; height: 36px;">
+                    <option value="#ff9204" style="background: #ff9204; color: #fff;">Laranja (Padrão)</option>
+                    <option value="#3699ff" style="background: #3699ff; color: #fff;">Azul (Visita / Atendimento)</option>
+                    <option value="#10b981" style="background: #10b981; color: #fff;">Verde (Concluído / Prioridade Baixa)</option>
+                    <option value="#ef4444" style="background: #ef4444; color: #fff;">Vermelho (Urgente / Alerta)</option>
+                    <option value="#8b5cf6" style="background: #8b5cf6; color: #fff;">Roxo (Retorno / Garantia)</option>
+                </select>
+            </div>
+
+            <div class="control-group" style="margin-bottom: 0;">
+                <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Descrição / Observações</label>
+                <textarea id="comp_descricao" name="descricao" rows="3" placeholder="Informações adicionais, detalhes do cliente, etc." class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px;"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer" style="background: #191924; border-top: 1px solid #323248; display: flex; justify-content: flex-end; gap: 8px;">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" id="btnSalvarCompromisso" class="btn btn-success">Salvar Compromisso</button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal Status OS / Evento Calendar -->
+<div id="calendarModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="border-radius: 10px; background: #1e1e2d;">
+    <div class="modal-header" style="border-bottom: 1px solid #323248;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">×</button>
+        <h3 id="myModalLabel" style="color: #fff; margin: 0;">Detalhes do Evento</h3>
+    </div>
+    <div class="modal-body" style="color: #e4e6ef;">
+        <!-- Bloco para OS -->
+        <div id="corpoModalOs">
+            <h4><b>OS:</b> <span id="modalId" class="modal-id"></span></h4>
+            <h5 id="modalCliente" class="modal-cliente" style="color: #ff9204;"></h5>
+            <div id="modalDataInicial" class="modal-DataInicial"></div>
+            <div id="modalDataFinal" class="modal-DataFinal"></div>
+            <div id="modalGarantia" class="modal-Garantia"></div>
+            <div id="modalStatus" class="modal-Status"></div>
+            <div id="modalDescription" class="modal-Description"></div>
+            <div id="modalDefeito" class="modal-Defeito"></div>
+            <div id="modalObservacoes" class="modal-Observacoes"></div>
+            <div id="modalSubtotal" class="modal-Subtotal"></div>
+            <div id="modalDesconto" class="modal-Desconto"></div>
+            <div id="modalTotal" class="modal-Total" style="font-weight: 700; color: #10b981;"></div>
+            <div id="modalFaturado" class="modal-Faturado"></div>
+        </div>
+
+        <!-- Bloco para Compromisso -->
+        <div id="corpoModalCompromisso" style="display: none;">
+            <h4 id="compDetalheTitulo" style="color: #ff9204; margin-top: 0;"></h4>
+            <div style="margin-bottom: 8px;"><b style="color: #a2a3b7;">Data e Hora:</b> <span id="compDetalheData"></span></div>
+            <div style="margin-bottom: 8px;"><b style="color: #a2a3b7;">Responsável:</b> <span id="compDetalheUsuario"></span></div>
+            <div style="margin-bottom: 8px;"><b style="color: #a2a3b7;">Status:</b> <span id="compDetalheStatus" class="badge badge-warning"></span></div>
+            <div style="margin-top: 12px; padding: 10px; background: #151521; border-radius: 6px; border: 1px solid #2e2e42;">
+                <b style="color: #a2a3b7; display: block; margin-bottom: 4px;">Observações:</b>
+                <span id="compDetalheDescricao" style="font-size: 13px; line-height: 1.4;"></span>
+            </div>
+        </div>
+
+        <!-- Bloco para Financeiro -->
+        <div id="corpoModalFinanceiro" style="display: none;">
+            <h4 id="finDetalheTipo" style="margin-top: 0;"></h4>
+            <div style="margin-bottom: 8px;"><b style="color: #a2a3b7;">Cliente / Fornecedor:</b> <span id="finDetalheCliente" style="color: #fff; font-weight: 600;"></span></div>
+            <div style="margin-bottom: 8px;"><b style="color: #a2a3b7;">Vencimento:</b> <span id="finDetalheVencimento"></span></div>
+            <div style="margin-bottom: 8px;"><b style="color: #a2a3b7;">Valor:</b> <span id="finDetalheValor" style="font-size: 16px; font-weight: 700;"></span></div>
+            <div style="margin-bottom: 8px;"><b style="color: #a2a3b7;">Situação:</b> <span id="finDetalheStatus"></span></div>
+            <div style="margin-top: 12px; padding: 10px; background: #151521; border-radius: 6px; border: 1px solid #2e2e42;">
+                <b style="color: #a2a3b7; display: block; margin-bottom: 4px;">Descrição:</b>
+                <span id="finDetalheDescricao" style="font-size: 13px;"></span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="background: #191924; border-top: 1px solid #323248; display: flex; justify-content: flex-end; gap: 8px;">
+        <!-- Ações OS -->
+        <div id="acoesModalOs" style="display: flex; gap: 6px;">
+            <?php
+                if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
+                    echo '<a id="modalIdVisualizar" href="" class="btn tip-top" title="Ver mais detalhes"><i class="fas fa-eye"></i> Visualizar</a>';
+                }
+                if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
+                    echo '<a id="modalIdEditar" href="" class="btn btn-info tip-top" title="Editar OS"><i class="fas fa-edit"></i> Editar</a>';
+                }
+                if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dOs')) {
+                    echo '<a id="linkExcluir" href="#modal-excluir-os" role="button" data-toggle="modal" os="" class="btn btn-danger tip-top" title="Excluir OS"><i class="fas fa-trash-alt"></i></a>';
+                }
+            ?>
+        </div>
+
+        <!-- Ações Compromisso -->
+        <div id="acoesModalCompromisso" style="display: none;">
+            <button type="button" id="btnExcluirCompromisso" class="btn btn-danger"><i class="bx bx-trash"></i> Excluir Compromisso</button>
+        </div>
+
+        <!-- Fechar Geral -->
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
     </div>
 </div>
 
@@ -1260,61 +1402,274 @@ if ($this->permission->checkPermission($this->session->userdata('permissao'), 'd
             }
         });
 
+        var dataClicadaTemp = null;
+        var idCompromissoAtivo = null;
+
         var srcCalendarEl = document.getElementById('source-calendar');
         var srcCalendar = new FullCalendar.Calendar(srcCalendarEl, {
             locale: 'pt-br',
-            height: 500,
-            editable: false,
-            selectable: false,
+            height: 540,
+            editable: true,
+            selectable: true,
             businessHours: true,
-            dayMaxEvents: true, // allow "more" link when too many events
+            dayMaxEvents: 3,
             displayEventTime: false,
             events: {
                 url: "<?= site_url('sistema/calendario'); ?>",
                 method: 'GET',
-                extraParams: function() { // a function that returns an object
+                extraParams: function() {
                     return {
+                        tipo: $("#filtroTipoAgenda").val(),
                         status: $("#statusOsGet").val(),
                     };
                 },
                 failure: function() {
-                    alert('Falha ao buscar OS de calendário!');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro ao carregar eventos da agenda',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
                 },
             },
-            eventClick: function(info) {
-                var eventObj = info.event.extendedProps;
-                $('#modalId').html(eventObj.id);
-                $('#modalIdVisualizar').attr("href", "<?php echo base_url(); ?>index.php/os/visualizar/" + eventObj.id);
-                if (eventObj.editar) {
-                    $('#modalIdEditar').show();
-                    $('#linkExcluir').show();
-                    $('#modalIdEditar').attr("href", "<?php echo base_url(); ?>index.php/os/editar/" + eventObj.id);
-                    $('#modalIdExcluir').val(eventObj.id);
-                } else {
-                    $('#modalIdEditar').hide();
-                    $('#linkExcluir').hide();
+            // Clique em data vazia -> Abre opções
+            dateClick: function(info) {
+                dataClicadaTemp = info.dateStr;
+                $('#labelDataSelecionada').html('Data: ' + info.dateStr.split('-').reverse().join('/'));
+                $('#btnAcaoCriarOs').attr('href', '<?= site_url("os/adicionar") ?>?dataFinal=' + info.dateStr);
+                $('#modalAcaoDia').modal('show');
+            },
+            // Arrastar e soltar para reprogramar prazo
+            eventDrop: function(info) {
+                var eventProps = info.event.extendedProps;
+                var novaDataStr = info.event.start.toISOString().slice(0, 10);
+                
+                if (eventProps.tipo === 'financeiro') {
+                    info.revert();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Aviso',
+                        text: 'Vencimentos financeiros devem ser alterados diretamente no módulo financeiro.',
+                        timer: 3500
+                    });
+                    return;
                 }
-                $('#modalCliente').html(eventObj.cliente);
-                $('#modalDataInicial').html(eventObj.dataInicial);
-                $('#modalDataFinal').html(eventObj.dataFinal);
-                $('#modalGarantia').html(eventObj.garantia);
-                $('#modalStatus').html(eventObj.status);
-                $('#modalDescription').html(eventObj.description);
-                $('#modalDefeito').html(eventObj.defeito);
-                $('#modalObservacoes').html(eventObj.observacoes);
-                $('#modalSubtotal').html(eventObj.subtotal);
-                $('#modalDesconto').html(eventObj.desconto);
-                $('#modalTotal').html(eventObj.total);
-                $('#modalFaturado').html(eventObj.faturado);
-                $('#eventUrl').attr('href', event.url);
-                $('#calendarModal').modal();
+
+                Swal.fire({
+                    title: 'Reprogramar Data?',
+                    text: 'Deseja alterar a data deste evento para ' + novaDataStr.split('-').reverse().join('/') + '?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#ff9204',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim, reprogramar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: "<?= site_url('sistema/reprogramarDataAjax'); ?>",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                tipo: eventProps.tipo,
+                                id: eventProps.rawId,
+                                novaData: novaDataStr
+                            },
+                            success: function(resp) {
+                                if (resp.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: resp.message,
+                                        timer: 2500,
+                                        showConfirmButton: false
+                                    });
+                                } else {
+                                    info.revert();
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Erro',
+                                        text: resp.message || 'Não foi possível reprogramar.'
+                                    });
+                                }
+                            },
+                            error: function() {
+                                info.revert();
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erro',
+                                    text: 'Falha na comunicação com o servidor.'
+                                });
+                            }
+                        });
+                    } else {
+                        info.revert();
+                    }
+                });
+            },
+            // Clique em evento existente
+            eventClick: function(info) {
+                var eventProps = info.event.extendedProps;
+
+                // Esconder todos os blocos
+                $('#corpoModalOs, #corpoModalCompromisso, #corpoModalFinanceiro').hide();
+                $('#acoesModalOs, #acoesModalCompromisso').hide();
+
+                if (eventProps.tipo === 'compromisso') {
+                    idCompromissoAtivo = eventProps.rawId;
+                    $('#myModalLabel').html('<i class="bx bx-pin" style="color: #ff9204;"></i> Detalhes do Compromisso');
+                    $('#compDetalheTitulo').text(eventProps.titulo);
+                    $('#compDetalheData').text(eventProps.data_inicio);
+                    $('#compDetalheUsuario').text(eventProps.usuario);
+                    $('#compDetalheStatus').text(eventProps.status);
+                    $('#compDetalheDescricao').text(eventProps.descricao || 'Sem observações.');
+                    $('#corpoModalCompromisso').show();
+                    $('#acoesModalCompromisso').show();
+                } else if (eventProps.tipo === 'financeiro') {
+                    $('#myModalLabel').html('<i class="bx bx-dollar-circle" style="color: #10b981;"></i> Vencimento Financeiro');
+                    $('#finDetalheTipo').html(eventProps.tipoFin === 'Receita' ? '<span style="color: #10b981;">Conta a Receber</span>' : '<span style="color: #ef4444;">Conta a Pagar</span>');
+                    $('#finDetalheCliente').text(eventProps.cliente_fornecedor);
+                    $('#finDetalheVencimento').text(eventProps.vencimento);
+                    $('#finDetalheValor').text(eventProps.valor).css('color', eventProps.tipoFin === 'Receita' ? '#10b981' : '#ef4444');
+                    $('#finDetalheStatus').html(eventProps.statusFin === 'Baixado' ? '<span class="badge badge-success">Baixado</span>' : '<span class="badge badge-warning">Pendente</span>');
+                    $('#finDetalheDescricao').text(eventProps.descricao || 'Sem descrição.');
+                    $('#corpoModalFinanceiro').show();
+                } else {
+                    // OS padrão
+                    $('#myModalLabel').text('Status OS Detalhada');
+                    $('#modalId').html(eventProps.id);
+                    $('#modalIdVisualizar').attr("href", "<?= base_url(); ?>index.php/os/visualizar/" + eventProps.id);
+                    if (eventProps.editar) {
+                        $('#modalIdEditar').show().attr("href", "<?= base_url(); ?>index.php/os/editar/" + eventProps.id);
+                        $('#linkExcluir').show();
+                        $('#modalIdExcluir').val(eventProps.id);
+                    } else {
+                        $('#modalIdEditar, #linkExcluir').hide();
+                    }
+                    $('#modalCliente').html(eventProps.cliente);
+                    $('#modalDataInicial').html(eventProps.dataInicial);
+                    $('#modalDataFinal').html(eventProps.dataFinal);
+                    $('#modalGarantia').html(eventProps.garantia);
+                    $('#modalStatus').html(eventProps.status);
+                    $('#modalDescription').html(eventProps.description);
+                    $('#modalDefeito').html(eventProps.defeito);
+                    $('#modalObservacoes').html(eventProps.observacoes);
+                    $('#modalSubtotal').html(eventProps.subtotal);
+                    $('#modalDesconto').html(eventProps.desconto);
+                    $('#modalTotal').html(eventProps.total);
+                    $('#modalFaturado').html(eventProps.faturado);
+                    $('#corpoModalOs').show();
+                    $('#acoesModalOs').show();
+                }
+
+                $('#calendarModal').modal('show');
             },
         });
 
         srcCalendar.render();
 
+        // Filtro tipo e status
+        $('#filtroTipoAgenda').on('change', function() {
+            var tipo = $(this).val();
+            if (tipo === 'financeiro' || tipo === 'compromissos') {
+                $('#wrapperFiltroStatus').hide();
+            } else {
+                $('#wrapperFiltroStatus').show();
+            }
+            srcCalendar.refetchEvents();
+        });
+
+        $('#statusOsGet').on('change', function() {
+            srcCalendar.refetchEvents();
+        });
+
         $('#btn-calendar').on('click', function() {
             srcCalendar.refetchEvents();
+        });
+
+        // Abrir modal de novo compromisso
+        $('#btn-novo-compromisso').on('click', function() {
+            var hoje = new Date().toISOString().slice(0, 10);
+            $('#comp_data').val(hoje);
+            $('#comp_titulo').val('');
+            $('#comp_descricao').val('');
+            $('#modalNovoCompromisso').modal('show');
+        });
+
+        $('#btnAcaoCriarCompromisso').on('click', function() {
+            $('#modalAcaoDia').modal('hide');
+            $('#comp_data').val(dataClicadaTemp);
+            $('#comp_titulo').val('');
+            $('#comp_descricao').val('');
+            $('#modalNovoCompromisso').modal('show');
+        });
+
+        // Salvar compromisso via AJAX
+        $('#formNovoCompromisso').on('submit', function(e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url: "<?= site_url('sistema/adicionarCompromissoAjax'); ?>",
+                type: 'POST',
+                dataType: 'json',
+                data: formData,
+                success: function(resp) {
+                    if (resp.success) {
+                        $('#modalNovoCompromisso').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso!',
+                            text: resp.message,
+                            timer: 2500,
+                            showConfirmButton: false
+                        });
+                        srcCalendar.refetchEvents();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro',
+                            text: resp.message || 'Não foi possível salvar.'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Excluir compromisso
+        $('#btnExcluirCompromisso').on('click', function() {
+            if (!idCompromissoAtivo) return;
+
+            Swal.fire({
+                title: 'Excluir Compromisso?',
+                text: 'Esta ação não pode ser desfeita.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sim, excluir',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: "<?= site_url('sistema/excluirCompromissoAjax'); ?>",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { id: idCompromissoAtivo },
+                        success: function(resp) {
+                            if (resp.success) {
+                                $('#calendarModal').modal('hide');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Compromisso excluído!',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                srcCalendar.refetchEvents();
+                            }
+                        }
+                    });
+                }
+            });
         });
     });
 </script>

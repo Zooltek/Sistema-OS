@@ -1,24 +1,26 @@
 # Manual do Usuário - Amura OS
 
-Bem-vindo ao **Manual Oficial do Usuário do Amura OS**, o sistema avançado de gestão de Ordens de Serviço, Vendas, Produtos, Clientes e Controle Financeiro da **Amura Tecnologias**.
+Bem-vindo ao **Manual Oficial do Usuário do Amura OS**, o sistema avançado de gestão de Ordens de Serviço, Vendas, Produtos, Clientes e Controle Financeiro desenvolvido por **Fabricio Castro**.
 
 ---
 
 ## 📋 Sumário
 1. [Acesso e Visão Geral](#1-acesso-e-visão-geral)
 2. [Atalhos Rápidos de Teclado](#2-atalhos-rápidos-de-teclado)
-3. [Configuração da Empresa (Emitente)](#3-configuração-da-empresa-emitente)
+3. [Configuração da Empresa (Emitente) e WhatsApp](#3-configuração-da-empresa-emitente-e-whatsapp)
 4. [Gestão Operacional (Clientes, Produtos, Serviços e OS)](#4-gestão-operacional)
-5. [Guia Detalhado de Configurações do Sistema](#5-guia-detalhado-de-configurações-do-sistema)
-6. [Guia Completo de Backup de Dados](#6-guia-completo-de-backup-de-dados)
-7. [Guia de Atualização de Banco de Dados e Sistema](#7-guia-de-atualização-de-banco-de-dados-e-sistema)
+5. [Agenda & Hub de Operações da Tela Inicial](#5-agenda--hub-de-operações-da-tela-inicial)
+6. [Guia Detalhado de Configurações do Sistema](#6-guia-detalhado-de-configurações-do-sistema)
+7. [Guia Completo de Backup e Restauração de Dados](#7-guia-completo-de-backup-e-restauração-de-dados)
+8. [Portal e Área do Cliente (Modo Desktop e Rede)](#8-portal-e-área-do-cliente-modo-desktop-e-rede)
+9. [Guia de Atualização de Banco de Dados e Sistema](#9-guia-de-atualização-de-banco-de-dados-e-sistema)
 
 ---
 
 ## 1. Acesso e Visão Geral
 
 ### Como Acessar:
-- **No Aplicativo Desktop (Windows)**: Dê um duplo clique no atalho **Amura OS** na sua Área de Trabalho ou execute `Amura OS Setup 1.0.0.exe`.
+- **No Aplicativo Desktop (Windows)**: Dê um duplo clique no atalho **Amura OS** na sua Área de Trabalho ou execute o aplicativo.
 - **No Navegador Web**: Acesse o endereço [http://localhost:8002](http://localhost:8002).
 
 ### 🔑 Credenciais Padrão de Acesso:
@@ -28,32 +30,40 @@ Bem-vindo ao **Manual Oficial do Usuário do Amura OS**, o sistema avançado de 
 > **Dica**: Recomendamos alterar a senha no primeiro acesso através do menu superior de usuário -> *Minha Conta / Alterar Senha*.
 
 ### Tela Principal (Dashboard):
-Ao fazer login, você verá o Dashboard com:
-- **Cards Superiores**: Resumo de Clientes, Produtos, Serviços, Lançamentos Financeiros e OS.
-- **Gráfico "Estatísticas Financeiras"**: Gráfico de Barras Horizontais com totalização de Receitas (verde), Despesas (vermelho) e Saldo (azul) formatados em Reais (R$).
-- **Agenda de Eventos e Ordens de Serviço Recentes**: Acompanhamento rápido das atividades do dia.
+Ao fazer login, você verá o Dashboard moderno com:
+- **Cards de Atalho Modernos (Glassmorphism)**: 6 cards estilizados com iluminação superior, ícones em vidro fosco e micro-interações no hover:
+  1. **Clientes** (`F1` - Azul)
+  2. **Produtos** (`F2` - Laranja)
+  3. **Serviços** (`F3` - Ciano)
+  4. **OS** (`F4` - Rosa)
+  5. **Vendas** (`F6` - Verde)
+  6. **Lançamentos** (`F7` - Amarelo Dourado)
+- **Menu Superior Redesenhado**: Botões de ação arredondados de 38x38px em formato pílula para **Perfil**, **Relatórios** e **Configurações**, com menus flutuantes elegantes.
+- **Gráfico "Estatísticas Financeiras"**: Gráfico de totalização de Receitas (verde), Despesas (vermelho) e Saldo (azul) formatados em Reais (R$).
+- **Agenda & Operações**: Calendário interativo dinâmico para acompanhamento e reprogramação de compromissos, OS e vencimentos financeiros.
 
 ---
 
 ## 2. Atalhos Rápidos de Teclado
 
-Para agilizar o atendimento, utilize as teclas de atalho a qualquer momento no sistema:
-- `F1`: Abrir tela de pesquisa geral
-- `F2`: Cadastrar novo Cliente
-- `F3`: Cadastrar nova Ordem de Serviço (OS)
-- `F4`: Cadastrar nova Venda
-- `F6`: Acessar lista de Clientes
-- `F7`: Acessar lista de Ordens de Serviço
+Para agilizar o atendimento diário, utilize as teclas de atalho a qualquer momento no sistema:
+- `F1`: Acessar lista de Clientes
+- `F2`: Acessar lista de Produtos
+- `F3`: Acessar lista de Serviços
+- `F4`: Acessar lista de Ordens de Serviço (OS)
+- `F6`: Acessar lista de Vendas
+- `F7`: Acessar lista de Lançamentos Financeiros
+- `ESC`: Voltar para a tela inicial (Dashboard)
 
 ---
 
-## 3. Configuração da Empresa (Emitente)
+## 3. Configuração da Empresa (Emitente) e WhatsApp
 
 Antes de emitir OS ou Vendas, configure os dados da sua empresa:
-1. Acesse o menu **Configurações -> Emitente** (`/sistema/emitente`).
+1. Acesse o menu **Configurações (engrenagem) -> Emitente** (`/sistema/emitente`).
 2. Preencha a Razão Social, CNPJ, Inscrição Estadual, Endereço completo, Telefone e E-mail de contato.
-3. Clique em **Alterar Logotipo** para enviar a imagem da sua marca (recomendado 130x130px).
-4. Essa logomarca e os dados da empresa serão impressos no cabeçalho de todas as OS, Vendas e Termos de Garantia.
+3. **Telefone / WhatsApp**: O número informado neste campo é utilizado pelo Amura OS para o envio de mensagens pelo WhatsApp (tanto na tag `{TELEFONE_EMITENTE}` quanto na identificação corporativa).
+4. Clique em **Alterar Logotipo** para enviar a imagem da sua marca. Essa logomarca e os dados da empresa serão impressos no cabeçalho de todas as OS, Vendas e Termos de Garantia.
 
 ---
 
@@ -71,90 +81,107 @@ Antes de emitir OS ou Vendas, configure os dados da sua empresa:
 
 ---
 
-## 5. Guia Detalhado de Configurações do Sistema
+## 5. Agenda & Hub de Operações da Tela Inicial
 
-Acesse o menu **Configurações -> Sistema** (`/sistema/configurar`). O módulo de configurações está dividido em 8 abas funcionais:
+A Agenda da tela inicial do Amura OS foi transformada em uma central completa de produtividade:
 
-```
-[ Gerais ] [ Financeiro ] [ Produtos ] [ Notificações ] [ Atualizações ] [ OS ] [ API ] [ E-mail ]
-```
-
-### 📍 5.1. Aba Gerais
-- **Nome do Sistema**: Nome que aparece no topo, navegador e e-mails (Padrão: `Amura OS`).
-- **Tema do Sistema**: Alterne entre 7 temas visuais (Dark, White, Pure Dark, Dark Orange, Dark Violet, White Green, White Black).
-- **Registros por Página**: Quantidade de registros por tabela (10, 20, 50, 100).
-
-### 📍 5.2. Aba Financeiro
-- **Permitir Baixa Retroativa**: Habilita o registro de pagamentos com datas passadas.
-- **Edição/Exclusão de OS/Vendas Faturadas**: Quando desativado, impede que funcionários alterem ou apaguem OS ou Vendas que já geraram entrada financeira.
-- **Chave Pix**: Digite sua chave Pix (CPF, CNPJ, E-mail, Celular ou Aleatória). Ela será impressa automaticamente nas OS e Vendas para o cliente pagar via QR Code / Pix copia e cola.
-- **Configuração de Gateways de Pagamento**:
-  - **EFI / Gerencianet**: Insira `CLIENT_ID` e `CLIENT_SECRET` para geração automática de Boletos e Pix cobrança.
-  - **Mercado Pago**: Insira `PUBLIC_KEY` e `ACCESS_TOKEN`.
-  - **Asaas**: Insira a `API_KEY` da sua conta Asaas.
-
-### 📍 5.3. Aba Produtos
-- **Controlar Estoque**: Quando **Sim**, diminui a quantidade de produtos disponíveis sempre que uma venda ou OS for faturada.
-
-### 📍 5.4. Aba Notificações (WhatsApp e E-mail)
-- **Notificação de OS por E-mail**: Selecione os destinatários (*Todos, Cliente, Técnico, Emitente ou Nenhum*).
-- **Mensagem do WhatsApp**: Personalize o modelo do texto enviado ao cliente via WhatsApp. Você pode utilizar as seguintes tags automáticas:
-  - `{CLIENTE_NOME}`: Nome completo do cliente.
-  - `{NUMERO_OS}`: Número identificador da OS.
-  - `{STATUS_OS}`: Status atual (ex: Em Andamento, Orçamento, Finalizado).
-  - `{VALOR_OS}`: Valor total da OS em R$.
-  - `{DESCRI_PRODUTOS}`: Resumo dos serviços e produtos.
-  - `{EMITENTE}`: Nome da sua empresa.
-
-### 📍 5.5. Aba OS
-- **Impressão em 2 Vias**: Define se a OS será impressa em 2 vias na mesma folha A4.
-- **Status Padrão**: Escolha quais status de OS aparecem automaticamente na listagem principal.
-
-### 📍 5.6. Aba API
-- **Ativar API REST**: Permite integrar o Amura OS com aplicativos externos ou sistemas de terceiros.
-- **Endpoint da API**: `http://localhost:8002/index.php/api/v1`
-- **Tempo do Token**: Validade do token JWT de autenticação.
-- **Botão "Resetar Token JWT"**: Clique para revogar todos os acessos externos ativos imediatamente.
-
-### 5.7. Aba E-mail (SMTP)
-- Configure os dados do seu servidor de e-mail para envio de notificações automáticas (Host, Porta, Criptografia TLS/SSL, Usuário e Senha).
+### ⚡ Funções Integradas:
+1. **Compromissos e Lembretes Rápidos**:
+   - Clique no botão **"+ Novo Compromisso"** no canto superior da Agenda.
+   - Defina o título, data, horário, cor de destaque (Laranja, Azul, Verde, Vermelho ou Roxo) e observações.
+2. **Criação de OS em 1 Clique**:
+   - Ao clicar sobre qualquer dia do calendário, o sistema abre um menu com opções rápidas. Ao escolher **"Abrir Nova Ordem de Serviço"**, o formulário de abertura de OS já carrega a data de entrega pré-selecionada.
+3. **Reprogramação de Prazos por Arraste (Drag & Drop)**:
+   - Arraste qualquer card de OS ou Compromisso para outro dia. O sistema pede confirmação rápida e atualiza o prazo automaticamente no banco de dados.
+4. **Vencimentos Financeiros na Agenda**:
+   - As contas a pagar (vermelho) e a receber (verde) do módulo financeiro são plotadas no dia do vencimento com seus respectivos valores e status.
+5. **Filtros Avançados**:
+   - Alterne a exibição entre:
+     - **Todos os Eventos** (OS, Financeiro e Compromissos)
+     - **Apenas OS** (com filtro adicional por status: Aberto, Em Andamento, etc.)
+     - **Vencimentos (Contas)**
+     - **Compromissos**
 
 ---
 
-## 6. Guia Completo de Backup de Dados
+## 6. Guia Detalhado de Configurações do Sistema
+
+Acesse o menu **Configurações -> Sistema** (`/sistema/configurar`). O módulo está estruturado em 9 abas dedicadas:
+
+```
+[ Gerais ] [ Financeiro ] [ Produtos ] [ Notificações ] [ Backup ] [ Atualizações ] [ OS ] [ API ] [ E-mail ]
+```
+
+### 📍 6.1. Aba Gerais
+- Nome do Sistema, Tema visual e Registros por página.
+
+### 📍 6.2. Aba Financeiro
+- Baixa retroativa, bloqueio de edição/exclusão após faturamento, Chave Pix e credenciais de gateways (Asaas, Mercado Pago, EFI/Gerencianet).
+
+### 📍 6.3. Aba Produtos
+- Controle e baixa automática de estoque.
+
+### 📍 6.4. Aba Notificações (WhatsApp e E-mail)
+- Personalização do modelo de mensagem automática do WhatsApp com tags dinâmicas (`{CLIENTE_NOME}`, `{NUMERO_OS}`, `{STATUS_OS}`, `{VALOR_OS}`, `{TELEFONE_EMITENTE}`).
+
+### 📍 6.5. Aba Backup (Nova)
+- Painel exclusivo para geração de cópias de segurança (.zip) e restauração (.sql ou .zip).
+
+### 📍 6.6. Aba Atualizações
+- Instalação de pacotes de atualização (.zip sem recompilar), migrações manuais de banco e sincronização.
+
+### 📍 6.7. Aba OS
+- Impressão em 2 vias e status de visualização padrão.
+
+### 📍 6.8. Aba API
+- Ativação da API REST e gestão do tempo de expiração do Token JWT.
+
+### 📍 6.9. Aba E-mail
+- Configuração de servidor SMTP para envio de e-mails automáticos.
+
+---
+
+## 7. Guia Completo de Backup e Restauração de Dados
 
 O backup é a única garantia de que suas informações estarão a salvo em caso de falha de hardware ou imprevistos.
 
-### 🔄 Como Fazer o Backup em 1 Clique:
-1. Clique no menu superior **Configurações -> Backup** (ou acesse a URL `/sistema/backup`).
-2. O sistema gerará e baixará um arquivo `.zip` contendo toda a base de dados MySQL (ex: `backup23-08-2026_18-00-00.zip`).
+### 🔄 Como Fazer o Backup:
+1. Acesse **Configurações -> Sistema**.
+2. Clique na aba **Backup**.
+3. Clique em **Fazer Download do Backup (.zip)**.
+4. O sistema gerará um arquivo compactado contendo toda a base de dados.
 
-### 🛡️ Plano Recomendado de Segurança:
-- **Rotina de Backup**: Faça backup ao final de cada dia de trabalho ou semanalmente.
-- **Armazenamento Seguro**: Salve o arquivo `.zip` em um pendrive ou pasta sincronizada na nuvem (Google Drive, Dropbox, OneDrive).
-- **Ressuprimento de Imagens**: Além do arquivo `.zip` do banco de dados, faça periodicamente uma cópia das pastas de anexos:
-  - `d:\Projetos\Amura OS\assets\anexos`
-  - `d:\Projetos\Amura OS\assets\arquivos`
+### 📥 Como Restaurar um Backup:
+1. Na mesma aba **Backup**, localize o card **Restaurar Cópia de Segurança**.
+2. Selecione o arquivo `.sql` ou `.zip` desejado.
+3. Clique em **Restaurar Backup** e confirme o aviso de segurança.
 
----
-
-## 7. Guia de Atualização de Banco de Dados e Sistema
-
-Mantenha seu sistema seguro e com os últimos recursos instalados.
-
-### 🗄️ Atualizando a Estrutura do Banco de Dados (`/sistema/atualizarBanco`)
-Quando houver atualizações que alterem colunas ou criem novas tabelas no banco de dados:
-1. Acesse **Configurações -> Atualizações**.
-2. Clique no botão **Banco de Dados**.
-3. Confirme a execução no aviso que aparecerá na tela.
-4. O Amura OS executará as *migrations* internas automaticamente e exibirá a mensagem de sucesso.
-
-### 💻 Atualizando o Código do Sistema (`/sistema/atualizarSistema`)
-1. Antes de atualizar, **FAÇA UM BACKUP DO BANCO DE DADOS** (conforme a Seção 6).
-2. Acesse **Configurações -> Atualizações**.
-3. Clique no botão **Atualizar Amura OS**.
-4. O sistema irá sincronizar e atualizar os arquivos da aplicação.
+> **Importante**: No menu nativo do Electron da janela desktop (**Arquivo -> Fazer Backup dos Dados**), também é possível salvar cópias de segurança diretas em formato `.sql`.
 
 ---
 
-*Manual elaborado pela equipe de desenvolvimento Amura Tecnologias.*
+## 8. Portal e Área do Cliente (Modo Desktop e Rede)
+
+O Amura OS conta com um portal exclusivo para que os clientes acompanhem ordens de serviço, faturas e garantias (`/mine`).
+
+### Visual Renovado:
+- Tela de login corporativa moderna com a logo clara da Amura, imagem hero de destaque, layout responsivo em duas colunas e alternador de visualização de senha.
+
+### Como Disponibilizar o Acesso pelo Modo Desktop:
+1. **Na mesma rede (Loja / Oficina)**:
+   - Na janela do Amura OS, acesse o menu **Rede Local -> Compartilhar na Rede Local (Ligar / Desligar)**.
+   - Veja o endereço em **Rede Local -> Ver Endereços de Acesso (IP / URL)** (ex: `http://192.168.1.100:8002/mine`).
+   - Qualquer computador, tablet ou celular conectado ao mesmo Wi-Fi poderá acessar o portal.
+2. **Pela Internet (Cliente acessando de casa)**:
+   - Como o Amura OS Desktop roda em seu computador local, para liberar o acesso externo recomenda-se utilizar uma ferramenta de túnel seguro e gratuito como **Cloudflare Tunnel (cloudflared)** ou **Ngrok**, criando uma URL pública (ex: `https://clientes.suaempresa.com.br/mine`) apontando para a porta `8002`.
+
+---
+
+## 9. Guia de Atualização de Banco de Dados e Sistema
+
+- **Pacotes de Atualização (.zip)**: Envie arquivos de atualização diretamente pela aba **Configurações -> Atualizações** sem necessidade de compilar um novo instalador.
+- **Migrações de Banco de Dados**: Clique em **Executar Migrações do Banco** para atualizar schemas e tabelas.
+
+---
+
+*Manual atualizado por Fabricio Castro.*

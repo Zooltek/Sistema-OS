@@ -110,7 +110,6 @@
             <li><a href="<?= site_url('permissoes') ?>">Permissões</a></li>
             <li><a href="<?= site_url('auditoria') ?>">Auditoria</a></li>
             <li><a href="<?= site_url('sistema/emails') ?>">Emails</a></li>
-            <li><a href="<?= site_url('sistema/backup') ?>">Backup</a></li>
           </ul>
         </li>
       </ul>

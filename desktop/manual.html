@@ -238,11 +238,13 @@
     <nav class="sidebar-nav" id="sidebarNav">
       <a href="#acesso" class="active">1. Acesso e Visão Geral</a>
       <a href="#atalhos">2. Atalhos de Teclado</a>
-      <a href="#empresa">3. Configuração da Empresa</a>
+      <a href="#empresa">3. Empresa e WhatsApp</a>
       <a href="#operacional">4. Gestão Operacional</a>
-      <a href="#configuracoes">5. Guia de Configurações</a>
-      <a href="#backup">6. Guia Completo de Backup</a>
-      <a href="#atualizacoes">7. Atualizações do Sistema</a>
+      <a href="#agenda">5. Agenda & Operações</a>
+      <a href="#configuracoes">6. Guia de Configurações</a>
+      <a href="#backup">7. Guia de Backup e Restauração</a>
+      <a href="#portal">8. Área do Cliente e Rede</a>
+      <a href="#atualizacoes">9. Atualizações do Sistema</a>
     </nav>
   </aside>
 
@@ -300,13 +302,14 @@
         </ul>
       </section>
 
-      <!-- 3. Empresa -->
+      <!-- 3. Empresa e WhatsApp -->
       <section class="doc-section" id="empresa">
-        <h2>3. Configuração da Empresa (Emitente)</h2>
+        <h2>3. Configuração da Empresa (Emitente) e WhatsApp</h2>
         <p>Antes de emitir OS ou realizar vendas, configure os dados da sua empresa emitente:</p>
         <ol>
           <li>Acesse o menu <b>Configurações &rarr; Emitente</b> (<code>/sistema/emitente</code>).</li>
           <li>Preencha a Razão Social, CNPJ, Inscrição Estadual, Endereço completo, Telefone e E-mail de contato.</li>
+          <li><b>Telefone / WhatsApp:</b> O número informado neste campo é utilizado pelo Amura OS para o envio de mensagens do WhatsApp e para compor a variável <code>{TELEFONE_EMITENTE}</code> nas notificações.</li>
           <li>Clique em <b>Alterar Logotipo</b> para enviar a imagem da sua marca (recomendado 130x130px).</li>
           <li>A logomarca e os dados cadastrados serão impressos no cabeçalho de todas as OS, Vendas e Termos de Garantia.</li>
         </ol>
@@ -331,60 +334,93 @@
         </ul>
       </section>
 
-      <!-- 5. Configurações -->
-      <section class="doc-section" id="configuracoes">
-        <h2>5. Guia Detalhado de Configurações do Sistema</h2>
-        <p>Acesse o menu <b>Configurações &rarr; Sistema</b> (<code>/sistema/configurar</code>). O módulo está dividido em abas funcionais:</p>
-        
-        <pre>[ Gerais ] [ Financeiro ] [ Produtos ] [ Notificações ] [ Atualizações ] [ OS ] [ API ] [ E-mail ]</pre>
-
-        <h3>5.1. Aba Gerais:</h3>
+      <!-- 5. Agenda & Operações -->
+      <section class="doc-section" id="agenda">
+        <h2>5. Agenda & Hub de Operações da Tela Inicial</h2>
+        <p>A Agenda da tela inicial do Amura OS é uma central dinâmica de produtividade e acompanhamento:</p>
         <ul>
-          <li><b>Nome do Sistema:</b> Nome que aparece no topo, navegador e e-mails (Padrão: <code>Amura OS</code>).</li>
-          <li><b>Tema do Sistema:</b> Alterne entre 7 temas visuais (Dark, White, Pure Dark, Dark Orange, Dark Violet, White Green, White Black).</li>
-          <li><b>Registros por Página:</b> Quantidade de registros por tabela (10, 20, 50, 100).</li>
+          <li><b>Compromissos e Lembretes:</b> Clique no botão <code>+ Novo Compromisso</code> para registrar visitas técnicas, entregas e tarefas com horário e cor de destaque.</li>
+          <li><b>Criação de OS em 1 Clique:</b> Clique em qualquer dia vazio do calendário para abrir uma Nova Ordem de Serviço com a data de entrega pré-selecionada.</li>
+          <li><b>Reprogramação por Drag & Drop:</b> Arraste qualquer card de OS ou Compromisso para outro dia. O sistema atualiza o prazo no banco de dados automaticamente.</li>
+          <li><b>Vencimentos Financeiros:</b> Contas a pagar (vermelho) e a receber (verde) são exibidas no dia do vencimento.</li>
+          <li><b>Filtros Integrados:</b> Alterne rapidamente entre <i>Todos os Eventos</i>, <i>Apenas OS</i>, <i>Vencimentos (Contas)</i> e <i>Compromissos</i>.</li>
         </ul>
+      </section>
 
-        <h3>5.2. Aba Financeiro e Pagamentos:</h3>
+      <!-- 6. Configurações -->
+      <section class="doc-section" id="configuracoes">
+        <h2>6. Guia Detalhado de Configurações do Sistema</h2>
+        <p>Acesse o menu <b>Configurações &rarr; Sistema</b> (<code>/sistema/configurar</code>). O módulo está estruturado em 9 abas:</p>
+        
+        <h3>6.1. Gerais e Financeiro:</h3>
         <ul>
+          <li><b>Nome e Tema:</b> Escolha entre 7 temas visuais (incluindo Pure Dark, Dark Orange, White, etc.).</li>
           <li><b>Permitir Baixa Retroativa:</b> Habilita o registro de pagamentos com datas passadas.</li>
           <li><b>Edição/Exclusão de OS/Vendas Faturadas:</b> Quando desativado, protege lançamentos que já movimentaram o caixa.</li>
-          <li><b>Chave Pix:</b> Cadastre sua chave Pix (CPF, CNPJ, E-mail ou Aleatória) para impressão de QR Code direto na OS.</li>
+          <li><b>Chave Pix:</b> Cadastre sua chave Pix para impressão de QR Code direto na OS.</li>
           <li><b>Gateways de Pagamento:</b> Suporte nativo a <b>EFI (Gerencianet)</b>, <b>Mercado Pago</b> e <b>Asaas</b>.</li>
         </ul>
 
-        <h3>5.3. Notificações (WhatsApp e E-mail):</h3>
+        <h3>6.2. Notificações (WhatsApp e E-mail):</h3>
         <ul>
           <li><b>Notificação de OS por E-mail:</b> Selecione os destinatários (Todos, Cliente, Técnico, Emitente ou Nenhum).</li>
-          <li><b>Mensagem do WhatsApp:</b> Personalize o texto automático usando as variáveis <code>{CLIENTE_NOME}</code>, <code>{NUMERO_OS}</code>, <code>{STATUS_OS}</code>, <code>{VALOR_OS}</code>, <code>{DESCRI_PRODUTOS}</code> e <code>{EMITENTE}</code>.</li>
+          <li><b>Mensagem do WhatsApp:</b> Personalize o texto automático usando as variáveis <code>{CLIENTE_NOME}</code>, <code>{NUMERO_OS}</code>, <code>{STATUS_OS}</code>, <code>{VALOR_OS}</code>, <code>{DESCRI_PRODUTOS}</code> e <code>{TELEFONE_EMITENTE}</code>.</li>
+        </ul>
+
+        <h3>6.3. Aba Backup e Atualizações:</h3>
+        <ul>
+          <li>Aba dedicada exclusivamente para criação e restauração de backups.</li>
+          <li>Aba de atualizações para envio de pacotes <code>.zip</code> sem necessidade de recompilar instalador.</li>
         </ul>
       </section>
 
-      <!-- 6. Backup -->
+      <!-- 7. Backup -->
       <section class="doc-section" id="backup">
-        <h2>6. Guia Completo de Backup de Dados</h2>
-        <p>O backup regular é fundamental para a segurança do seu negócio.</p>
+        <h2>7. Guia Completo de Backup e Restauração de Dados</h2>
+        <p>O backup regular é fundamental para a segurança total das suas informações.</p>
         
-        <h3>Como Fazer Backup pelo Menu Superior:</h3>
+        <h3>Como Fazer Backup e Restaurar pelo Sistema Web:</h3>
         <ol>
-          <li>Clique no menu <b>Arquivo &rarr; Fazer Backup dos Dados (.sql)</b> no topo da tela.</li>
-          <li>Escolha onde deseja salvar o arquivo (ex: em um Pen Drive ou pasta do Google Drive/OneDrive).</li>
-          <li>O sistema exporta toda a estrutura e registros do banco MariaDB em segundos.</li>
+          <li>Acesse <b>Configurações &rarr; Sistema</b> e abra a aba <b>Backup</b>.</li>
+          <li>Clique em <b>Fazer Download do Backup (.zip)</b> para baixar a cópia do banco.</li>
+          <li>Para restaurar, envie o arquivo <code>.sql</code> ou <code>.zip</code> no painel de restauração e confirme a operação.</li>
+        </ol>
+
+        <h3>Pelo Menu Nativo do Desktop:</h3>
+        <ol>
+          <li>No topo da janela do Amura OS, clique em <b>Arquivo &rarr; Fazer Backup dos Dados (.sql)</b>.</li>
+          <li>Para restaurar, clique em <b>Arquivo &rarr; Restaurar Backup dos Dados (.sql)</b>.</li>
         </ol>
 
         <div class="card-tip">
-          <b>Armazenamento dos Dados Portáteis:</b> Todos os dados do banco e anexos do Amura OS Portable ficam armazenados na pasta <code>AmuraOS_Data</code> junto ao executável ou no AppData do usuário. Você pode abri-la a qualquer momento pelo menu <b>Arquivo &rarr; Abrir Pasta de Dados</b>.
+          <b>Armazenamento dos Dados:</b> Todos os dados do banco e anexos do Amura OS ficam armazenados na pasta <code>AmuraOS_Data</code>. Você pode abri-la a qualquer momento pelo menu <b>Arquivo &rarr; Abrir Pasta de Dados (AppData)</b>.
         </div>
       </section>
 
-      <!-- 7. Atualizações -->
+      <!-- 8. Área do Cliente -->
+      <section class="doc-section" id="portal">
+        <h2>8. Portal e Área do Cliente (Modo Desktop e Rede)</h2>
+        <p>Seus clientes podem acompanhar ordens de serviço, orçamentos e faturas através da rota <code>/mine</code>.</p>
+
+        <h3>Acesso na Mesma Rede (Wi-Fi da Loja / Oficina):</h3>
+        <ol>
+          <li>Clique no menu superior da janela: <b>Rede Local &rarr; Compartilhar na Rede Local (Ligar / Desligar)</b>.</li>
+          <li>Consulte os IPs em <b>Rede Local &rarr; Ver Endereços de Acesso (IP / URL)</b>.</li>
+          <li>O cliente poderá abrir no celular ou tablet: <code>http://[IP-DO-COMPUTADOR]:8002/mine</code>.</li>
+        </ol>
+
+        <h3>Acesso Externo pela Internet:</h3>
+        <p>Para clientes acessarem da própria residência sem custos de hospedagem, basta rodar uma ferramenta de túnel seguro como <b>Cloudflare Tunnel</b> ou <b>Ngrok</b> apontando para a porta <code>8002</code> do seu computador.</p>
+      </section>
+
+      <!-- 9. Atualizações -->
       <section class="doc-section" id="atualizacoes">
-        <h2>7. Guia de Atualização de Banco de Dados e Sistema</h2>
+        <h2>9. Guia de Atualização de Banco de Dados e Sistema</h2>
         <h3>Atualizando a Estrutura do Banco (Migrations):</h3>
         <p>Quando novas funcionalidades forem adicionadas ao sistema:</p>
         <ol>
           <li>Acesse <b>Configurações &rarr; Atualizações</b>.</li>
-          <li>Clique no botão <b>Banco de Dados</b>.</li>
+          <li>Clique no botão <b>Executar Migrações do Banco</b>.</li>
           <li>O Amura OS executará as migrations automaticamente e exibirá a mensagem de conclusão.</li>
         </ol>
       </section>

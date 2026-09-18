@@ -125,10 +125,140 @@ function buildApplicationMenu() {
             }
           }
         },
+        {
+          label: 'Restaurar Backup dos Dados (.sql)...',
+          click: async () => {
+            if (!processManager) return;
+            try {
+              const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+                title: 'Selecionar Arquivo de Backup para Restauração (.sql)',
+                filters: [
+                  { name: 'Arquivo SQL', extensions: ['sql'] },
+                  { name: 'Todos os Arquivos', extensions: ['*'] }
+                ],
+                properties: ['openFile']
+              });
+
+              if (!canceled && filePaths && filePaths[0]) {
+                const confirm = await dialog.showMessageBox(mainWindow, {
+                  type: 'warning',
+                  buttons: ['Cancelar', 'Sim, Restaurar Banco'],
+                  defaultId: 0,
+                  cancelId: 0,
+                  title: 'Atenção: Confirmação de Restauração',
+                  message: 'Deseja realmente restaurar este arquivo de backup?',
+                  detail: `Arquivo: ${filePaths[0]}\n\nATENÇÃO: Os dados atuais serão substituídos pelo conteúdo deste backup.\nUm backup automático de segurança dos dados atuais será criado antes da restauração.`
+                });
+
+                if (confirm.response === 1) {
+                  const res = await processManager.restoreDatabase(filePaths[0]);
+                  await dialog.showMessageBox(mainWindow, {
+                    type: 'info',
+                    title: 'Restauração Concluída',
+                    message: 'O banco de dados foi restaurado com sucesso!',
+                    detail: `Cópia de segurança prévia guardada em:\n${res.safetyBackup}`
+                  });
+                  if (mainWindow) mainWindow.loadURL(SERVER_URL);
+                }
+              }
+            } catch (err) {
+              dialog.showErrorBox('Erro na Restauração', `Não foi possível restaurar o backup:\n${err.message}`);
+            }
+          }
+        },
+        { type: 'separator' },
+        {
+          label: 'Instalar Pacote de Atualização (.zip)...',
+          click: async () => {
+            if (!processManager) return;
+            try {
+              const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+                title: 'Selecionar Pacote de Atualização do Amura OS (.zip)',
+                filters: [
+                  { name: 'Pacote ZIP', extensions: ['zip'] }
+                ],
+                properties: ['openFile']
+              });
+
+              if (!canceled && filePaths && filePaths[0]) {
+                const confirm = await dialog.showMessageBox(mainWindow, {
+                  type: 'question',
+                  buttons: ['Cancelar', 'Instalar Atualização'],
+                  defaultId: 1,
+                  cancelId: 0,
+                  title: 'Instalação de Atualização',
+                  message: 'Deseja aplicar esta atualização no Amura OS agora?',
+                  detail: `Arquivo: ${filePaths[0]}\n\nO sistema fará um backup preventivo automático antes da instalação.`
+                });
+
+                if (confirm.response === 1) {
+                  await processManager.applyUpdatePackage(filePaths[0]);
+                  await dialog.showMessageBox(mainWindow, {
+                    type: 'info',
+                    title: 'Atualização Concluída',
+                    message: 'O Amura OS foi atualizado com sucesso!',
+                    detail: 'A aplicação será recarregada para refletir as melhorias.'
+                  });
+                  if (mainWindow) mainWindow.loadURL(SERVER_URL);
+                }
+              }
+            } catch (err) {
+              dialog.showErrorBox('Erro na Atualização', `Não foi possível aplicar a atualização:\n${err.message}`);
+            }
+          }
+        },
         { type: 'separator' },
         {
           label: 'Sair',
           role: 'quit'
+        }
+      ]
+    },
+    {
+      label: 'Rede Local',
+      submenu: [
+        {
+          label: 'Compartilhar na Rede Local (Ligar / Desligar)',
+          type: 'checkbox',
+          checked: !!(processManager && processManager.config && processManager.config.networkSharing),
+          click: async (menuItem) => {
+            if (!processManager) return;
+            try {
+              await processManager.setNetworkSharing(menuItem.checked);
+              const ips = processManager.getLocalIpAddresses();
+              const ipList = ips.map(i => `• ${i.name}: ${i.url}`).join('\n') || 'Nenhuma placa de rede ativa encontrada.';
+
+              dialog.showMessageBox(mainWindow, {
+                type: 'info',
+                title: 'Rede Local',
+                message: menuItem.checked ? 'Compartilhamento em Rede ATIVADO!' : 'Compartilhamento em Rede DESATIVADO (Apenas Local).',
+                detail: menuItem.checked ? `Outros computadores ou celulares podem acessar o Amura OS em:\n${ipList}` : 'Agora o sistema só aceita conexões deste computador (127.0.0.1).'
+              });
+
+              // Reconstruir menu para manter estado atualizado
+              Menu.setApplicationMenu(buildApplicationMenu());
+            } catch (err) {
+              dialog.showErrorBox('Erro na Rede', `Não foi possível alterar o modo de rede:\n${err.message}`);
+            }
+          }
+        },
+        {
+          label: 'Ver Endereços de Acesso (IP / URL)',
+          click: () => {
+            if (!processManager) return;
+            const ips = processManager.getLocalIpAddresses();
+            const isSharing = processManager.config && processManager.config.networkSharing;
+            const ipList = ips.map(i => `• ${i.name}: ${i.url}`).join('\n') || 'Nenhuma placa de rede ativa encontrada.';
+
+            dialog.showMessageBox(mainWindow, {
+              type: 'info',
+              title: 'Endereços na Rede Local',
+              message: isSharing ? 'O compartilhamento em rede está ATIVO.' : 'Atenção: O compartilhamento em rede está DESATIVADO.',
+              detail: isSharing
+                ? `Para acessar de outro computador, tablet ou celular, abra o navegador em:\n\n${ipList}`
+                : `Endereços disponíveis no computador:\n${ipList}\n\nPara liberar o acesso para outros computadores, ative a opção "Compartilhar na Rede Local" no menu acima.`
+            });
+          }
         }
       ]
     },

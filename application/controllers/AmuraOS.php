@@ -109,6 +109,126 @@ class AmuraOS extends MY_Controller
         force_download('backup' . date('d-m-Y H:m:s') . '.zip', $backup);
     }
 
+    public function restaurarBackup()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'cBackup')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para restaurar backup.');
+            redirect(base_url());
+        }
+
+        if (empty($_FILES['backup_file']['name'])) {
+            $this->session->set_flashdata('error', 'Nenhum arquivo de backup (.sql ou .zip) foi enviado.');
+            return redirect(site_url('sistema/configurar'));
+        }
+
+        $config['upload_path'] = './assets/';
+        $config['allowed_types'] = 'sql|zip';
+        $config['max_size'] = 51200; // 50MB max
+        $config['encrypt_name'] = true;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('backup_file')) {
+            $this->session->set_flashdata('error', 'Falha no upload: ' . $this->upload->display_errors('', ''));
+            return redirect(site_url('sistema/configurar'));
+        }
+
+        $uploadData = $this->upload->data();
+        $filePath = $uploadData['full_path'];
+        $extension = strtolower($uploadData['file_ext']);
+
+        $sqlContent = '';
+        if ($extension === '.zip') {
+            $zip = new ZipArchive();
+            if ($zip->open($filePath) === true) {
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $entryName = $zip->getNameIndex($i);
+                    if (pathinfo($entryName, PATHINFO_EXTENSION) === 'sql') {
+                        $sqlContent = $zip->getFromIndex($i);
+                        break;
+                    }
+                }
+                $zip->close();
+            }
+        } else {
+            $sqlContent = file_get_contents($filePath);
+        }
+
+        @unlink($filePath);
+
+        if (empty($sqlContent)) {
+            $this->session->set_flashdata('error', 'O arquivo enviado não contém instruções SQL válidas para restauração.');
+            return redirect(site_url('sistema/configurar'));
+        }
+
+        try {
+            $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+            $lines = explode(";\n", $sqlContent);
+            foreach ($lines as $line) {
+                $statement = trim($line);
+                if (!empty($statement)) {
+                    $this->db->query($statement);
+                }
+            }
+            $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+
+            log_info('Efetuou restauração do banco de dados via interface Web.');
+            $this->session->set_flashdata('success', 'Banco de dados restaurado com sucesso!');
+        } catch (Exception $e) {
+            $this->session->set_flashdata('error', 'Erro ao executar comandos de restauração: ' . $e->getMessage());
+        }
+
+        return redirect(site_url('sistema/configurar'));
+    }
+
+    public function aplicarPacoteAtualizacao()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'cSistema')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para atualizar o sistema.');
+            redirect(base_url());
+        }
+
+        if (empty($_FILES['package_file']['name'])) {
+            $this->session->set_flashdata('error', 'Nenhum pacote de atualização (.zip) foi enviado.');
+            return redirect(site_url('sistema/configurar'));
+        }
+
+        $config['upload_path'] = './assets/';
+        $config['allowed_types'] = 'zip';
+        $config['max_size'] = 102400; // 100MB
+        $config['encrypt_name'] = true;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('package_file')) {
+            $this->session->set_flashdata('error', 'Falha no upload do pacote: ' . $this->upload->display_errors('', ''));
+            return redirect(site_url('sistema/configurar'));
+        }
+
+        $uploadData = $this->upload->data();
+        $zipPath = $uploadData['full_path'];
+        $rootPath = FCPATH;
+
+        $zip = new ZipArchive();
+        if ($zip->open($zipPath) === true) {
+            $zip->extractTo($rootPath);
+            $zip->close();
+            @unlink($zipPath);
+
+            // Rodar migrações do banco se houver
+            $this->load->library('migration');
+            $this->migration->latest();
+
+            log_info('Aplicou pacote de atualização do sistema via Web.');
+            $this->session->set_flashdata('success', 'Pacote de atualização instalado com sucesso e migrações aplicadas!');
+        } else {
+            @unlink($zipPath);
+            $this->session->set_flashdata('error', 'Não foi possível descompactar o arquivo de atualização.');
+        }
+
+        return redirect(site_url('sistema/configurar'));
+    }
+
     public function emitente()
     {
         if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'cEmitente')) {

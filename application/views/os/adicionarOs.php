@@ -72,32 +72,164 @@
                                             <input id="garantias_id" class="span12" type="hidden" name="garantias_id" value="" />
                                         </div>
                                     </div>
-                                    <div class="span6" style="padding: 1%; margin-left: 0">
-                                        <label for="descricaoProduto">
-                                            <h4>Descrição Produto/Serviço</h4>
-                                        </label>
-                                        <textarea class="span12 editor" name="descricaoProduto" id="descricaoProduto" cols="30" rows="5"></textarea>
+                                    <!-- Seção Moderna de Detalhamento da OS -->
+                                    <style>
+                                        .os-modern-card {
+                                            background: #212130;
+                                            border: 1px solid #323248;
+                                            border-radius: 8px;
+                                            padding: 16px;
+                                            margin-bottom: 18px;
+                                            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                                        }
+                                        .os-card-header {
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: space-between;
+                                            margin-bottom: 12px;
+                                            padding-bottom: 8px;
+                                            border-bottom: 1px solid #2e2e42;
+                                        }
+                                        .os-card-title {
+                                            font-size: 14px;
+                                            font-weight: 600;
+                                            color: #ff9204;
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 8px;
+                                            margin: 0;
+                                        }
+                                        .os-quick-tags {
+                                            display: flex;
+                                            flex-wrap: wrap;
+                                            gap: 6px;
+                                            margin-top: 6px;
+                                            margin-bottom: 10px;
+                                        }
+                                        .quick-tag-btn {
+                                            background: #2b2b3d;
+                                            color: #b5b5c3;
+                                            border: 1px solid #3f3f58;
+                                            border-radius: 4px;
+                                            font-size: 11px;
+                                            padding: 2px 8px;
+                                            cursor: pointer;
+                                            transition: all 0.2s ease;
+                                        }
+                                        .quick-tag-btn:hover {
+                                            background: #ff9204;
+                                            color: #fff;
+                                            border-color: #ff9204;
+                                        }
+                                        .modern-textarea {
+                                            width: 100% !important;
+                                            box-sizing: border-box !important;
+                                            background: #181824 !important;
+                                            border: 1px solid #3a3a52 !important;
+                                            color: #e4e6ef !important;
+                                            border-radius: 6px !important;
+                                            padding: 10px !important;
+                                            font-size: 13px !important;
+                                            line-height: 1.5 !important;
+                                            resize: vertical !important;
+                                            min-height: 90px;
+                                            transition: border-color 0.2s ease;
+                                        }
+                                        .modern-textarea:focus {
+                                            border-color: #ff9204 !important;
+                                            outline: none !important;
+                                            box-shadow: 0 0 0 2px rgba(255, 146, 4, 0.2) !important;
+                                        }
+                                        .toggle-editor-btn {
+                                            font-size: 11px;
+                                            color: #8c8c9e;
+                                            background: transparent;
+                                            border: none;
+                                            cursor: pointer;
+                                            text-decoration: underline;
+                                            padding: 0;
+                                        }
+                                        .toggle-editor-btn:hover {
+                                            color: #ff9204;
+                                        }
+                                    </style>
+
+                                    <div class="span12" style="margin-left: 0; padding: 0 1%;">
+                                        <div class="row-fluid">
+                                            <!-- Card 1: Equipamento e Defeito -->
+                                            <div class="span6 os-modern-card" style="margin-left: 0; margin-bottom: 15px;">
+                                                <div class="os-card-header">
+                                                    <span class="os-card-title"><i class="fas fa-laptop"></i> Equipamento / Produto & Defeito</span>
+                                                </div>
+
+                                                <label for="descricaoProduto" style="font-weight: 600; font-size: 12px; color: #cfcfe0; display: flex; justify-content: space-between; align-items: center;">
+                                                    <span>Descrição do Equipamento / Marca / Modelo / Nº Série</span>
+                                                    <button type="button" class="toggle-editor-btn" onclick="toggleTrumbowyg('descricaoProduto')"><i class="fas fa-edit"></i> Alternar Formatador</button>
+                                                </label>
+                                                <div class="os-quick-tags">
+                                                    <span class="quick-tag-btn" onclick="addTextToField('descricaoProduto', 'Notebook ')">+ Notebook</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('descricaoProduto', 'Desktop/PC ')">+ PC</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('descricaoProduto', 'Smartphone ')">+ Smartphone</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('descricaoProduto', 'Impressora ')">+ Impressora</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('descricaoProduto', 'Com fonte/carregador. ')">+ Com Fonte</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('descricaoProduto', 'Sem carregador. ')">+ S/ Fonte</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('descricaoProduto', 'Aparelho com marcas normais de uso. ')">+ Marcas de uso</span>
+                                                </div>
+                                                <textarea class="modern-textarea editor-field" name="descricaoProduto" id="descricaoProduto" placeholder="Ex: Notebook Dell Inspiron 15, Cor Prata, S/N: 987654. Acompanha carregador original."></textarea>
+
+                                                <div style="margin-top: 14px;">
+                                                    <label for="defeito" style="font-weight: 600; font-size: 12px; color: #cfcfe0; display: flex; justify-content: space-between; align-items: center;">
+                                                        <span>Defeito Reclamado pelo Cliente</span>
+                                                        <button type="button" class="toggle-editor-btn" onclick="toggleTrumbowyg('defeito')"><i class="fas fa-edit"></i> Alternar Formatador</button>
+                                                    </label>
+                                                    <div class="os-quick-tags">
+                                                        <span class="quick-tag-btn" onclick="addTextToField('defeito', 'Não liga. ')">+ Não liga</span>
+                                                        <span class="quick-tag-btn" onclick="addTextToField('defeito', 'Sem imagem na tela / Tela preta. ')">+ Tela preta</span>
+                                                        <span class="quick-tag-btn" onclick="addTextToField('defeito', 'Lento e travando. ')">+ Travando</span>
+                                                        <span class="quick-tag-btn" onclick="addTextToField('defeito', 'Tela trincada/quebrada. ')">+ Tela quebrada</span>
+                                                        <span class="quick-tag-btn" onclick="addTextToField('defeito', 'Não carrega a bateria. ')">+ Não carrega</span>
+                                                        <span class="quick-tag-btn" onclick="addTextToField('defeito', 'Desliga sozinho após algum tempo de uso. ')">+ Desliga sozinho</span>
+                                                    </div>
+                                                    <textarea class="modern-textarea editor-field" name="defeito" id="defeito" placeholder="Relato do cliente sobre o problema apresentado..."></textarea>
+                                                </div>
+                                            </div>
+
+                                            <!-- Card 2: Diagnóstico e Observações -->
+                                            <div class="span6 os-modern-card" style="margin-bottom: 15px;">
+                                                <div class="os-card-header">
+                                                    <span class="os-card-title"><i class="fas fa-stethoscope"></i> Avaliação Técnica & Observações</span>
+                                                </div>
+
+                                                <label for="laudoTecnico" style="font-weight: 600; font-size: 12px; color: #cfcfe0; display: flex; justify-content: space-between; align-items: center;">
+                                                    <span>Laudo Técnico / Diagnóstico da Bancada</span>
+                                                    <button type="button" class="toggle-editor-btn" onclick="toggleTrumbowyg('laudoTecnico')"><i class="fas fa-edit"></i> Alternar Formatador</button>
+                                                </label>
+                                                <div class="os-quick-tags">
+                                                    <span class="quick-tag-btn" onclick="addTextToField('laudoTecnico', 'Aparelho em testes na bancada. ')">+ Em testes</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('laudoTecnico', 'Necessário substituição de componentes danificados. ')">+ Troca de peça</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('laudoTecnico', 'Efetuada limpeza interna e troca de pasta térmica. ')">+ Limpeza/Pasta</span>
+                                                    <span class="quick-tag-btn" onclick="addTextToField('laudoTecnico', 'Reinstalação do sistema operacional e testes de hardware concluídos. ')">+ Formatação OK</span>
+                                                </div>
+                                                <textarea class="modern-textarea editor-field" name="laudoTecnico" id="laudoTecnico" placeholder="Constatações técnicas, testes efetuados ou solução proposta..."></textarea>
+
+                                                <div style="margin-top: 14px;">
+                                                    <label for="observacoes" style="font-weight: 600; font-size: 12px; color: #cfcfe0; display: flex; justify-content: space-between; align-items: center;">
+                                                        <span>Observações Internas / Avisos de Garantia</span>
+                                                        <button type="button" class="toggle-editor-btn" onclick="toggleTrumbowyg('observacoes')"><i class="fas fa-edit"></i> Alternar Formatador</button>
+                                                    </label>
+                                                    <div class="os-quick-tags">
+                                                        <span class="quick-tag-btn" onclick="addTextToField('observacoes', 'Cliente ciente do prazo de orçamento. ')">+ Ciente do prazo</span>
+                                                        <span class="quick-tag-btn" onclick="addTextToField('observacoes', 'Lacre de garantia nº ')">+ Lacre Nº</span>
+                                                        <span class="quick-tag-btn" onclick="addTextToField('observacoes', 'Aparelho entregue com teste de bancada na presença do cliente. ')">+ Testado na entrega</span>
+                                                    </div>
+                                                    <textarea class="modern-textarea editor-field" name="observacoes" id="observacoes" placeholder="Informações complementares, número de lacre ou avisos internos..."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="span6" style="padding: 1%; margin-left: 0">
-                                        <label for="defeito">
-                                            <h4>Defeito</h4>
-                                        </label>
-                                        <textarea class="span12 editor" name="defeito" id="defeito" cols="30" rows="5"></textarea>
-                                    </div>
-                                    <div class="span6" style="padding: 1%; margin-left: 0">
-                                        <label for="observacoes">
-                                            <h4>Observações</h4>
-                                        </label>
-                                        <textarea class="span12 editor" name="observacoes" id="observacoes" cols="30" rows="5"></textarea>
-                                    </div>
-                                    <div class="span6" style="padding: 1%; margin-left: 0">
-                                        <label for="laudoTecnico">
-                                            <h4>Laudo Técnico</h4>
-                                        </label>
-                                        <textarea class="span12 editor" name="laudoTecnico" id="laudoTecnico" cols="30" rows="5"></textarea>
-                                    </div>
+
                                     <div class="span12" style="padding: 1%; margin-left: 0">
-                                        <div class="span12" style="display:flex; justify-content: center;">
+                                        <div class="span12" style="display:flex; justify-content: center; gap: 10px;">
                                             <button class="button btn btn-success" id="btnContinuar">
                                               <span class="button__icon"><i class='bx bx-chevrons-right'></i></span><span class="button__text2">Continuar</span></button>
                                             <a href="<?php echo base_url() ?>index.php/os" class="button btn btn-mini btn-warning" style="max-width: 160px">
@@ -109,7 +241,6 @@
                         </div>
                     </div>
                 </div>
-                .
             </div>
         </div>
     </div>
@@ -181,9 +312,38 @@
         $(".datepicker").datepicker({
             dateFormat: 'dd/mm/yy'
         });
-        $('.editor').trumbowyg({
-            lang: 'pt_br',
-            semantic: { 'strikethrough': 's', }
-        });
     });
+
+    function addTextToField(fieldId, text) {
+        const field = document.getElementById(fieldId);
+        if (!field) return;
+
+        // Se Trumbowyg estiver ativo no campo
+        if ($(field).data('trumbowyg')) {
+            const currentHtml = $(field).trumbowyg('html');
+            $(field).trumbowyg('html', currentHtml + ' ' + text);
+        } else {
+            const currentVal = field.value || '';
+            field.value = currentVal ? currentVal.trim() + ' ' + text : text;
+            field.focus();
+        }
+    }
+
+    function toggleTrumbowyg(fieldId) {
+        const $field = $('#' + fieldId);
+        if ($field.data('trumbowyg')) {
+            $field.trumbowyg('destroy');
+        } else {
+            $field.trumbowyg({
+                lang: 'pt_br',
+                semantic: { 'strikethrough': 's' },
+                btns: [
+                    ['formatting'],
+                    ['strong', 'em', 'underline'],
+                    ['unorderedList', 'orderedList'],
+                    ['removeformat']
+                ]
+            });
+        }
+    }
 </script>

@@ -482,6 +482,28 @@ class Os extends MY_Controller
         $this->load->view('os/imprimirOsTermica', $this->data);
     }
 
+    public function imprimirEtiquetaGarantia()
+    {
+        if (! $this->uri->segment(3) || ! is_numeric($this->uri->segment(3))) {
+            $this->session->set_flashdata('error', 'Item não pode ser encontrado, parâmetro não foi passado corretamente.');
+            redirect('mapos');
+        }
+
+        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para visualizar O.S.');
+            redirect(base_url());
+        }
+
+        $this->load->model('mapos_model');
+        $this->data['result'] = $this->os_model->getById($this->uri->segment(3));
+        $this->data['emitente'] = $this->mapos_model->getEmitente();
+        $this->data['formato'] = $this->input->get('formato') ?: '50x30';
+        $this->data['largura'] = (int)($this->input->get('largura') ?: 50);
+        $this->data['altura'] = (int)($this->input->get('altura') ?: 30);
+
+        $this->load->view('os/imprimirEtiquetaGarantia', $this->data);
+    }
+
     public function enviar_email()
     {
         if (! $this->uri->segment(3) || ! is_numeric($this->uri->segment(3))) {

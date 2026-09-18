@@ -340,15 +340,68 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Menu Atualização -->
+                    <!-- Menu Atualização e Backup -->
                     <div id="menu4" class="tab-pane fade">
-                        <div class="form-actions">
-                            <div class="span8">
-                                <div class="span9" style="display:flex">
-                                    <button href="#modal-confirmabanco" data-toggle="modal" type="button" class="button btn btn-warning">
-                                      <span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Banco de Dados</span></button>
-                                    <button href="#modal-confirmaratualiza" data-toggle="modal" type="button" class="button btn btn-danger">
-                                      <span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar Sistema</span></button>
+                        <div style="padding: 15px;">
+                            <div class="row-fluid">
+                                <!-- Card de Backup e Restauração -->
+                                <div class="span6" style="background: #212130; border: 1px solid #323248; border-radius: 8px; padding: 18px; margin-left: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                    <h4 style="color: #ff9204; margin-top: 0; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-database"></i> Backup e Restauração de Dados
+                                    </h4>
+                                    <p style="color: #a2a3b7; font-size: 13px; line-height: 1.5;">
+                                        Gere cópias de segurança completas ou restaure os dados do Amura OS a qualquer momento.
+                                    </p>
+                                    <div style="margin-bottom: 20px;">
+                                        <a href="<?= site_url('sistema/backup') ?>" class="button btn btn-primary">
+                                            <span class="button__icon"><i class="bx bx-download"></i></span>
+                                            <span class="button__text2">Fazer Download do Backup (.zip)</span>
+                                        </a>
+                                    </div>
+                                    <hr style="border-top: 1px solid #323248;">
+                                    <h5 style="color: #e4e6ef; margin-bottom: 10px;">Restaurar Cópia de Segurança</h5>
+                                    <form action="<?= site_url('sistema/restaurarBackup') ?>" method="post" enctype="multipart/form-data" onsubmit="return confirm('ATENÇÃO: A restauração substituirá todos os registros atuais pelo conteúdo do arquivo enviado. Tem certeza que deseja continuar?');">
+                                        <div style="margin-bottom: 12px;">
+                                            <input type="file" name="backup_file" accept=".sql,.zip" required style="color: #a2a3b7;">
+                                            <div style="color: #8c8c9e; font-size: 11px; margin-top: 4px;">Aceita arquivos .sql ou .zip gerados pelo sistema.</div>
+                                        </div>
+                                        <button type="submit" class="button btn btn-danger">
+                                            <span class="button__icon"><i class="bx bx-upload"></i></span>
+                                            <span class="button__text2">Restaurar Backup</span>
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Card de Atualização do Sistema e Banco -->
+                                <div class="span6" style="background: #212130; border: 1px solid #323248; border-radius: 8px; padding: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                    <h4 style="color: #ff9204; margin-top: 0; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-cloud-upload-alt"></i> Atualização sem Recompilar (Pacote .zip)
+                                    </h4>
+                                    <p style="color: #a2a3b7; font-size: 13px; line-height: 1.5;">
+                                        Envie pacotes de melhorias ou correções (.zip) para atualizar telas e banco sem precisar compilar um novo instalador e sem perder dados.
+                                    </p>
+                                    <form action="<?= site_url('sistema/aplicarPacoteAtualizacao') ?>" method="post" enctype="multipart/form-data" onsubmit="return confirm('Deseja instalar este pacote de atualização no Amura OS agora?');">
+                                        <div style="margin-bottom: 12px;">
+                                            <input type="file" name="package_file" accept=".zip" required style="color: #a2a3b7;">
+                                            <div style="color: #8c8c9e; font-size: 11px; margin-top: 4px;">Envie o arquivo compactado .zip com os arquivos atualizados.</div>
+                                        </div>
+                                        <button type="submit" class="button btn btn-success">
+                                            <span class="button__icon"><i class="bx bx-check-circle"></i></span>
+                                            <span class="button__text2">Instalar Pacote de Atualização</span>
+                                        </button>
+                                    </form>
+                                    <hr style="border-top: 1px solid #323248;">
+                                    <h5 style="color: #e4e6ef; margin-bottom: 10px;">Migrações Manuais de Estrutura</h5>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        <button href="#modal-confirmabanco" data-toggle="modal" type="button" class="button btn btn-warning">
+                                            <span class="button__icon"><i class="bx bx-sync"></i></span>
+                                            <span class="button__text2">Executar Migrações do Banco</span>
+                                        </button>
+                                        <button href="#modal-confirmaratualiza" data-toggle="modal" type="button" class="button btn btn-inverse">
+                                            <span class="button__icon"><i class="bx bxl-github"></i></span>
+                                            <span class="button__text2">Sincronizar via GitHub</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

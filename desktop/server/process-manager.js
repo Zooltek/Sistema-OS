@@ -47,11 +47,25 @@ class ProcessManager {
     this.logsDir = path.join(this.dataDir, 'logs');
     this.logFile = path.join(this.logsDir, 'app_debug.log');
     this.phpErrorLog = path.join(this.logsDir, 'php_error.log');
+    this.configFile = path.join(this.dataDir, 'desktop_config.json');
 
     this.mysqlProcess = null;
     this.phpProcess = null;
     this.isShuttingDown = false;
     this.phpRestartTimeout = null;
+
+    // Carregar configurações locais (modo rede)
+    this.config = {
+      networkSharing: false
+    };
+    try {
+      if (fs.existsSync(this.configFile)) {
+        const saved = JSON.parse(fs.readFileSync(this.configFile, 'utf8'));
+        this.config = Object.assign(this.config, saved);
+      }
+    } catch (e) {
+      console.error('Erro ao ler desktop_config.json:', e);
+    }
 
     // Criar diretórios necessários
     try {
@@ -60,6 +74,14 @@ class ProcessManager {
       if (!fs.existsSync(this.logsDir)) fs.mkdirSync(this.logsDir, { recursive: true });
     } catch (err) {
       console.error('Erro ao criar pastas de dados/logs:', err);
+    }
+  }
+
+  saveConfig() {
+    try {
+      fs.writeFileSync(this.configFile, JSON.stringify(this.config, null, 2), 'utf8');
+    } catch (err) {
+      this.log(`Erro ao salvar desktop_config.json: ${err.message}`, 'AVISO');
     }
   }
 
@@ -235,7 +257,9 @@ class ProcessManager {
   async startPhpServer() {
     if (this.isShuttingDown) return;
 
-    this.log('Iniciando servidor PHP embutido...');
+    const host = this.config.networkSharing ? '0.0.0.0' : '127.0.0.1';
+    this.log(`Iniciando servidor PHP embutido no host ${host}:8002 (Rede Local: ${this.config.networkSharing ? 'ATIVADA' : 'DESATIVADA'})...`);
+    
     const env = Object.assign({}, process.env, {
       DB_HOSTNAME: '127.0.0.1',
       DB_PORT: '3307',
@@ -249,7 +273,7 @@ class ProcessManager {
     const cleanPhpErrorLog = this.phpErrorLog.replace(/\\/g, '/');
 
     const args = [
-      '-S', '127.0.0.1:8002',
+      '-S', `${host}:8002`,
       '-c', this.phpIni,
       '-d', `error_log=${cleanPhpErrorLog}`,
       this.routerScript
@@ -358,6 +382,135 @@ class ProcessManager {
       backupProc.on('error', (err) => {
         this.log(`Erro ao executar rotina de backup: ${err.message}`, 'ERRO');
         reject(err);
+      });
+    });
+  }
+
+  // Alternar compartilhamento em rede local (0.0.0.0 vs 127.0.0.1)
+  async setNetworkSharing(enabled) {
+    this.config.networkSharing = !!enabled;
+    this.saveConfig();
+    this.log(`Modo de rede local alterado para: ${this.config.networkSharing ? 'ATIVADO (0.0.0.0:8002)' : 'DESATIVADO (127.0.0.1:8002)'}`);
+
+    // Reiniciar servidor PHP para aplicar novo bind
+    if (this.phpProcess) {
+      this.isShuttingDown = true;
+      try {
+        this.phpProcess.kill();
+        exec(`taskkill /PID ${this.phpProcess.pid} /T /F`, () => {});
+      } catch (e) {}
+      await new Promise(r => setTimeout(r, 400));
+      this.isShuttingDown = false;
+      await this.startPhpServer();
+      await this.waitForHttpServer('http://127.0.0.1:8002', 15);
+    }
+    return { success: true, networkSharing: this.config.networkSharing };
+  }
+
+  // Obter endereços IP locais (IPv4) de placas ativas
+  getLocalIpAddresses() {
+    const os = require('os');
+    const interfaces = os.networkInterfaces();
+    const ips = [];
+
+    for (const name of Object.keys(interfaces)) {
+      for (const iface of interfaces[name]) {
+        // Apenas IPv4 e não interno (não loopback)
+        if (iface.family === 'IPv4' && !iface.internal) {
+          ips.push({
+            name: name,
+            address: iface.address,
+            url: `http://${iface.address}:8002`
+          });
+        }
+      }
+    }
+    return ips;
+  }
+
+  // Restauração de Banco de Dados MariaDB a partir de arquivo .sql
+  async restoreDatabase(sourceSqlPath) {
+    return new Promise(async (resolve, reject) => {
+      if (!fs.existsSync(sourceSqlPath)) {
+        return reject(new Error('Arquivo de backup selecionado não foi encontrado.'));
+      }
+
+      this.log(`Iniciando restauração do banco de dados a partir de: ${sourceSqlPath}`);
+
+      // 1. Criar backup preventivo automático antes de sobrescrever
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const safetyBackupPath = path.join(this.dataDir, `backup-pre-restore-${timestamp}.sql`);
+      try {
+        await this.backupDatabase(safetyBackupPath);
+        this.log(`Backup de contingência criado em: ${safetyBackupPath}`);
+      } catch (backupErr) {
+        this.log(`Aviso ao criar backup de segurança: ${backupErr.message}`, 'AVISO');
+      }
+
+      // 2. Executar importação via powershell / mysql.exe
+      const restoreCmd = `powershell -Command "Get-Content -Path '${sourceSqlPath}' -Raw | & '${this.mysqlExe}' -h 127.0.0.1 -P 3307 -u root amura_os"`;
+      exec(restoreCmd, (err, stdout, stderr) => {
+        if (err) {
+          const errMsg = stderr || err.message;
+          this.log(`Falha na restauração do banco: ${errMsg}`, 'ERRO');
+          return reject(new Error(`Erro ao restaurar banco de dados: ${errMsg}`));
+        }
+
+        this.log('Banco de dados restaurado com sucesso!');
+        resolve({ success: true, safetyBackup: safetyBackupPath });
+      });
+    });
+  }
+
+  // Aplicar Pacote de Atualização (.zip) sem recompilação e sem perder dados
+  async applyUpdatePackage(zipFilePath) {
+    return new Promise(async (resolve, reject) => {
+      if (!fs.existsSync(zipFilePath)) {
+        return reject(new Error('Arquivo de atualização .zip não encontrado.'));
+      }
+
+      this.log(`Iniciando aplicação de pacote de atualização: ${zipFilePath}`);
+
+      // 1. Fazer backup preventivo do banco
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const backupPath = path.join(this.dataDir, `backup-pre-update-${timestamp}.sql`);
+      try {
+        await this.backupDatabase(backupPath);
+        this.log(`Backup preventivo de atualização criado em: ${backupPath}`);
+      } catch (e) {
+        this.log(`Aviso no backup pré-atualização: ${e.message}`, 'AVISO');
+      }
+
+      // 2. Extrair arquivos do .zip diretamente sobre a pasta da aplicação
+      const extractCmd = `powershell -Command "Expand-Archive -Path '${zipFilePath}' -DestinationPath '${this.appRoot}' -Force"`;
+      exec(extractCmd, async (err, stdout, stderr) => {
+        if (err) {
+          const errMsg = stderr || err.message;
+          this.log(`Erro ao extrair pacote de atualização: ${errMsg}`, 'ERRO');
+          return reject(new Error(`Falha na extração dos arquivos: ${errMsg}`));
+        }
+
+        this.log('Arquivos do pacote extraídos com sucesso.');
+
+        // 3. Executar migrações do banco de dados (se houver migration pendente)
+        try {
+          const migrateCmd = `"${this.phpExe}" -c "${this.phpIni}" "${path.join(this.appRoot, 'index.php')}" tools migrate`;
+          execSync(migrateCmd, {
+            cwd: this.appRoot,
+            env: Object.assign({}, process.env, {
+              DB_HOSTNAME: '127.0.0.1',
+              DB_PORT: '3307',
+              DB_USERNAME: 'root',
+              DB_PASSWORD: '',
+              DB_DATABASE: 'amura_os'
+            })
+          });
+          this.log('Migrações de banco de dados executadas com sucesso.');
+        } catch (migErr) {
+          this.log(`Aviso ao rodar migrações: ${migErr.message}`, 'AVISO');
+        }
+
+        resolve({ success: true, backupSafety: backupPath });
       });
     });
   }

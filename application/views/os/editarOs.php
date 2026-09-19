@@ -8,61 +8,69 @@
 
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css" />
 
-<div class="row-fluid" style="margin-top: 15px">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: 0; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; height: auto; min-height: 42px; flex-wrap: wrap;">
-                <div style="display: flex; align-items: center;">
-                    <span class="icon" style="padding: 9px 10px 7px 11px;"><i class="fas fa-diagnoses"></i></span>
-                    <h5 style="margin: 0; line-height: 38px;">Editar Ordem de Serviço #<?php echo $result->idOs; ?></h5>
-                </div>
-                <div class="buttons">
-                    <?php if ($result->faturado == 0) { ?>
-                        <a href="#modal-faturar" id="btn-faturar" role="button" data-toggle="modal" class="button btn btn-mini btn-danger">
-                            <span class="button__icon"><i class='bx bx-dollar'></i></span> <span class="button__text">Faturar</span>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-diagnoses"></i>
+            </div>
+            <div>
+                <h1 class="amura-header-title">Editar Ordem de Serviço #<?php echo $result->idOs; ?></h1>
+                <p class="amura-header-subtitle">Cliente: <strong><?php echo htmlspecialchars($result->nomeCliente); ?></strong> | Status: <span class="badge badge-default"><?php echo $result->status; ?></span></p>
+            </div>
+        </div>
+        <div class="amura-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <?php if ($result->faturado == 0) { ?>
+                <a href="#modal-faturar" id="btn-faturar" role="button" data-toggle="modal" class="btn-amura-danger">
+                    <i class='bx bx-dollar'></i> Faturar
+                </a>
+            <?php } ?>
+            <a title="Visualizar OS" class="btn-amura-secondary" href="<?php echo site_url() ?>/os/visualizar/<?php echo $result->idOs; ?>">
+                <i class="bx bx-show"></i> Visualizar OS
+            </a>
+            <div class="button-container">
+                <a target="_blank" title="Imprimir Ordem de Serviço" class="btn-amura-secondary">
+                    <i class="bx bx-printer"></i> Imprimir
+                </a>
+                <div class="cascading-buttons">
+                    <a target="_blank" title="Impressão em Papel A4" href="<?php echo site_url() ?>/os/imprimir/<?php echo $result->idOs; ?>">
+                        <i class='bx bx-file'></i> Papel A4
+                    </a>
+                    <a target="_blank" title="Impressão Cupom Não Fiscal" href="<?php echo site_url() ?>/os/imprimirTermica/<?php echo $result->idOs; ?>">
+                        <i class='bx bx-receipt'></i> Cupom 80mm
+                    </a>
+                    <a target="_blank" title="Imprimir Etiqueta de Garantia (Adesiva / Térmica)" href="<?php echo site_url() ?>/os/imprimirEtiquetaGarantia/<?php echo $result->idOs; ?>">
+                        <i class='bx bx-purchase-tag'></i> Etiqueta Garantia
+                    </a>
+                    <?php if ($result->garantias_id) { ?>
+                        <a target="_blank" title="Imprimir Termo de Garantia" href="<?php echo site_url() ?>/garantias/imprimirGarantiaOs/<?php echo $result->idOs; ?>">
+                            <i class="bx bx-paperclip"></i> Termo Garantia
                         </a>
                     <?php } ?>
-                    <a title="Visualizar OS" class="button btn btn-primary" href="<?php echo site_url() ?>/os/visualizar/<?php echo $result->idOs; ?>">
-                        <span class="button__icon"><i class="bx bx-show"></i></span><span class="button__text">Visualizar OS</span>
-                    </a>
-                    <div class="button-container">
-                        <a target="_blank" title="Imprimir Ordem de Serviço" class="button btn btn-mini btn-inverse">
-                            <span class="button__icon"><i class="bx bx-printer"></i></span><span class="button__text">Imprimir</span>
-                        </a>
-                        <div class="cascading-buttons">
-                            <a target="_blank" title="Impressão em Papel A4" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/os/imprimir/<?php echo $result->idOs; ?>">
-                                <span class="button__icon"><i class='bx bx-file'></i></span> <span class="button__text">Papel A4</span>
-                            </a>
-                            <a target="_blank" title="Impressão Cupom Não Fical" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/os/imprimirTermica/<?php echo $result->idOs; ?>">
-                                <span class="button__icon"><i class='bx bx-receipt'></i></span> <span class="button__text">Cupom 80mm</span>
-                            </a>
-                            <a target="_blank" title="Imprimir Etiqueta de Garantia (Adesiva / Térmica)" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/os/imprimirEtiquetaGarantia/<?php echo $result->idOs; ?>">
-                                <span class="button__icon"><i class='bx bx-purchase-tag'></i></span> <span class="button__text">Etiqueta Garantia</span>
-                            </a>
-                            <?php if ($result->garantias_id) { ?>
-                                <a target="_blank" title="Imprimir Termo de Garantia" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/garantias/imprimirGarantiaOs/<?php echo $result->idOs; ?>">
-                                    <span class="button__icon"><i class="bx bx-paperclip"></i></span> <span class="button__text">Termo Garantia</span>
-                                </a>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
-                        $this->load->model('os_model');
-                        $zapnumber = preg_replace("/[^0-9]/", "", $result->celular_cliente);
-                        $troca = [$result->nomeCliente, $result->idOs, $result->status, 'R$ ' . ($result->desconto != 0 && $result->valor_desconto != 0 ? number_format($result->valor_desconto, 2, ',', '.') : number_format($totalProdutos + $totalServico, 2, ',', '.')), strip_tags($result->descricaoProduto), ($emitente ? $emitente->nome : ''), ($emitente ? $emitente->telefone : ''), strip_tags($result->observacoes), strip_tags($result->defeito), strip_tags($result->laudoTecnico), date('d/m/Y', strtotime($result->dataFinal)), date('d/m/Y', strtotime($result->dataInicial)), $result->garantia . ' dias'];
-                        $texto_de_notificacao = $this->os_model->criarTextoWhats($texto_de_notificacao, $troca);
-                        if (!empty($zapnumber)) {
-                            echo '<a title="Via WhatsApp" class="button btn btn-mini btn-success" id="enviarWhatsApp" target="_blank" href="https://wa.me/send?phone=55' . $zapnumber . '&text=' . $texto_de_notificacao . '" ' . ($zapnumber == '' ? 'disabled' : '') . '>
-                                <span class="button__icon"><i class="bx bxl-whatsapp"></i></span> <span class="button__text">WhatsApp</span>
-                            </a>';
-                        }
-                    } ?>
-                    <a title="Enviar por E-mail" class="button btn btn-mini btn-warning" href="<?php echo site_url() ?>/os/enviar_email/<?php echo $result->idOs; ?>">
-                        <span class="button__icon"><i class="bx bx-envelope"></i></span> <span class="button__text">Via E-mail</span>
-                    </a>
                 </div>
             </div>
-            <div class="widget-content nopadding tab-content">
+            <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
+                $this->load->model('os_model');
+                $zapnumber = preg_replace("/[^0-9]/", "", $result->celular_cliente);
+                $troca = [$result->nomeCliente, $result->idOs, $result->status, 'R$ ' . ($result->desconto != 0 && $result->valor_desconto != 0 ? number_format($result->valor_desconto, 2, ',', '.') : number_format($totalProdutos + $totalServico, 2, ',', '.')), strip_tags($result->descricaoProduto), ($emitente ? $emitente->nome : ''), ($emitente ? $emitente->telefone : ''), strip_tags($result->observacoes), strip_tags($result->defeito), strip_tags($result->laudoTecnico), date('d/m/Y', strtotime($result->dataFinal)), date('d/m/Y', strtotime($result->dataInicial)), $result->garantia . ' dias'];
+                $texto_de_notificacao = $this->os_model->criarTextoWhats($texto_de_notificacao, $troca);
+                if (!empty($zapnumber)) {
+                    echo '<a title="Via WhatsApp" class="btn-amura-secondary" style="color: #25D366; border-color: rgba(37,211,102,0.3);" id="enviarWhatsApp" target="_blank" href="https://wa.me/send?phone=55' . $zapnumber . '&text=' . $texto_de_notificacao . '" ' . ($zapnumber == '' ? 'disabled' : '') . '>
+                        <i class="bx bxl-whatsapp"></i> WhatsApp
+                    </a>';
+                }
+            } ?>
+            <a title="Enviar por E-mail" class="btn-amura-secondary" href="<?php echo site_url() ?>/os/enviar_email/<?php echo $result->idOs; ?>">
+                <i class="bx bx-envelope"></i> E-mail
+            </a>
+            <a href="<?= base_url('index.php/os'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="amura-form-card" style="padding: 0; overflow: visible;">
+        <div class="tab-content" style="overflow: visible;">
                 <div class="span12" id="divProdutosServicos" style=" margin-left: 0">
                     <ul class="nav nav-tabs">
                         <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Detalhes da OS</a></li>
@@ -387,7 +395,7 @@ foreach ($servicos as $s) {
                             </div>
                             <div class="widget-box" id="divProdutos">
                                 <div class="widget_content nopadding">
-                                    <table width="100%" class="table table-bordered" id="tblProdutos">
+                                    <table width="100%" class="table table-bordered amura-table" id="tblProdutos">
                                         <thead>
                                             <tr>
                                                 <th>Produto</th>
@@ -404,10 +412,10 @@ foreach ($produtos as $p) {
     $total = $total + $p->subTotal;
     echo '<tr>';
     echo '<td>' . $p->descricao . '</td>';
-    echo '<td><div align="center">' . $p->quantidade . '</td>';
-    echo '<td><div align="center">R$: ' . ($p->preco ?: $p->precoVenda) . '</td>';
-    echo (strtolower($result->status) != "cancelado") ? '<td><div align="center"><a href="" idAcao="' . $p->idProdutos_os . '" prodAcao="' . $p->idProdutos . '" quantAcao="' . $p->quantidade . '" title="Excluir Produto" class="btn-nwe4"><i class="bx bx-trash-alt"></i></a></td>' : '<td></td>';
-    echo '<td><div align="center">R$: ' . number_format($p->subTotal, 2, ',', '.') . '</td>';
+    echo '<td><div align="center">' . $p->quantidade . '</div></td>';
+    echo '<td><div align="center">R$: ' . ($p->preco ?: $p->precoVenda) . '</div></td>';
+    echo (strtolower($result->status) != "cancelado") ? '<td><div align="center"><a href="" idAcao="' . $p->idProdutos_os . '" prodAcao="' . $p->idProdutos . '" quantAcao="' . $p->quantidade . '" title="Excluir Produto" class="btn-nwe4 amura-action-btn delete"><i class="bx bx-trash-alt"></i></a></div></td>' : '<td></td>';
+    echo '<td><div align="center">R$: ' . number_format($p->subTotal, 2, ',', '.') . '</div></td>';
     echo '</tr>';
 } ?>
                                         </tbody>
@@ -463,7 +471,7 @@ foreach ($produtos as $p) {
                             </div>
                             <div class="widget-box" id="divServicos">
                                 <div class="widget_content nopadding">
-                                    <table width="100%" class="table table-bordered" id="tblServicos">
+                                    <table width="100%" class="table table-bordered amura-table" id="tblServicos">
                                         <thead>
                                             <tr>
                                                 <th>Serviço</th>
@@ -484,7 +492,7 @@ foreach ($servicos as $s) {
     echo '<td>' . $s->nome . '</td>';
     echo '<td><div align="center">' . ($s->quantidade ?: 1) . '</div></td>';
     echo '<td><div align="center">R$ ' . $preco . '</div></td>';
-    echo '<td><div align="center"><span idAcao="' . $s->idServicos_os . '" title="Excluir Serviço" class="btn-nwe4 servico"><i class="bx bx-trash-alt"></i></span></div></td>';
+    echo '<td><div align="center"><span idAcao="' . $s->idServicos_os . '" title="Excluir Serviço" class="btn-nwe4 servico amura-action-btn delete"><i class="bx bx-trash-alt"></i></span></div></td>';
     echo '<td><div align="center">R$: ' . number_format($subtotals, 2, ',', '.') . '</div></td>';
     echo '</tr>';
 } ?>
@@ -560,7 +568,7 @@ foreach ($servicos as $s) {
                                         <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span
                                             class="button__text2">Adicionar anotação</span></a>
                                     <hr>
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered amura-table">
                                         <thead>
                                             <tr>
                                                 <th>Data/Hora</th>
@@ -574,7 +582,7 @@ foreach ($servicos as $s) {
             echo '<tr>';
             echo '<td>' . date('d/m/Y H:i:s', strtotime($a->data_hora)) . '</td>';
             echo '<td>' . $a->anotacao . '</td>';
-            echo '<td><span idAcao="' . $a->idAnotacoes . '" title="Excluir Anotação" class="btn-nwe4 anotacao"><i class="bx bx-trash-alt"></i></span></td>';
+            echo '<td><span idAcao="' . $a->idAnotacoes . '" title="Excluir Anotação" class="btn-nwe4 anotacao amura-action-btn delete"><i class="bx bx-trash-alt"></i></span></td>';
             echo '</tr>';
         }
 if (!$anotacoes) {
@@ -590,15 +598,13 @@ if (!$anotacoes) {
                         </div>
                         <!-- Fim tab anotações -->
                     </div>
-                </div>
-                &nbsp
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal visualizar anexo -->
-<div id="modal-anexo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="modal-anexo" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -619,7 +625,7 @@ if (!$anotacoes) {
 </div>
 
 <!-- Modal cadastro anotações -->
-<div id="modal-anotacao" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="modal-anotacao" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <form action="#" method="POST" id="formAnotacao">
         <div class="modal-header">
@@ -642,7 +648,7 @@ if (!$anotacoes) {
 </div>
 
 <!-- Modal Faturar-->
-<div id="modal-faturar" class="modal hide fade " tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="modal-faturar" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <form id="formFaturar" action="<?php echo current_url() ?>" method="post">
         <div class="modal-header">

@@ -8,21 +8,28 @@
 
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css" />
 
-<div class="row-fluid" style="margin-top: 15px">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: 0; padding: 0 12px; min-height: 42px;">
-                <h5 style="margin: 0; line-height: 38px;">Cadastro de OS</h5>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-tools"></i>
             </div>
-            <div class="widget-content nopadding tab-content">
-                <div class="span12" id="divProdutosServicos" style=" margin-left: 0">
+            <div>
+                <h1 class="amura-header-title">Adicionar Ordem de Serviço</h1>
+                <p class="amura-header-subtitle">Abertura de nova OS, vinculação de cliente, responsável e detalhamento inicial</p>
+            </div>
+        </div>
+        <div class="amura-header-actions">
+            <a href="<?= base_url('index.php/os'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar para Lista
+            </a>
+        </div>
+    </div>
 
-                    <ul class="nav nav-tabs">
-                        <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Detalhes da OS</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab1">
-                            <div class="span12" id="divCadastrarOs">
+    <div class="amura-form-card">
+        <div class="tab-content" style="padding: 16px;">
+            <div class="tab-pane active" id="tab1">
+                <div id="divCadastrarOs">
                                 <?php if ($custom_error == true) { ?>
                                     <div class="span12 alert alert-danger" id="divInfo" style="padding: 1%;">Dados incompletos, verifique os campos com asterisco ou se selecionou corretamente cliente, responsável e garantia.<br />Ou se tem um cliente e um termo de garantia cadastrado.</div>
                                 <?php
@@ -225,22 +232,15 @@
                                                     <textarea class="modern-textarea editor-field" name="observacoes" id="observacoes" placeholder="Informações complementares, número de lacre ou avisos internos..."></textarea>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="span12" style="padding: 1%; margin-left: 0">
-                                        <div class="span12" style="display:flex; justify-content: center; gap: 10px;">
-                                            <button class="button btn btn-success" id="btnContinuar">
-                                              <span class="button__icon"><i class='bx bx-chevrons-right'></i></span><span class="button__text2">Continuar</span></button>
-                                            <a href="<?php echo base_url() ?>index.php/os" class="button btn btn-mini btn-warning" style="max-width: 160px">
-                                              <span class="button__icon"><i class="bx bx-undo"></i></span><span class="button__text2">Voltar</span></a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                                                     <div class="amura-form-actions" style="margin-top: 20px;">
+                        <a href="<?php echo base_url() ?>index.php/os" class="btn-amura-secondary">
+                            <i class="bx bx-x"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn-amura-primary" id="btnContinuar">
+                            <i class='bx bx-chevrons-right'></i> Continuar para Itens da OS
+                        </button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

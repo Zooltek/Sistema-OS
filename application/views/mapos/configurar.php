@@ -1,24 +1,29 @@
-<div class="row-fluid" style="margin-top:0">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: -20px 0 0">
-                <span class="icon">
-                    <i class="fas fa-wrench"></i>
-                </span>
-                <h5>Configurações do Sistema</h5>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-sliders-h"></i>
             </div>
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#home">Gerais</a></li>
-                <li><a data-toggle="tab" href="#menu1">Financeiro</a></li>
-                <li><a data-toggle="tab" href="#menu2">Produtos</a></li>
-                <li><a data-toggle="tab" href="#menu3">Notificações</a></li>
-                <li><a data-toggle="tab" href="#menuBackup">Backup</a></li>
-                <li><a data-toggle="tab" href="#menu4">Atualizações</a></li>
-                <li><a data-toggle="tab" href="#menu5">OS</a></li>
-                <li><a data-toggle="tab" href="#menu6">API</a></li>
-                <li><a data-toggle="tab" href="#menu7">E-mail</a></li>
-            </ul>
-            <form action="<?php echo current_url(); ?>" id="formConfigurar" method="post" class="form-horizontal">
+            <div>
+                <h1 class="amura-header-title">Configurações do Sistema</h1>
+                <p class="amura-header-subtitle">Parâmetros operacionais, notificações, integrações, backup e regras de negócio</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="amura-form-card">
+        <ul class="nav nav-tabs amura-tabs">
+            <li class="active"><a data-toggle="tab" href="#home"><i class='bx bx-cog'></i> Gerais</a></li>
+            <li><a data-toggle="tab" href="#menu1"><i class='bx bx-dollar'></i> Financeiro</a></li>
+            <li><a data-toggle="tab" href="#menu2"><i class='bx bx-package'></i> Produtos</a></li>
+            <li><a data-toggle="tab" href="#menu3"><i class='bx bx-bell'></i> Notificações</a></li>
+            <li><a data-toggle="tab" href="#menuBackup"><i class='bx bx-data'></i> Backup</a></li>
+            <li><a data-toggle="tab" href="#menu4"><i class='bx bx-refresh'></i> Atualizações</a></li>
+            <li><a data-toggle="tab" href="#menu5"><i class='bx bx-wrench'></i> OS</a></li>
+            <li><a data-toggle="tab" href="#menu6"><i class='bx bx-code-alt'></i> API</a></li>
+            <li><a data-toggle="tab" href="#menu7"><i class='bx bx-envelope'></i> E-mail</a></li>
+        </ul>
+        <form action="<?php echo current_url(); ?>" id="formConfigurar" method="post" class="form-horizontal">
                 <div class="widget-content nopadding tab-content">
                     <?php echo $custom_error; ?>
                     <!-- Menu Gerais -->
@@ -34,15 +39,10 @@
                             <label for="app_theme" class="control-label">Tema do Sistema</label>
                             <div class="controls">
                                 <select name="app_theme" id="app_theme">
-                                    <option value="default">Escuro</option>
-                                    <option value="white" <?= $configuration['app_theme'] == 'white' ? 'selected' : ''; ?>>Claro</option>
-                                    <option value="puredark" <?= $configuration['app_theme'] == 'puredark' ? 'selected' : ''; ?>>Pure dark</option>
-                                    <option value="darkorange" <?= $configuration['app_theme'] == 'darkorange' ? 'selected' : ''; ?>>Dark orange</option>
-                                    <option value="darkviolet" <?= $configuration['app_theme'] == 'darkviolet' ? 'selected' : ''; ?>>Dark violet</option>
-                                    <option value="whitegreen" <?= $configuration['app_theme'] == 'whitegreen' ? 'selected' : ''; ?>>White green</option>
-                                    <option value="whiteblack" <?= $configuration['app_theme'] == 'whiteblack' ? 'selected' : ''; ?>>White black</option>
+                                    <option value="white" <?= ($configuration['app_theme'] == 'white') ? 'selected' : ''; ?>>Claro</option>
+                                    <option value="puredark" <?= ($configuration['app_theme'] != 'white') ? 'selected' : ''; ?>>Escuro</option>
                                 </select>
-                                <span class="help-inline">Selecione o tema que que deseja usar no sistema</span>
+                                <span class="help-inline">Selecione o tema que deseja usar no sistema (Claro ou Escuro)</span>
                             </div>
                         </div>
                         <div class="control-group">
@@ -591,46 +591,55 @@
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+        </form>
     </div>
 </div>
-<!-- Modal -->
-<div id="modal-confirmaratualiza" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+<!-- Modal Atualizar Sistema -->
+<div id="modal-confirmaratualiza" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form action="<?php echo base_url() ?>index.php/clientes/excluir" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h5 id="myModalLabel">Atualização de sistema</h5>
+            <h5 id="myModalLabel"><i class="bx bx-refresh" style="color: #ff9204; margin-right: 6px;"></i> Atualização de Sistema</h5>
         </div>
         <div class="modal-body">
-            <h5 style="text-align: left">Deseja realmente fazer a atualização de sistema?</h5>
-            <h7 style="text-align: left">Recomendamos que faça um backup antes de prosseguir!</h7>
-            <h7 style="text-align: left"><br>Faça o backup dos seguintes arquivos pois os mesmo serão excluídos:</h7>
-            <h7 style="text-align: left"><br>* ./assets/anexos</h7>
-            <h7 style="text-align: left"><br>* ./assets/arquivos</h7>
+            <p style="margin: 0 0 10px 0;">Deseja realmente fazer a atualização do sistema?</p>
+            <div style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; padding: 10px; border-radius: 6px; font-size: 0.82rem;">
+                <strong>Atenção:</strong> Recomendamos que faça um backup antes de prosseguir! Os diretórios <code>./assets/anexos</code> e <code>./assets/arquivos</code> devem ser salvos.
+            </div>
         </div>
-        <div class="modal-footer" style="display:flex;justify-content: center">
-          <button class="button btn btn-mini btn-danger" data-dismiss="modal" aria-hidden="true"><span class="button__icon"><i class='bx bx-x' ></i></span> <span class="button__text2">Cancelar</span></button>
-          <button id="update-mapos" type="button" class="button btn btn-warning"><span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar</span></button>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class='bx bx-x'></i> Cancelar
+            </button>
+            <button id="update-mapos" type="button" class="btn-amura-primary">
+                <i class="bx bx-sync"></i> Atualizar Agora
+            </button>
         </div>
     </form>
 </div>
-<!-- Modal -->
-<div id="modal-confirmabanco" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+<!-- Modal Atualizar Banco -->
+<div id="modal-confirmabanco" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form action="<?php echo base_url() ?>index.php/clientes/excluir" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h5 id="myModalLabel">Atualização de sistema</h5>
+            <h5 id="myModalLabel"><i class="bx bx-data" style="color: #ff9204; margin-right: 6px;"></i> Atualização do Banco de Dados</h5>
         </div>
         <div class="modal-body">
-            <h5 style="text-align: left">Deseja realmente fazer a atualização do banco de dados?</h5>
-            <h7 style="text-align: left">Recomendamos que faça um backup antes de prosseguir!
-                <a target="_blank" title="Fazer Bakup" class="btn btn-mini btn-inverse" href="<?php echo site_url('sistema/backup') ?>">Fazer Backup</a>
-            </h7>
+            <p style="margin: 0 0 10px 0;">Deseja realmente aplicar as migrações no banco de dados?</p>
+            <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; padding: 10px; border-radius: 6px; font-size: 0.82rem;">
+                Recomendamos que realize uma cópia de segurança antes de prosseguir.
+                <a target="_blank" class="btn-amura-secondary" style="margin-left: 10px; padding: 3px 8px; font-size: 0.78rem;" href="<?php echo site_url('sistema/backup') ?>">Gerar Backup</a>
+            </div>
         </div>
-        <div class="modal-footer" style="display:flex;justify-content: center">
-          <button class="button btn btn-mini btn-danger" data-dismiss="modal" aria-hidden="true"><span class="button__icon"><i class='bx bx-x' ></i></span> <span class="button__text2">Cancelar</span></button>
-          <button id="update-database" type="button" class="button btn btn-warning"><span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar</span></button>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class='bx bx-x'></i> Cancelar
+            </button>
+            <button id="update-database" type="button" class="btn-amura-primary">
+                <i class="bx bx-sync"></i> Atualizar Banco
+            </button>
         </div>
     </form>
 </div>

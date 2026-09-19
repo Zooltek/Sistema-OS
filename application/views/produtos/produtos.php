@@ -1,168 +1,174 @@
-<style>
-  select {
-    width: 70px;
-  }
-</style>
-<div class="new122">
-    <div class="widget-title" style="margin: -20px 0 0">
-        <span class="icon">
-            <i class="fas fa-shopping-bag"></i>
-        </span>
-        <h5>Produtos</h5>
+<div class="amura-page">
+    <!-- Header -->
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <div>
+                <h1 class="amura-header-title">Produtos</h1>
+                <p class="amura-header-subtitle">Gerenciamento de estoque e catálogo de produtos cadastrados</p>
+            </div>
+        </div>
+        <div class="amura-header-actions">
+            <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aProduto')) : ?>
+                <a href="<?= base_url() ?>index.php/produtos/adicionar" class="btn-amura-primary">
+                    <i class='bx bx-plus-circle'></i> Adicionar Produto
+                </a>
+                <a href="#modal-etiquetas" role="button" data-toggle="modal" class="btn-amura-secondary">
+                    <i class='bx bx-barcode-reader'></i> Gerar Etiquetas
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
-    <div class="span12" style="margin-left: 0">
-        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aProduto')) : ?>
-            <div class="span3 flexxn" style="display: flex;">
-                <a href="<?= base_url() ?>index.php/produtos/adicionar" class="button btn btn-mini btn-success" style="max-width: 160px">
-                    <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2"> Produtos</span>
-                </a>
-                <a href="#modal-etiquetas" role="button" data-toggle="modal" class="button btn btn-mini btn-warning" style="max-width: 160px">
-                    <span class="button__icon"><i class='bx bx-barcode-reader' ></i></span><span class="button__text2">Gerar Etiquetas</span>
-                </a>
+
+    <!-- Filtros -->
+    <div class="amura-filter-card">
+        <form class="amura-filter-form" method="get" action="<?= base_url() ?>index.php/produtos">
+            <div class="amura-filter-group" style="flex: 1 1 350px;">
+                <label class="amura-filter-label">Pesquisar</label>
+                <input type="text" name="pesquisa" id="pesquisa"
+                    placeholder="Buscar por Nome ou Código de Barras..." class="amura-input"
+                    value="<?= html_escape($this->input->get('pesquisa')) ?>">
             </div>
-        <?php endif; ?>
-        <form class="span9" method="get" action="<?= base_url() ?>index.php/produtos" style="display: flex; justify-content: flex-end;">
-            <div class="span3">
-                <input type="text" name="pesquisa" id="pesquisa" placeholder="Buscar por Nome ou Cod. barra..." class="span12" value="<?=html_escape($this->input->get('pesquisa'))?>">
-            </div>
-            <div class="span1">
-                <button class="button btn btn-mini btn-warning" style="min-width: 30px">
-                    <span class="button__icon"><i class='bx bx-search-alt'></i></span></button>
+            <div class="amura-filter-group-btn">
+                <button type="submit" class="amura-filter-search-btn">
+                    <i class='bx bx-search-alt'></i><span>Pesquisar</span>
+                </button>
             </div>
         </form>
     </div>
 
-    <div class="widget-box">
-        <h5 style="padding: 3px 0"></h5>
-        <div class="widget-content nopadding tab-content">
-            <table id="tabela" class="table table-bordered ">
+    <!-- Tabela -->
+    <div class="amura-table-card">
+        <div class="amura-table-wrapper">
+            <table id="tabela" class="table">
                 <thead>
-                <tr>
-                    <th>Cod.</th>
-                    <th>Cod. Barra</th>
-                    <th>Nome</th>
-                    <th>Estoque</th>
-                    <th>Preço</th>
-                    <th>Ações</th>
-                </tr>
+                    <tr>
+                        <th style="width: 60px;">Cod.</th>
+                        <th style="width: 140px;">Cod. Barra</th>
+                        <th>Nome / Descrição</th>
+                        <th style="width: 100px; text-align: center;">Estoque</th>
+                        <th style="width: 120px; text-align: right;">Preço Venda</th>
+                        <th style="width: 160px; text-align: center;">Ações</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <?php
-
-                if (!$results) {
-                    echo '<tr>
-                                    <td colspan="6">Nenhum Produto Cadastrado</td>
-                                    </tr>';
-                }
-        foreach ($results as $r) {
-            echo '<tr>';
-            echo '<td>' . $r->idProdutos . '</td>';
-            echo '<td>' . $r->codDeBarra . '</td>';
-            echo '<td>' . $r->descricao . '</td>';
-            echo '<td>' . $r->estoque . '</td>';
-            echo '<td>' . number_format($r->precoVenda, 2, ',', '.') . '</td>';
-            echo '<td>';
-            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vProduto')) {
-                echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/produtos/visualizar/' . $r->idProdutos . '" class="btn-nwe" title="Visualizar Produto"><i class="bx bx-show bx-xs"></i></a>  ';
-            }
-            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eProduto')) {
-                echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/produtos/editar/' . $r->idProdutos . '" class="btn-nwe3" title="Editar Produto"><i class="bx bx-edit bx-xs"></i></a>';
-            }
-            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dProduto')) {
-                echo '<a style="margin-right: 1%" href="#modal-excluir" role="button" data-toggle="modal" produto="' . $r->idProdutos . '" class="btn-nwe4" title="Excluir Produto"><i class="bx bx-trash-alt bx-xs"></i></a>';
-            }
-            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eProduto')) {
-                echo '<a href="#atualizar-estoque" role="button" data-toggle="modal" produto="' . $r->idProdutos . '" estoque="' . $r->estoque . '" class="btn-nwe5" title="Atualizar Estoque"><i class="bx bx-plus-circle bx-xs"></i></a>';
-            }
-            echo '</td>';
-            echo '</tr>';
-        } ?>
+                    <?php
+                    if (!$results) {
+                        echo '<tr><td colspan="6" style="text-align: center; padding: 24px; color: #8c97a8;">Nenhum produto cadastrado</td></tr>';
+                    }
+                    foreach ($results as $r) {
+                        $estoqueBadge = ($r->estoque <= 0) ? 'amura-badge-danger' : (($r->estoque <= 5) ? 'amura-badge-warning' : 'amura-badge-neutral');
+                        echo '<tr>';
+                        echo '<td><strong>#' . $r->idProdutos . '</strong></td>';
+                        echo '<td>' . html_escape($r->codDeBarra) . '</td>';
+                        echo '<td>' . html_escape($r->descricao) . '</td>';
+                        echo '<td style="text-align: center;"><span class="amura-badge ' . $estoqueBadge . '">' . $r->estoque . '</span></td>';
+                        echo '<td style="text-align: right;"><strong>R$ ' . number_format($r->precoVenda, 2, ',', '.') . '</strong></td>';
+                        echo '<td style="text-align: center;">';
+                        echo '<div class="amura-actions-cell" style="justify-content: center;">';
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vProduto')) {
+                            echo '<a href="' . base_url() . 'index.php/produtos/visualizar/' . $r->idProdutos . '" class="amura-action-btn amura-action-view" title="Visualizar Produto"><i class="bx bx-show"></i></a>';
+                        }
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eProduto')) {
+                            echo '<a href="' . base_url() . 'index.php/produtos/editar/' . $r->idProdutos . '" class="amura-action-btn amura-action-edit" title="Editar Produto"><i class="bx bx-edit"></i></a>';
+                            echo '<a href="#atualizar-estoque" role="button" data-toggle="modal" produto="' . $r->idProdutos . '" estoque="' . $r->estoque . '" class="amura-action-btn amura-action-extra" title="Atualizar Estoque"><i class="bx bx-plus-circle"></i></a>';
+                        }
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dProduto')) {
+                            echo '<a href="#modal-excluir" role="button" data-toggle="modal" produto="' . $r->idProdutos . '" class="amura-action-btn amura-action-delete" title="Excluir Produto"><i class="bx bx-trash-alt"></i></a>';
+                        }
+                        echo '</div>';
+                        echo '</td>';
+                        echo '</tr>';
+                    } ?>
                 </tbody>
             </table>
         </div>
     </div>
-</div>
-<?php echo $this->pagination->create_links(); ?>
 
-<!-- Modal -->
-<div id="modal-excluir" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Paginação -->
+    <div class="amura-pagination">
+        <?= $this->pagination->create_links(); ?>
+    </div>
+</div>
+
+<!-- Modal Excluir -->
+<div id="modal-excluir" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form action="<?php echo base_url() ?>index.php/produtos/excluir" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h5 id="myModalLabel"><i class="fas fa-trash-alt"></i> Excluir Produto</h5>
+            <h5 id="myModalLabel"><i class="bx bx-trash" style="color: #f87171; margin-right: 6px;"></i> Excluir Produto</h5>
         </div>
         <div class="modal-body">
             <input type="hidden" id="idProduto" class="idProduto" name="id" value=""/>
-            <h5 style="text-align: center">Deseja realmente excluir este produto?</h5>
+            <p style="text-align: center; margin: 10px 0; font-size: 0.95rem;">Deseja realmente excluir este produto?</p>
         </div>
-        <div class="modal-footer" style="display:flex;justify-content: center">
-            <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true">
-              <span class="button__icon"><i class="bx bx-x"></i></span><span class="button__text2">Cancelar</span></button>
-            <button class="button btn btn-danger"><span class="button__icon"><i class='bx bx-trash'></i></span> <span class="button__text2">Excluir</span></button>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class="bx bx-x"></i> Cancelar
+            </button>
+            <button type="submit" class="btn-amura-danger">
+                <i class='bx bx-trash'></i> Excluir
+            </button>
         </div>
     </form>
 </div>
 
-<!-- Modal Estoque -->
-<div id="atualizar-estoque" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Modal Atualizar Estoque -->
+<div id="atualizar-estoque" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="modalEstoqueLabel" aria-hidden="true">
     <form action="<?php echo base_url() ?>index.php/produtos/atualizar_estoque" method="post" id="formEstoque">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h5 id="myModalLabel"><i class="fas fa-plus-square"></i> Atualizar Estoque</h5>
+            <h5 id="modalEstoqueLabel"><i class="bx bx-plus-circle" style="color: #ff9204; margin-right: 6px;"></i> Atualizar Estoque</h5>
         </div>
         <div class="modal-body">
-            <div class="control-group">
-                <label for="estoqueAtual" class="control-label">Estoque Atual</label>
-                <div class="controls">
-                    <input id="estoqueAtual" type="text" name="estoqueAtual" value="" readonly />
-                </div>
+            <div class="amura-form-group" style="margin-bottom: 14px;">
+                <label for="estoqueAtual" class="amura-form-label">Estoque Atual</label>
+                <input id="estoqueAtual" type="text" name="estoqueAtual" value="" readonly class="amura-input" style="opacity: 0.75;" />
             </div>
-
-            <div class="control-group">
-                <label for="estoque" class="control-label">Adicionar Produtos<span class="required">*</span></label>
-                <div class="controls">
-                    <input type="hidden" id="idProduto" class="idProduto" name="id" value=""/>
-                    <input id="estoque" type="text" name="estoque" value=""/>
-                </div>
+            <div class="amura-form-group">
+                <label for="estoque" class="amura-form-label">Adicionar ao Estoque <span style="color: #f87171;">*</span></label>
+                <input type="hidden" id="idProdutoModal" class="idProduto" name="id" value=""/>
+                <input id="estoque" type="text" name="estoque" value="" class="amura-input" placeholder="Informe a quantidade a adicionar" />
             </div>
         </div>
-        <div class="modal-footer" style="display:flex;justify-content: center">
-          <button class="button btn btn-primary"><span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar</span></button>
-          <button class="button btn btn-warning"  data-dismiss="modal" aria-hidden="true"><span class="button__icon"><i class="bx bx-x"></i></span><span class="button__text2">Cancelar</span></button>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class="bx bx-x"></i> Cancelar
+            </button>
+            <button type="submit" class="btn-amura-primary">
+                <i class="bx bx-sync"></i> Atualizar Estoque
+            </button>
         </div>
     </form>
 </div>
 
 <!-- Modal Etiquetas -->
-<div id="modal-etiquetas" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modal-etiquetas" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="modalEtiquetasLabel" aria-hidden="true">
     <form action="<?php echo base_url() ?>index.php/relatorios/produtosEtiquetas" method="get">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h5 id="myModalLabel">Gerar etiquetas com Código de Barras</h5>
+            <h5 id="modalEtiquetasLabel"><i class="bx bx-barcode-reader" style="color: #ff9204; margin-right: 6px;"></i> Gerar Etiquetas de Código de Barras</h5>
         </div>
         <div class="modal-body">
-            <div class="span12 alert alert-info" style="margin-left: 0"> Escolha o intervalo de produtos para gerar as etiquetas.</div>
-
-            <div class="span12" style="margin-left: 0;">
-                <div class="span6" style="margin-left: 0;">
-                    <label for="valor">De</label>
-                    <input class="span9" style="margin-left: 0" type="text" id="de_id" name="de_id" placeholder="ID do primeiro produto" value=""/>
+            <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; font-size: 0.84rem;">
+                <i class="bx bx-info-circle"></i> Escolha o intervalo de produtos para gerar as etiquetas.
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                <div class="amura-form-group">
+                    <label for="de_id" class="amura-form-label">Do ID</label>
+                    <input class="amura-input" type="text" id="de_id" name="de_id" placeholder="ID do primeiro produto" value=""/>
                 </div>
-
-
-                <div class="span6">
-                    <label for="valor">Até</label>
-                    <input class="span9" type="text" id="ate_id" name="ate_id" placeholder="ID do último produto" value=""/>
+                <div class="amura-form-group">
+                    <label for="ate_id" class="amura-form-label">Até o ID</label>
+                    <input class="amura-input" type="text" id="ate_id" name="ate_id" placeholder="ID do último produto" value=""/>
                 </div>
-
-                <div class="span4">
-                    <label for="valor">Qtd. do Estoque</label>
-                    <input class="span12" type="checkbox" name="qtdEtiqueta" value="true"/>
-                </div>
-
-                <div class="span6">
-                    <label class="span12" for="valor">Formato Etiqueta</label>
-                    <select class="span5" name="etiquetaCode">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="amura-form-group">
+                    <label class="amura-form-label">Formato da Etiqueta</label>
+                    <select class="amura-select" name="etiquetaCode">
                         <option value="EAN13">EAN-13</option>
                         <option value="UPCA">UPCA</option>
                         <option value="C93">CODE 93</option>
@@ -171,20 +177,29 @@
                         <option value="QR">QR-CODE</option>
                     </select>
                 </div>
-
+                <div class="amura-form-group" style="justify-content: center; padding-top: 18px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #cbd5e1; font-size: 0.85rem;">
+                        <input type="checkbox" name="qtdEtiqueta" value="true" style="margin: 0; width: 16px; height: 16px;"/>
+                        Imprimir com Qtd. do Estoque
+                    </label>
+                </div>
             </div>
         </div>
-        <div class="modal-footer" style="display:flex;justify-content: center">
-          <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span class="button__icon"><i class="bx bx-x"></i></span><span class="button__text2">Cancelar</span></button>
-          <button class="button btn btn-success"><span class="button__icon"><i class='bx bx-barcode'></i></span><span class="button__text2">Gerar</span></button>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class="bx bx-x"></i> Cancelar
+            </button>
+            <button type="submit" class="btn-amura-primary">
+                <i class='bx bx-barcode'></i> Gerar Etiquetas
+            </button>
         </div>
     </form>
 </div>
+
 <script src="<?php echo base_url() ?>assets/js/jquery.validate.js"></script>
-<!-- Modal Etiquetas e Estoque-->
 <script type="text/javascript">
     $(document).ready(function () {
-        $(document).on('click', 'a', function (event) {
+        $(document).on('click', 'a[produto]', function (event) {
             var produto = $(this).attr('produto');
             var estoque = $(this).attr('estoque');
             $('.idProduto').val(produto);
@@ -207,11 +222,10 @@
             errorClass: "help-inline",
             errorElement: "span",
             highlight: function (element, errorClass, validClass) {
-                $(element).parents('.control-group').addClass('error');
+                $(element).parents('.amura-form-group').addClass('error');
             },
             unhighlight: function (element, errorClass, validClass) {
-                $(element).parents('.control-group').removeClass('error');
-                $(element).parents('.control-group').addClass('success');
+                $(element).parents('.amura-form-group').removeClass('error');
             }
         });
     });

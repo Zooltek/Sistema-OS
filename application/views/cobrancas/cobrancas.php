@@ -1,37 +1,37 @@
-<style>
-  select {
-    width: 70px;
-  }
-</style>
-<div class="new122">
-    <div class="widget-title" style="margin: -20px 0 0">
-            <span class="icon">
-                <i class="fas fa-cash-register"></i>
-            </span>
-            <h5>Cobranças</h5>
+<div class="amura-page">
+    <!-- Header -->
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <div>
+                <h1 class="amura-header-title">Cobranças</h1>
+                <p class="amura-header-subtitle">Controle financeiro de transações, boletos e gateways de pagamento</p>
+            </div>
+        </div>
     </div>
-    <div class="widget-box">
-        <h5 style="padding: 3px 0"></h5>
-        <div class="widget-content nopadding tab-content">
-            <table id="tabela" class="table table-bordered ">
+
+    <!-- Tabela -->
+    <div class="amura-table-card">
+        <div class="amura-table-wrapper">
+            <table id="tabela" class="table">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th style="width: 50px;">#</th>
                         <th>Gateway</th>
                         <th>Tipo</th>
-                        <th>Data de Vencimento</th>
+                        <th style="width: 110px;">Vencimento</th>
                         <th>Referência</th>
-                        <th>Status</th>
-                        <th>Valor</th>
-                        <th>Ações</th>
+                        <th style="width: 120px; text-align: center;">Status</th>
+                        <th style="width: 120px; text-align: right;">Valor</th>
+                        <th style="width: 170px; text-align: center;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     if (!$results) {
-                        echo '<tr>
-                                <td colspan="8">Nenhuma cobrança Cadastrada</td>
-                            </tr>';
+                        echo '<tr><td colspan="8" style="text-align: center; padding: 24px; color: #8c97a8;">Nenhuma cobrança cadastrada</td></tr>';
                     }
                     foreach ($results as $r) {
                         $dataVenda = date(('d/m/Y'), strtotime($r->expire_at));
@@ -42,34 +42,39 @@
                         );
 
                         echo '<tr>';
-                        echo '<td>' . $r->idCobranca . '</td>';
-                        echo '<td>' . $r->payment_gateway . '</td>';
-                        echo '<td>' . $r->payment_method . '</td>';
+                        echo '<td><strong>#' . $r->idCobranca . '</strong></td>';
+                        echo '<td><span class="amura-badge amura-badge-neutral">' . html_escape($r->payment_gateway) . '</span></td>';
+                        echo '<td>' . html_escape($r->payment_method) . '</td>';
                         echo '<td>' . $dataVenda . '</td>';
 
+                        echo '<td>';
                         if ($r->os_id != '') {
-                            echo '<td><a href="' . base_url() . 'index.php/os/visualizar/' . $r->os_id . '"> Ordem de Serviço: #' . $r->os_id . '</a></td>';
+                            echo '<a href="' . base_url() . 'index.php/os/visualizar/' . $r->os_id . '"><i class="bx bx-wrench"></i> OS: #' . $r->os_id . '</a>';
                         }
                         if ($r->vendas_id != '') {
-                            echo '<td><a href="' . base_url() . 'index.php/vendas/visualizar/' . $r->vendas_id . '"> Venda: #' . $r->vendas_id . '</a></td>';
+                            echo '<a href="' . base_url() . 'index.php/vendas/visualizar/' . $r->vendas_id . '"><i class="bx bx-cart"></i> Venda: #' . $r->vendas_id . '</a>';
                         }
+                        echo '</td>';
 
-                        echo '<td>' .  $cobrancaStatus . '</td>';
-                        echo '<td>R$ ' . number_format($r->total / 100, 2, ',', '.') . '</td>';
-                        echo '<td>';
+                        echo '<td style="text-align: center;"><span class="amura-badge amura-badge-info">' . $cobrancaStatus . '</span></td>';
+                        echo '<td style="text-align: right;"><strong>R$ ' . number_format($r->total / 100, 2, ',', '.') . '</strong></td>';
+                        echo '<td style="text-align: center;">';
+                        echo '<div class="amura-actions-cell" style="justify-content: center;">';
+
                         if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCobranca')) {
-                            echo '<a style="margin-right: 1%" href="#modal-cancelar" role="button" data-toggle="modal" cancela_id="' . $r->idCobranca . '" class="btn-nwe4" title="Cancelar Cobrança"><i class="bx bx-x" ></i></a>';
-                            echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/cobrancas/atualizar/' . $r->idCobranca . '" class="btn-nwe" title="Atualizar Cobrança"><i class="bx bx-refresh"></i></a>';
-                            echo '<a style="margin-right: 1%" href="#modal-confirmar" role="button" data-toggle="modal" confirma_id="' . $r->idCobranca . '" class="btn-nwe3" title="Confirmar pagamento"><i class="bx bx-check"></i></a>';
-                            echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/cobrancas/visualizar/' . $r->idCobranca . '" class="btn-nwe2" title="Ver mais detalhes"><i class="bx bx-show" ></i></a>';
-                            echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/cobrancas/enviarEmail/' . $r->idCobranca . '" class="btn-nwe5" title="Enviar por E-mail"><i class="bx bx-envelope" ></i></a>';
+                            echo '<a href="#modal-cancelar" role="button" data-toggle="modal" cancela_id="' . $r->idCobranca . '" class="amura-action-btn amura-action-delete" title="Cancelar Cobrança"><i class="bx bx-x"></i></a>';
+                            echo '<a href="' . base_url() . 'index.php/cobrancas/atualizar/' . $r->idCobranca . '" class="amura-action-btn amura-action-view" title="Atualizar Cobrança"><i class="bx bx-refresh"></i></a>';
+                            echo '<a href="#modal-confirmar" role="button" data-toggle="modal" confirma_id="' . $r->idCobranca . '" class="amura-action-btn amura-action-extra" title="Confirmar pagamento"><i class="bx bx-check"></i></a>';
+                            echo '<a href="' . base_url() . 'index.php/cobrancas/visualizar/' . $r->idCobranca . '" class="amura-action-btn amura-action-view" title="Ver mais detalhes"><i class="bx bx-show"></i></a>';
+                            echo '<a href="' . base_url() . 'index.php/cobrancas/enviarEmail/' . $r->idCobranca . '" class="amura-action-btn amura-action-edit" title="Enviar por E-mail"><i class="bx bx-envelope"></i></a>';
                         }
                         if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCobranca') && $r->barcode != '') {
-                            echo '<a style="margin-right: 1%" href="' . $r->link . '" target="_blank" class="btn-nwe" title="Visualizar boleto"><i class="bx bx-barcode" ></i></a>';
+                            echo '<a href="' . $r->link . '" target="_blank" class="amura-action-btn amura-action-print" title="Visualizar boleto"><i class="bx bx-barcode"></i></a>';
                         }
                         if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dCobranca')) {
-                            echo '<a href="#modal-excluir" role="button" data-toggle="modal" excluir_id="' . $r->idCobranca . '" class="btn-nwe4" title="Excluir Cobrança"><i class="bx bx-trash-alt"></i></a>';
+                            echo '<a href="#modal-excluir" role="button" data-toggle="modal" excluir_id="' . $r->idCobranca . '" class="amura-action-btn amura-action-delete" title="Excluir Cobrança"><i class="bx bx-trash-alt"></i></a>';
                         }
+                        echo '</div>';
                         echo '</td>';
                         echo '</tr>';
                     } ?>
@@ -77,75 +82,100 @@
             </table>
         </div>
     </div>
-    <?php echo $this->pagination->create_links(); ?>
 
-    <!-- Modal -->
-    <div id="modal-excluir" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <form action="<?php echo base_url() ?>index.php/cobrancas/excluir" method="post">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h5 id="myModalLabel">Excluir cobrança</h5>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="excluir_id" name="excluir_id" value="" />
-                <h5 style="text-align: center">Deseja realmente excluir esta cobrança? A cobrança será cancelada.</h5>
-            </div>
-            <div class="modal-footer" style="display:flex;justify-content: center">
-                <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span class="button__icon"><i class="bx bx-x"></i></span><span class="button__text2">Cancelar</span></button>
-                <button class="button btn btn-danger"><span class="button__icon"><i class='bx bx-trash'></i></span> <span class="button__text2">Excluir</span></button>
-            </div>
-        </form>
-    </div>
-
-    <div id="modal-confirmar" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <form action="<?php echo base_url() ?>index.php/cobrancas/confirmarpagamento" method="post">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h5 id="myModalLabel">Confirmar pagamento</h5>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="confirma_id" name="confirma_id" value="" />
-                <h5 style="text-align: center">Deseja realmente confirmar pagamento desta cobrança?</h5>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                <button class="btn btn-success">Confirmar</button>
-            </div>
-        </form>
-    </div>
-
-    <div id="modal-cancelar" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <form action="<?php echo base_url() ?>index.php/cobrancas/cancelar" method="post">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h5 id="myModalLabel">Cancelar cobrança</h5>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="cancela_id" name="cancela_id" value="" />
-                <h5 style="text-align: center">Deseja realmente Cancelar esta cobrança?</h5>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                <button class="btn btn-danger">Confirmar</button>
-            </div>
-        </form>
+    <!-- Paginação -->
+    <div class="amura-pagination">
+        <?= $this->pagination->create_links(); ?>
     </div>
 </div>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(document).on('click', 'a', function(event) {
-                var cobranca = $(this).attr('excluir_id');
-                $('#excluir_id').val(cobranca);
-            });
 
-            $(document).on('click', 'a', function(event) {
-                var cobranca = $(this).attr('confirma_id');
-                $('#confirma_id').val(cobranca);
-            });
+<!-- Modal Excluir -->
+<div id="modal-excluir" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelExcluir" aria-hidden="true">
+    <form action="<?php echo base_url() ?>index.php/cobrancas/excluir" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 id="myModalLabelExcluir"><i class="bx bx-trash" style="color: #f87171; margin-right: 6px;"></i> Excluir Cobrança</h5>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="excluir_id" name="excluir_id" value="" />
+            <p style="text-align: center; margin: 10px 0; font-size: 0.95rem;">
+                Deseja realmente excluir esta cobrança? Ela será cancelada definitivamente.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class="bx bx-x"></i> Cancelar
+            </button>
+            <button type="submit" class="btn-amura-danger">
+                <i class='bx bx-trash'></i> Excluir
+            </button>
+        </div>
+    </form>
+</div>
 
-            $(document).on('click', 'a', function(event) {
-                var cobranca = $(this).attr('cancela_id');
-                $('#cancela_id').val(cobranca);
-            });
+<!-- Modal Confirmar Pagamento -->
+<div id="modal-confirmar" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelConfirmar" aria-hidden="true">
+    <form action="<?php echo base_url() ?>index.php/cobrancas/confirmarpagamento" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 id="myModalLabelConfirmar"><i class="bx bx-check-circle" style="color: #4ade80; margin-right: 6px;"></i> Confirmar Pagamento</h5>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="confirma_id" name="confirma_id" value="" />
+            <p style="text-align: center; margin: 10px 0; font-size: 0.95rem;">
+                Deseja realmente confirmar o pagamento desta cobrança manualmente?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class="bx bx-x"></i> Cancelar
+            </button>
+            <button type="submit" class="btn-amura-primary">
+                <i class="bx bx-check"></i> Confirmar
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal Cancelar Cobrança -->
+<div id="modal-cancelar" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelCancelar" aria-hidden="true">
+    <form action="<?php echo base_url() ?>index.php/cobrancas/cancelar" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 id="myModalLabelCancelar"><i class="bx bx-x-circle" style="color: #f87171; margin-right: 6px;"></i> Cancelar Cobrança</h5>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="cancela_id" name="cancela_id" value="" />
+            <p style="text-align: center; margin: 10px 0; font-size: 0.95rem;">
+                Deseja realmente cancelar esta cobrança no gateway?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class="bx bx-x"></i> Voltar
+            </button>
+            <button type="submit" class="btn-amura-danger">
+                <i class="bx bx-x"></i> Cancelar Cobrança
+            </button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(document).on('click', 'a[excluir_id]', function(event) {
+            var cobranca = $(this).attr('excluir_id');
+            $('#excluir_id').val(cobranca);
         });
-    </script>
+
+        $(document).on('click', 'a[confirma_id]', function(event) {
+            var cobranca = $(this).attr('confirma_id');
+            $('#confirma_id').val(cobranca);
+        });
+
+        $(document).on('click', 'a[cancela_id]', function(event) {
+            var cobranca = $(this).attr('cancela_id');
+            $('#cancela_id').val(cobranca);
+        });
+    });
+</script>

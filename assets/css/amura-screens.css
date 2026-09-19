@@ -1,0 +1,841 @@
+/* ==========================================================================
+   Amura OS - Design System Compartilhado
+   Aplicado em todas as telas: Listagens, Formulários, Visualizações
+   Tema: Escuro (padrão) + Claro (via body.theme-light ou tema-white.css)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. LAYOUT GERAL DA PÁGINA
+   -------------------------------------------------------------------------- */
+.amura-page {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   2. HEADER CORPORATIVO
+   -------------------------------------------------------------------------- */
+.amura-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: #141b22;
+  border: 1px solid #252e3b;
+  border-radius: 8px;
+  padding: 14px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.amura-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.amura-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: rgba(222, 121, 2, 0.12);
+  border: 1px solid rgba(222, 121, 2, 0.28);
+  border-radius: 8px;
+  color: #ff9204;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.amura-header-title {
+  margin: 0;
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: #f1f4f9;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+}
+
+.amura-header-subtitle {
+  margin: 3px 0 0 0;
+  font-size: 0.80rem;
+  color: #8c97a8;
+}
+
+.amura-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   3. BOTÕES AMURA
+   -------------------------------------------------------------------------- */
+.btn-amura-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(180deg, #ff9b1a 0%, #e07a00 100%);
+  color: #ffffff !important;
+  border: 1px solid #d06d00;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  box-shadow: 0 2px 6px rgba(224,122,0,0.35);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+}
+.btn-amura-primary:hover {
+  background: linear-gradient(180deg, #ffa834 0%, #eb8405 100%);
+  box-shadow: 0 4px 12px rgba(224,122,0,0.5);
+  transform: translateY(-1px);
+  color: #ffffff !important;
+}
+.btn-amura-primary:active { transform: translateY(0); }
+.btn-amura-primary i { font-size: 1.1rem; }
+
+.btn-amura-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #1f2a38;
+  color: #c8d4e3 !important;
+  border: 1px solid #334255;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+}
+.btn-amura-secondary:hover {
+  background: #273546;
+  border-color: #ff9204;
+  color: #ffffff !important;
+}
+.btn-amura-secondary i { font-size: 1.05rem; color: #ff9204; }
+
+.btn-amura-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(220,38,38,0.12);
+  color: #f87171 !important;
+  border: 1px solid rgba(220,38,38,0.3);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+}
+.btn-amura-danger:hover {
+  background: rgba(220,38,38,0.22);
+  border-color: #f87171;
+  color: #ffffff !important;
+}
+.btn-amura-danger i { font-size: 1.05rem; }
+
+/* --------------------------------------------------------------------------
+   4. CARD DE FILTROS
+   -------------------------------------------------------------------------- */
+.amura-filter-card {
+  background: #161e27;
+  border: 1px solid #232d3b;
+  border-radius: 8px;
+  padding: 14px 18px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.amura-filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin: 0;
+}
+
+.amura-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.amura-filter-group-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+}
+
+.amura-filter-label {
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8c97a8;
+  margin: 0;
+}
+
+.amura-input,
+.amura-select {
+  width: 100% !important;
+  height: 36px !important;
+  padding: 6px 12px !important;
+  font-size: 0.84rem !important;
+  background: #0d1218 !important;
+  border: 1px solid #283344 !important;
+  border-radius: 5px !important;
+  color: #e2e8f0 !important;
+  outline: none !important;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.4) !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.amura-input:focus,
+.amura-select:focus {
+  border-color: #ff9204 !important;
+  box-shadow: 0 0 0 2px rgba(255,146,4,0.2), inset 0 1px 2px rgba(0,0,0,0.4) !important;
+}
+.amura-input::placeholder { color: #556274; }
+
+.amura-filter-search-btn {
+  height: 36px !important;
+  padding: 0 18px !important;
+  background: #1f2a38 !important;
+  color: #dce3ec !important;
+  border: 1px solid #334255 !important;
+  border-radius: 5px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+.amura-filter-search-btn:hover {
+  background: #273546 !important;
+  border-color: #ff9204 !important;
+  color: #ffffff !important;
+}
+.amura-filter-search-btn i { font-size: 1.1rem; color: #ff9204; }
+
+/* --------------------------------------------------------------------------
+   5. TABELA CORPORATIVA
+   -------------------------------------------------------------------------- */
+.amura-table-card {
+  background: #141b22;
+  border: 1px solid #232d3b;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  min-height: 240px;
+}
+
+.amura-table-card .widget-title,
+.amura-table-card h5 { display: none; }
+
+.amura-table-wrapper {
+  width: 100%;
+  overflow-x: visible;
+  min-height: 240px;
+}
+
+@media (max-width: 992px) {
+  .amura-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Alvo: tabelas com id="tabela" dentro de amura-table-card — preserva DataTables */
+.amura-table-card #tabela,
+.amura-table-card .amura-table {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin: 0 !important;
+  font-size: 0.81rem;
+}
+
+.amura-table-card #tabela thead th,
+.amura-table-card .amura-table thead th {
+  background: #0f141a !important;
+  color: #9aa7b8 !important;
+  font-weight: 600 !important;
+  font-size: 0.70rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  padding: 10px 10px !important;
+  border: none !important;
+  border-bottom: 2px solid #232d3b !important;
+  white-space: nowrap;
+}
+
+.amura-table-card #tabela tbody td,
+.amura-table-card .amura-table tbody td {
+  padding: 9px 10px !important;
+  border: none !important;
+  border-bottom: 1px solid #1c2430 !important;
+  color: #c9d2de !important;
+  vertical-align: middle !important;
+  background: transparent !important;
+}
+
+.amura-table-card #tabela tbody tr:hover td,
+.amura-table-card .amura-table tbody tr:hover td {
+  background: #19222c !important;
+}
+
+.amura-table-card #tabela tbody tr:last-child td,
+.amura-table-card .amura-table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+.amura-table-card #tabela tbody td a:not(.amura-action-btn),
+.amura-table-card .amura-table tbody td a:not(.amura-action-btn) {
+  color: #60a5fa !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+.amura-table-card #tabela tbody td a:not(.amura-action-btn):hover,
+.amura-table-card .amura-table tbody td a:not(.amura-action-btn):hover {
+  color: #93c5fd !important;
+  text-decoration: underline !important;
+}
+
+/* DataTables controls dentro do amura-table-card */
+.amura-table-card,
+.amura-table-card .widget-content,
+.amura-table-card .dataTables_wrapper,
+.amura-table-card .amura-table-wrapper {
+  overflow: visible !important;
+}
+
+.amura-table-card .dataTables_wrapper {
+  padding: 12px 16px 0 16px;
+}
+
+.amura-table-card .dataTables_filter label,
+.amura-table-card .dataTables_length label {
+  color: #8c97a8 !important;
+  font-size: 0.81rem;
+}
+
+.amura-table-card .dataTables_filter input {
+  background: #0d1218 !important;
+  border: 1px solid #283344 !important;
+  color: #e2e8f0 !important;
+  border-radius: 5px !important;
+  padding: 4px 10px !important;
+}
+
+.amura-table-card .dataTables_paginate .paginate_button {
+  color: #8c97a8 !important;
+  background: #1a2333 !important;
+  border: 1px solid #252e3b !important;
+  border-radius: 4px !important;
+  padding: 3px 8px !important;
+  margin: 2px !important;
+}
+.amura-table-card .dataTables_paginate .paginate_button.current,
+.amura-table-card .dataTables_paginate .paginate_button:hover {
+  background: #ff9204 !important;
+  border-color: #e07a00 !important;
+  color: #fff !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. BADGES DE STATUS
+   -------------------------------------------------------------------------- */
+.amura-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.amura-badge-success {
+  background: rgba(34,197,94,0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34,197,94,0.28);
+}
+.amura-badge-info {
+  background: rgba(59,130,246,0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59,130,246,0.28);
+}
+.amura-badge-warning {
+  background: rgba(245,158,11,0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,0.28);
+}
+.amura-badge-danger {
+  background: rgba(239,68,68,0.12);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.28);
+}
+.amura-badge-neutral {
+  background: rgba(148,163,184,0.1);
+  color: #94a3b8;
+  border: 1px solid rgba(148,163,184,0.2);
+}
+.amura-badge-purple {
+  background: rgba(139,92,246,0.12);
+  color: #a78bfa;
+  border: 1px solid rgba(139,92,246,0.28);
+}
+
+/* --------------------------------------------------------------------------
+   7. AÇÕES DE LINHA (botões de ícone)
+   -------------------------------------------------------------------------- */
+.amura-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  text-decoration: none !important;
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
+}
+.amura-action-view {
+  background: rgba(59,130,246,0.1);
+  color: #60a5fa !important;
+  border-color: rgba(59,130,246,0.2);
+}
+.amura-action-view:hover { background: rgba(59,130,246,0.22); color: #93c5fd !important; }
+
+.amura-action-edit {
+  background: rgba(245,158,11,0.1);
+  color: #fbbf24 !important;
+  border-color: rgba(245,158,11,0.2);
+}
+.amura-action-edit:hover { background: rgba(245,158,11,0.22); color: #fde68a !important; }
+
+.amura-action-delete {
+  background: rgba(239,68,68,0.08);
+  color: #f87171 !important;
+  border-color: rgba(239,68,68,0.18);
+}
+.amura-action-delete:hover { background: rgba(239,68,68,0.2); color: #fca5a5 !important; }
+
+.amura-action-print {
+  background: rgba(148,163,184,0.08);
+  color: #94a3b8 !important;
+  border-color: rgba(148,163,184,0.15);
+}
+.amura-action-print:hover { background: rgba(148,163,184,0.18); color: #cbd5e1 !important; }
+
+.amura-action-extra {
+  background: rgba(34,197,94,0.08);
+  color: #4ade80 !important;
+  border-color: rgba(34,197,94,0.15);
+}
+.amura-action-extra:hover { background: rgba(34,197,94,0.18); color: #86efac !important; }
+
+.amura-actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* Dropdown de Ações Agrupadas na Tabela */
+.amura-action-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.amura-action-dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  left: auto !important;
+  z-index: 1000 !important;
+  min-width: 175px !important;
+  padding: 6px 0 !important;
+  margin: 4px 0 0 0 !important;
+  list-style: none !important;
+  background-color: #1a232f !important;
+  border: 1px solid #2d3c4e !important;
+  border-radius: 6px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.amura-action-dropdown-menu > li > a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 14px !important;
+  clear: both !important;
+  font-weight: 500 !important;
+  font-size: 0.8rem !important;
+  color: #cbd5e1 !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.amura-action-dropdown-menu > li > a:hover {
+  background-color: #243142 !important;
+  color: #ffffff !important;
+}
+
+.amura-action-dropdown-menu > li > a i {
+  font-size: 1.05rem !important;
+  width: 16px !important;
+  text-align: center !important;
+}
+
+.amura-action-dropdown-menu .divider {
+  height: 1px !important;
+  margin: 5px 0 !important;
+  background-color: #283749 !important;
+  border: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. MODAIS MODERNOS
+   -------------------------------------------------------------------------- */
+.amura-modal .modal-header {
+  background: #141b22 !important;
+  border-bottom: 1px solid #232d3b !important;
+  padding: 14px 18px !important;
+}
+.amura-modal .modal-header h5,
+.amura-modal .modal-header h4 {
+  color: #f1f4f9 !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+}
+.amura-modal .modal-body {
+  background: #161e27 !important;
+  color: #c9d2de !important;
+  padding: 18px !important;
+}
+.amura-modal .modal-footer {
+  background: #141b22 !important;
+  border-top: 1px solid #232d3b !important;
+  padding: 12px 18px !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. PAGINAÇÃO
+   -------------------------------------------------------------------------- */
+.amura-pagination {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}
+.amura-pagination .pagination li a,
+.amura-pagination .pagination li span {
+  background: #1a2333;
+  border: 1px solid #252e3b;
+  color: #8c97a8;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin: 2px;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: all 0.18s;
+}
+.amura-pagination .pagination li.active a,
+.amura-pagination .pagination li a:hover {
+  background: #ff9204;
+  border-color: #e07a00;
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   9.1 TABS CORPORATIVAS (Configurações, OS Editar, Vendas Editar)
+   -------------------------------------------------------------------------- */
+.nav-tabs,
+.amura-tabs.nav-tabs {
+  border-bottom: 2px solid #232d3b !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 4px !important;
+  margin-bottom: 0 !important;
+  background: #0f141a !important;
+  padding: 8px 12px 0 12px !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+.nav-tabs > li > a,
+.amura-tabs.nav-tabs > li > a {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: #8c97a8 !important;
+  font-weight: 600 !important;
+  font-size: 0.83rem !important;
+  padding: 8px 16px !important;
+  border-radius: 6px 6px 0 0 !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.nav-tabs > li > a:hover,
+.amura-tabs.nav-tabs > li > a:hover {
+  background: rgba(255, 146, 4, 0.08) !important;
+  color: #ff9204 !important;
+  border-color: transparent !important;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus,
+.amura-tabs.nav-tabs > li.active > a,
+.amura-tabs.nav-tabs > li.active > a:hover {
+  background: #141b22 !important;
+  color: #ff9204 !important;
+  border: 1px solid #232d3b !important;
+  border-bottom-color: #141b22 !important;
+}
+.tab-content {
+  overflow: visible !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. FORMULÁRIOS
+   -------------------------------------------------------------------------- */
+.amura-form-card {
+  background: #141b22;
+  border: 1px solid #232d3b;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+}
+
+.amura-form-section {
+  padding: 18px 22px;
+  border-bottom: 1px solid #1c2a38;
+}
+.amura-form-section:last-child { border-bottom: none; }
+
+.amura-form-section-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #ff9204;
+  margin: 0 0 14px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,146,4,0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.amura-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.amura-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.amura-form-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #8c97a8;
+  margin: 0;
+}
+.amura-form-label .required { color: #f87171; margin-left: 2px; }
+
+.amura-form-input,
+.amura-form-select,
+.amura-form-textarea {
+  width: 100% !important;
+  padding: 7px 12px !important;
+  font-size: 0.84rem !important;
+  background: #0d1218 !important;
+  border: 1px solid #283344 !important;
+  border-radius: 5px !important;
+  color: #e2e8f0 !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 36px;
+}
+.amura-form-input:focus,
+.amura-form-select:focus,
+.amura-form-textarea:focus {
+  border-color: #ff9204 !important;
+  box-shadow: 0 0 0 2px rgba(255,146,4,0.15) !important;
+}
+.amura-form-textarea { min-height: 80px; resize: vertical; }
+
+.amura-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 22px;
+  border-top: 1px solid #1c2a38;
+  background: #0f141a;
+}
+
+/* --------------------------------------------------------------------------
+   11. TEMA CLARO — overrides automáticos
+   -------------------------------------------------------------------------- */
+body.white .amura-header,
+body.white .amura-form-card,
+body.white .amura-table-card {
+  background: #ffffff;
+  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+body.white .amura-filter-card {
+  background: #f4f5f9;
+  border-color: rgba(0,0,0,0.08);
+}
+
+body.white .amura-header-title { color: #1a202c; }
+body.white .amura-header-subtitle { color: #6b7280; }
+body.white .amura-header-icon {
+  background: rgba(234,123,0,0.08);
+  border-color: rgba(234,123,0,0.2);
+}
+
+body.white .amura-input,
+body.white .amura-select,
+body.white .amura-form-input,
+body.white .amura-form-select,
+body.white .amura-form-textarea {
+  background: #f8f9fc !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #1a202c !important;
+}
+body.white .amura-input::placeholder { color: #9ca3af; }
+
+body.white .amura-table-card #tabela thead th,
+body.white .amura-table-card .amura-table thead th {
+  background: #f4f5f9 !important;
+  color: #374151 !important;
+  border-bottom-color: rgba(0,0,0,0.08) !important;
+}
+
+body.white .amura-table-card #tabela tbody td,
+body.white .amura-table-card .amura-table tbody td {
+  color: #374151 !important;
+  border-bottom-color: rgba(0,0,0,0.05) !important;
+}
+
+body.white .amura-table-card #tabela tbody tr:hover td,
+body.white .amura-table-card .amura-table tbody tr:hover td {
+  background: rgba(234,123,0,0.04) !important;
+}
+
+body.white .amura-table-card #tabela tbody td a:not(.amura-action-btn),
+body.white .amura-table-card .amura-table tbody td a:not(.amura-action-btn) {
+  color: #2563eb !important;
+}
+body.white .amura-table-card #tabela tbody td a:not(.amura-action-btn):hover,
+body.white .amura-table-card .amura-table tbody td a:not(.amura-action-btn):hover {
+  color: #1d4ed8 !important;
+}
+
+body.white .amura-filter-search-btn,
+body.white .btn-amura-secondary {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #374151 !important;
+}
+body.white .amura-filter-search-btn:hover,
+body.white .btn-amura-secondary:hover {
+  border-color: rgba(234,123,0,0.5) !important;
+  color: #c47000 !important;
+}
+
+body.white .amura-form-section-title { color: #c47000; }
+body.white .amura-form-section { border-bottom-color: rgba(0,0,0,0.06); }
+body.white .amura-form-actions { background: #f4f5f9; border-top-color: rgba(0,0,0,0.06); }
+body.white .amura-form-label { color: #6b7280; }
+
+body.white .amura-modal .modal-header { background: #ffffff !important; border-bottom-color: rgba(0,0,0,0.08) !important; }
+body.white .amura-modal .modal-header h5, body.white .amura-modal .modal-header h4 { color: #1a202c !important; }
+body.white .amura-modal .modal-body { background: #f4f5f9 !important; color: #374151 !important; }
+body.white .nav-tabs,
+body.white .amura-tabs.nav-tabs {
+  background: #f4f5f9 !important;
+  border-bottom-color: rgba(0,0,0,0.1) !important;
+}
+body.white .nav-tabs > li > a,
+body.white .amura-tabs.nav-tabs > li > a {
+  color: #64748b !important;
+}
+body.white .nav-tabs > li.active > a,
+body.white .nav-tabs > li.active > a:hover,
+body.white .amura-tabs.nav-tabs > li.active > a {
+  background: #ffffff !important;
+  color: #ea7b00 !important;
+  border-color: rgba(0,0,0,0.1) !important;
+  border-bottom-color: #ffffff !important;
+}
+
+body.white .amura-action-dropdown-menu {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+body.white .amura-action-dropdown-menu > li > a {
+  color: #334155 !important;
+}
+body.white .amura-action-dropdown-menu > li > a:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+body.white .amura-action-dropdown-menu .divider {
+  background-color: #e2e8f0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   12. RESPONSIVO
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .amura-header { flex-direction: column; align-items: flex-start; }
+  .amura-filter-form { flex-direction: column; }
+  .amura-filter-group { flex: 1 1 100%; }
+  .amura-form-row { grid-template-columns: 1fr; }
+  .amura-header-actions { width: 100%; }
+}

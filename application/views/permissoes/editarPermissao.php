@@ -119,35 +119,47 @@
 </style>
 
 <?php $permissoes = json_decode_legacy($result->permissoes); ?>
-<div class="span12" style="margin-left: 0">
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <div>
+                <h1 class="amura-header-title">Editar Perfil de Permissão</h1>
+                <p class="amura-header-subtitle">Modifique os privilégios e acessos do perfil (ID #<?= $result->idPermissao ?>)</p>
+            </div>
+        </div>
+        <div class="amura-header-actions">
+            <a href="<?= site_url('permissoes'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar para Lista
+            </a>
+        </div>
+    </div>
+
     <form action="<?php echo base_url();?>index.php/permissoes/editar" id="formPermissao" method="post">
-        <div class="span12" style="margin-left: 0">
-            <div class="widget-box">
-                <div class="widget-title" style="display: flex; align-items: center; justify-content: flex-start; gap: 8px; padding: 0 12px; min-height: 40px;">
-                    <span class="icon"><i class="fas fa-lock"></i></span>
-                    <h5 style="margin: 0; font-size: 14px; font-weight: 600;">Editar Permissão</h5>
-                </div>
-                <div class="widget-content">
-                    <div class="row-fluid" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 15px; margin-bottom: 20px;">
-                        <div style="flex: 2; min-width: 240px;">
-                            <label for="nome" style="font-weight: 600; margin-bottom: 6px;">Nome da Permissão</label>
-                            <input name="nome" type="text" id="nome" class="span12" style="margin-bottom: 0;" value="<?php echo $result->nome; ?>" />
-                            <input type="hidden" name="idPermissao" value="<?php echo $result->idPermissao; ?>">
-                        </div>
-                        <div style="flex: 1; min-width: 160px;">
-                            <label for="situacao" style="font-weight: 600; margin-bottom: 6px;">Situação</label>
-                            <select name="situacao" id="situacao" class="span12" style="margin-bottom: 0;">
-                                <option value="1" <?php echo $result->situacao == 1 ? 'selected' : ''; ?>>Ativo</option>
-                                <option value="0" <?php echo $result->situacao == 0 ? 'selected' : ''; ?>>Inativo</option>
-                            </select>
-                        </div>
-                        <div style="flex: 1; min-width: 150px; padding-bottom: 8px;">
-                            <label style="cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 0;">
-                                <input name="" type="checkbox" value="1" id="marcarTodos" style="margin: 0;" />
-                                <span class="lbl" style="font-weight: 600;"> Marcar Todos</span>
-                            </label>
-                        </div>
+        <div class="amura-form-card">
+            <div class="amura-form-section">
+                <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; margin-bottom: 20px;">
+                    <div style="flex: 2; min-width: 240px;">
+                        <label for="nome" class="amura-form-label">Nome do Perfil de Permissão <span class="required">*</span></label>
+                        <input name="nome" type="text" id="nome" class="amura-form-input" value="<?php echo html_escape($result->nome); ?>" />
+                        <input type="hidden" name="idPermissao" value="<?php echo $result->idPermissao; ?>">
                     </div>
+                    <div style="flex: 1; min-width: 140px;">
+                        <label for="situacao" class="amura-form-label">Situação <span class="required">*</span></label>
+                        <select name="situacao" id="situacao" class="amura-form-select">
+                            <option value="1" <?php echo $result->situacao == 1 ? 'selected' : ''; ?>>Ativo</option>
+                            <option value="0" <?php echo $result->situacao == 0 ? 'selected' : ''; ?>>Inativo</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1; min-width: 150px; padding-bottom: 8px;">
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; margin: 0; color: #ff9204; font-weight: 600;">
+                            <input name="" type="checkbox" value="1" id="marcarTodos" style="margin: 0; width: 16px; height: 16px;" />
+                            <span> Marcar Todos</span>
+                        </label>
+                    </div>
+                </div>
                     <div class="clearfix"></div>
 
                     <div class="accordion" id="collapse-group" style="width: 100%;">
@@ -889,20 +901,17 @@
                 </div>
             </div>
 
-            <div class="form-actions">
-                <div class="span12" style="display: flex; justify-content: center; gap: 12px; margin: 0;">
-                    <button type="submit" class="button btn btn-primary">
-                        <span class="button__icon"><i class='bx bx-save'></i></span><span class="button__text2">Salvar</span>
-                    </button>
-                    <a title="Voltar" class="button btn btn-mini btn-warning" href="<?php echo site_url() ?>/permissoes">
-                        <span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span>
-                    </a>
-                </div>
+            </div>
+            <div class="amura-form-actions">
+                <a title="Voltar" class="btn-amura-secondary" href="<?php echo site_url('permissoes') ?>">
+                    <i class="bx bx-x"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-amura-primary">
+                    <i class='bx bx-save'></i> Salvar Alterações
+                </button>
             </div>
         </div>
-    </div>
-</div>
-</form>
+    </form>
 </div>
 
 

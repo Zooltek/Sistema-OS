@@ -47,6 +47,7 @@ $route['404_override'] = '';
 
 // Rotas Amura OS
 $route['sistema'] = 'amuraOS/index';
+$route['sistema/alternarTema'] = 'amuraOS/alternarTema';
 $route['sistema/configurar'] = 'amuraOS/configurar';
 $route['sistema/emitente'] = 'amuraOS/emitente';
 $route['sistema/backup'] = 'amuraOS/backup';

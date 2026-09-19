@@ -1,97 +1,113 @@
-<style>
-  select {
-    width: 70px;
-  }
-</style>
-<div class="new122">
-    <div class="widget-title" style="margin: -20px 0 0">
-        <span class="icon">
-            <i class="fas fa-wrench"></i>
-        </span>
-        <h5>Serviços</h5>
-    </div>
-    <div class="span12" style="margin-left: 0">
-        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aServico')) : ?>
-            <div class="span3 flexxn" style="display: flex;">
-                <a href="<?= base_url() ?>index.php/servicos/adicionar" class="button btn btn-mini btn-success" style="max-width: 160px">
-                    <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2"> Serviços</span>
+<div class="amura-page">
+    <!-- Header -->
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-wrench"></i>
+            </div>
+            <div>
+                <h1 class="amura-header-title">Serviços</h1>
+                <p class="amura-header-subtitle">Gerenciamento dos serviços prestados e catálogo de mão de obra</p>
+            </div>
+        </div>
+        <div class="amura-header-actions">
+            <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aServico')) : ?>
+                <a href="<?= base_url() ?>index.php/servicos/adicionar" class="btn-amura-primary">
+                    <i class='bx bx-plus-circle'></i> Adicionar Serviço
                 </a>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="amura-filter-card">
+        <form class="amura-filter-form" method="get" action="<?= base_url() ?>index.php/servicos">
+            <div class="amura-filter-group" style="flex: 1 1 350px;">
+                <label class="amura-filter-label">Pesquisar</label>
+                <input type="text" name="pesquisa" id="pesquisa"
+                    placeholder="Buscar por Nome ou Descrição do serviço..." class="amura-input"
+                    value="<?= html_escape($this->input->get('pesquisa')) ?>">
             </div>
-        <?php endif; ?>
-        <form class="span9" method="get" action="<?= base_url() ?>index.php/servicos" style="display: flex; justify-content: flex-end;">
-            <div class="span3">
-                <input type="text" name="pesquisa" id="pesquisa" placeholder="Buscar por Nome ou Descrição..." class="span12" value="<?=html_escape($this->input->get('pesquisa'))?>">
-            </div>
-            <div class="span1">
-                <button class="button btn btn-mini btn-warning" style="min-width: 30px">
-                    <span class="button__icon"><i class='bx bx-search-alt'></i></span></button>
+            <div class="amura-filter-group-btn">
+                <button type="submit" class="amura-filter-search-btn">
+                    <i class='bx bx-search-alt'></i><span>Pesquisar</span>
+                </button>
             </div>
         </form>
     </div>
-    <div class="widget-box">
-        <h5 style="padding: 3px 0"></h5>
-        <div class="widget-content nopadding tab-content">
-            <table id="tabela" class="table table-bordered ">
+
+    <!-- Tabela -->
+    <div class="amura-table-card">
+        <div class="amura-table-wrapper">
+            <table id="tabela" class="table">
                 <thead>
                     <tr>
-                        <th>Cod.</th>
+                        <th style="width: 60px;">Cod.</th>
                         <th>Nome</th>
-                        <th>Preço</th>
+                        <th style="width: 140px; text-align: right;">Preço</th>
                         <th>Descrição</th>
-                        <th>Ações</th>
+                        <th style="width: 110px; text-align: center;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                        if (!$results) {
-                            echo '<tr>
-                                    <td colspan="5">Nenhum Serviço Cadastrado</td>
-                                </tr>';
+                    if (!$results) {
+                        echo '<tr><td colspan="5" style="text-align: center; padding: 24px; color: #8c97a8;">Nenhum serviço cadastrado</td></tr>';
+                    }
+                    foreach ($results as $r) {
+                        echo '<tr>';
+                        echo '<td><strong>#' . $r->idServicos . '</strong></td>';
+                        echo '<td><strong>' . html_escape($r->nome) . '</strong></td>';
+                        echo '<td style="text-align: right;"><strong>R$ ' . number_format($r->preco, 2, ',', '.') . '</strong></td>';
+                        echo '<td>' . html_escape($r->descricao) . '</td>';
+                        echo '<td style="text-align: center;">';
+                        echo '<div class="amura-actions-cell" style="justify-content: center;">';
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eServico')) {
+                            echo '<a href="' . base_url() . 'index.php/servicos/editar/' . $r->idServicos . '" class="amura-action-btn amura-action-edit" title="Editar Serviço"><i class="bx bx-edit"></i></a>';
                         }
-        foreach ($results as $r) {
-            echo '<tr>';
-            echo '<td>' . $r->idServicos . '</td>';
-            echo '<td>' . $r->nome . '</td>';
-            echo '<td>' . number_format($r->preco, 2, ',', '.') . '</td>';
-            echo '<td>' . $r->descricao . '</td>';
-            echo '<td>';
-            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eServico')) {
-                echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/servicos/editar/' . $r->idServicos . '" class="btn-nwe3" title="Editar Serviço"><i class="bx bx-edit bx-xs"></i></a>';
-            }
-            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dServico')) {
-                echo '<a href="#modal-excluir" role="button" data-toggle="modal" servico="' . $r->idServicos . '" class="btn-nwe4" title="Excluir Serviço"><i class="bx bx-trash-alt bx-xs"></i></a>  ';
-            }
-            echo '</td>';
-            echo '</tr>';
-        } ?>
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dServico')) {
+                            echo '<a href="#modal-excluir" role="button" data-toggle="modal" servico="' . $r->idServicos . '" class="amura-action-btn amura-action-delete" title="Excluir Serviço"><i class="bx bx-trash-alt"></i></a>';
+                        }
+                        echo '</div>';
+                        echo '</td>';
+                        echo '</tr>';
+                    } ?>
                 </tbody>
             </table>
         </div>
     </div>
-</div>
-<?php echo $this->pagination->create_links(); ?>
 
-<!-- Modal -->
-<div id="modal-excluir" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Paginação -->
+    <div class="amura-pagination">
+        <?= $this->pagination->create_links(); ?>
+    </div>
+</div>
+
+<!-- Modal Excluir -->
+<div id="modal-excluir" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form action="<?php echo base_url() ?>index.php/servicos/excluir" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h5 id="myModalLabel">Excluir Serviço</h5>
+            <h5 id="myModalLabel"><i class="bx bx-trash" style="color: #f87171; margin-right: 6px;"></i> Excluir Serviço</h5>
         </div>
         <div class="modal-body">
             <input type="hidden" id="idServico" name="id" value="" />
-            <h5 style="text-align: center">Deseja realmente excluir este serviço?</h5>
+            <p style="text-align: center; margin: 10px 0; font-size: 0.95rem;">Deseja realmente excluir este serviço?</p>
         </div>
-        <div class="modal-footer" style="display:flex;justify-content: center">
-          <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span class="button__icon"><i class="bx bx-x"></i></span><span class="button__text2">Cancelar</span></button>
-          <button class="button btn btn-danger"><span class="button__icon"><i class='bx bx-trash'></i></span> <span class="button__text2">Excluir</span></button>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class="bx bx-x"></i> Cancelar
+            </button>
+            <button type="submit" class="btn-amura-danger">
+                <i class='bx bx-trash'></i> Excluir
+            </button>
         </div>
     </form>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $(document).on('click', 'a', function(event) {
+        $(document).on('click', 'a[servico]', function(event) {
             var servico = $(this).attr('servico');
             $('#idServico').val(servico);
         });

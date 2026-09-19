@@ -1,136 +1,148 @@
-<style>
-    /* Hiding the checkbox, but allowing it to be focused */
-    .badgebox {
-        opacity: 0;
-    }
-
-    .badgebox+.badge {
-        /* Move the check mark away when unchecked */
-        text-indent: -999999px;
-        /* Makes the badge's width stay the same checked and unchecked */
-        width: 27px;
-    }
-
-    .badgebox:focus+.badge {
-        /* Set something to make the badge looks focused */
-        /* This really depends on the application, in my case it was: */
-
-        /* Adding a light border */
-        box-shadow: inset 0px 0px 5px;
-        /* Taking the difference out of the padding */
-    }
-
-    .badgebox:checked+.badge {
-        /* Move the check mark back when checked */
-        text-indent: 0;
-    }
-</style>
-<div class="row-fluid" style="margin-top:0">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: -20px 0 0">
-                <span class="icon">
-                    <i class="fas fa-shopping-bag"></i>
-                </span>
-                <h5>Editar Produto</h5>
+<div class="amura-page">
+    <!-- Header -->
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-edit"></i>
             </div>
-            <div class="widget-content nopadding tab-content">
-                <?php echo $custom_error; ?>
-                <form action="<?php echo current_url(); ?>" id="formProduto" method="post" class="form-horizontal">
-                    <div class="control-group">
-                        <?php echo form_hidden('idProdutos', $result->idProdutos) ?>
-                        <label for="codDeBarra" class="control-label">Código de Barra<span class=""></span></label>
-                        <div class="controls">
-                            <input id="codDeBarra" type="text" name="codDeBarra" value="<?php echo $result->codDeBarra; ?>" />
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label for="descricao" class="control-label">Descrição<span class="required">*</span></label>
-                        <div class="controls">
-                            <input id="descricao" type="text" name="descricao" value="<?php echo $result->descricao; ?>" />
-                        </div>
-                    </div>
+            <div>
+                <h1 class="amura-header-title">Editar Produto</h1>
+                <p class="amura-header-subtitle">Atualize os dados, precificação e níveis de estoque (ID #<?= $result->idProdutos ?>)</p>
+            </div>
+        </div>
+        <div class="amura-header-actions">
+            <a href="<?= base_url('index.php/produtos'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar para Lista
+            </a>
+        </div>
+    </div>
 
-                    <div class="control-group">
-                        <label class="control-label">Tipo de Movimento</label>
-                        <div class="controls">
-                            <label for="entrada" class="btn btn-default" style="margin-top: 5px;">Entrada
-                                <input type="checkbox" id="entrada" name="entrada" class="badgebox" value="1" <?= ($result->entrada == 1) ? 'checked' : '' ?>>
-                                <span class="badge">&check;</span>
-                            </label>
-                            <label for="saida" class="btn btn-default" style="margin-top: 5px;">Saída
-                                <input type="checkbox" id="saida" name="saida" class="badgebox" value="1" <?= ($result->saida == 1) ? 'checked' : '' ?>>
-                                <span class="badge">&check;</span>
-                            </label>
-                        </div>
-                    </div>
+    <?php if (!empty($custom_error)) { ?>
+        <div class="alert alert-danger" style="background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; border-radius: 6px; padding: 12px 16px;">
+            <?= $custom_error ?>
+        </div>
+    <?php } ?>
 
-                    <div class="control-group">
-                        <label for="precoCompra" class="control-label">Preço de Compra<span class="required">*</span></label>
-                        <div class="controls">
-                            <input id="precoCompra" class="money" data-affixes-stay="true" data-thousands="" data-decimal="." type="text" name="precoCompra" value="<?php echo $result->precoCompra; ?>" />
-                            Margem <input style="width: 3em;" id="margemLucro" name="margemLucro" type="text" placeholder="%" maxlength="3" size="2" />
-                            <strong><span style="color: red" id="errorAlert"></span><strong>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label for="Lucro" class="control-label">Lucro</label>
-                        <div class="controls">
-                            <select id="selectLucro" name="selectLucro" style="width: 10.5em;">
-                              <option value="markup">Markup</option>
-                              <option value="margemLucro">Margem de Lucro</option>
-                            </select>
-                            <input style="width: 4em;" id="Lucro" name="Lucro" type="text" placeholder="%" maxlength="3" size="2" />
-                            <i class="icon-info-sign tip-left" title="Markup: Porcentagem aplicada ao valor de compra | Margem de Lucro: Porcentagem aplicada ao valor de venda"></i>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label for="precoVenda" class="control-label">Preço de Venda<span class="required">*</span></label>
-                        <div class="controls">
-                            <input id="precoVenda" class="money" data-affixes-stay="true" data-thousands="" data-decimal="." type="text" name="precoVenda" value="<?php echo $result->precoVenda; ?>" />
-                        </div>
-                    </div>
+    <!-- Card do Formulário -->
+    <div class="amura-form-card">
+        <form action="<?php echo current_url(); ?>" id="formProduto" method="post">
+            <?php echo form_hidden('idProdutos', $result->idProdutos) ?>
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0;">
+                <!-- Coluna 1: Identificação & Preços -->
+                <div class="amura-form-section" style="border-right: 1px solid #1c2a38;">
+                    <h3 class="amura-form-section-title">
+                        <i class="bx bx-barcode"></i> Identificação do Produto
+                    </h3>
 
-                    <div class="control-group">
-                        <label for="unidade" class="control-label">Unidade<span class="required">*</span></label>
-                        <div class="controls">
-                            <select id="unidade" name="unidade" style="width: 15em;"></select>
+                    <div style="display: grid; grid-template-columns: 180px 1fr; gap: 10px; margin-bottom: 12px;">
+                        <div class="control-group amura-form-group">
+                            <label for="codDeBarra" class="control-label amura-form-label">Código de Barras</label>
+                            <div class="controls">
+                                <input id="codDeBarra" class="amura-form-input" type="text" name="codDeBarra" value="<?php echo html_escape($result->codDeBarra); ?>" placeholder="EAN ou código interno" />
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="estoque" class="control-label">Estoque<span class="required">*</span></label>
-                        <div class="controls">
-                            <input id="estoque" type="text" name="estoque" value="<?php echo $result->estoque; ?>" />
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="estoqueMinimo" class="control-label">Estoque Mínimo</label>
-                        <div class="controls">
-                            <input id="estoqueMinimo" type="text" name="estoqueMinimo" value="<?php echo $result->estoqueMinimo; ?>" />
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <div class="span12">
-                            <div class="span6 offset3" style="display: flex;justify-content: center">
-                                <button type="submit" class="button btn btn-primary" style="max-width: 160px">
-                                  <span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar</span></button>
-                                <a href="<?php echo base_url() ?>index.php/produtos" id="" class="button btn btn-mini btn-warning">
-                                  <span class="button__icon"><i class="bx bx-undo"></i></span><span class="button__text2">Voltar</span></a>
+                        <div class="control-group amura-form-group">
+                            <label for="descricao" class="control-label amura-form-label">Descrição / Nome do Produto <span class="required">*</span></label>
+                            <div class="controls">
+                                <input id="descricao" class="amura-form-input" type="text" name="descricao" value="<?php echo html_escape($result->descricao); ?>" placeholder="Nome completo do item" />
                             </div>
                         </div>
                     </div>
 
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                        <div class="control-group amura-form-group">
+                            <label for="unidade" class="control-label amura-form-label">Unidade de Medida <span class="required">*</span></label>
+                            <div class="controls">
+                                <select id="unidade" name="unidade" class="amura-form-select"></select>
+                            </div>
+                        </div>
+                        <div class="control-group amura-form-group">
+                            <label class="control-label amura-form-label">Tipo de Movimento</label>
+                            <div class="controls" style="display: flex; gap: 14px; padding-top: 6px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #cbd5e1; font-size: 0.85rem;">
+                                    <input type="checkbox" id="entrada" name="entrada" value="1" <?= ($result->entrada == 1) ? 'checked' : '' ?> style="margin: 0; width: 16px; height: 16px;"> Entrada
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: #cbd5e1; font-size: 0.85rem;">
+                                    <input type="checkbox" id="saida" name="saida" value="1" <?= ($result->saida == 1) ? 'checked' : '' ?> style="margin: 0; width: 16px; height: 16px;"> Saída
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
-                </form>
+                    <h3 class="amura-form-section-title" style="margin-top: 18px;">
+                        <i class="bx bx-dollar-circle"></i> Formação de Preço
+                    </h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                        <div class="control-group amura-form-group">
+                            <label for="precoCompra" class="control-label amura-form-label">Preço Compra <span class="required">*</span></label>
+                            <div class="controls">
+                                <input id="precoCompra" class="money amura-form-input" data-affixes-stay="true" data-thousands="" data-decimal="." type="text" name="precoCompra" value="<?php echo $result->precoCompra; ?>" placeholder="0.00" />
+                                <span style="color: #f87171; font-size: 0.75rem;" id="errorAlert"></span>
+                            </div>
+                        </div>
+                        <div class="control-group amura-form-group">
+                            <label for="Lucro" class="control-label amura-form-label">Tipo / Margem (%)</label>
+                            <div class="controls" style="display: flex; gap: 6px;">
+                                <select id="selectLucro" name="selectLucro" class="amura-form-select" style="flex: 1.4; padding: 4px 6px !important;">
+                                    <option value="markup">Markup</option>
+                                    <option value="margemLucro">Margem</option>
+                                </select>
+                                <input id="Lucro" name="Lucro" class="amura-form-input" type="text" placeholder="%" maxlength="3" style="flex: 0.8; text-align: center;" />
+                            </div>
+                        </div>
+                        <div class="control-group amura-form-group">
+                            <label for="precoVenda" class="control-label amura-form-label">Preço Venda <span class="required">*</span></label>
+                            <div class="controls">
+                                <input id="precoVenda" class="money amura-form-input" data-affixes-stay="true" data-thousands="" data-decimal="." type="text" name="precoVenda" value="<?php echo $result->precoVenda; ?>" placeholder="0.00" style="font-weight: 700; color: #4ade80 !important;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna 2: Estoque & Parâmetros -->
+                <div class="amura-form-section">
+                    <h3 class="amura-form-section-title">
+                        <i class="bx bx-cube"></i> Controle de Estoque
+                    </h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                        <div class="control-group amura-form-group">
+                            <label for="estoque" class="control-label amura-form-label">Estoque Atual <span class="required">*</span></label>
+                            <div class="controls">
+                                <input id="estoque" class="amura-form-input" type="text" name="estoque" value="<?php echo $result->estoque; ?>" placeholder="Quantidade em estoque" />
+                            </div>
+                        </div>
+                        <div class="control-group amura-form-group">
+                            <label for="estoqueMinimo" class="control-label amura-form-label">Estoque Mínimo</label>
+                            <div class="controls">
+                                <input id="estoqueMinimo" class="amura-form-input" type="text" name="estoqueMinimo" value="<?php echo $result->estoqueMinimo; ?>" placeholder="Alerta de reposição" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(255,146,4,0.06); border: 1px solid rgba(255,146,4,0.18); border-radius: 6px; padding: 14px; margin-top: 14px; font-size: 0.82rem; color: #94a3b8; line-height: 1.5;">
+                        <strong style="color: #ff9204;"><i class='bx bx-info-circle'></i> Regras de Cálculo:</strong>
+                        <ul style="margin: 6px 0 0 16px; padding: 0;">
+                            <li><strong>Markup:</strong> Percentual aplicado diretamente sobre o preço de compra.</li>
+                            <li><strong>Margem de Lucro:</strong> Percentual de margem calculada sobre o preço final de venda.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
-        </div>
+            <!-- Ações -->
+            <div class="amura-form-actions">
+                <a href="<?php echo base_url('index.php/produtos') ?>" class="btn-amura-secondary">
+                    <i class="bx bx-x"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-amura-primary">
+                    <i class='bx bx-save'></i> Atualizar Produto
+                </button>
+            </div>
+        </form>
     </div>
 </div>
-
 
 <script src="<?php echo base_url() ?>assets/js/jquery.validate.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/maskmoney.js"></script>
@@ -152,58 +164,55 @@
         var precoCompra = Number($("#precoCompra").val());
         var lucro = Number($("#Lucro").val());
         
-        if (precoCompra > 0 && lucro >= 0) {
-            $('#precoVenda').val(calcLucro(precoCompra, lucro));
+        if (precoCompra > 0 && lucro > 0) {
+            var precoVenda = calcLucro(precoCompra, lucro);
+            $("#precoVenda").val(precoVenda);
         }
     }
-    
-    $("#precoCompra, #Lucro, #selectLucro").on('input change', atualizarPrecoVenda);
 
-    $("#precoCompra, #Lucro").on('input change', function() {
-        if ($("#precoCompra").val() == '0.00' && $('#precoVenda').val() != '') {
-            $('#errorAlert').text('Você não pode preencher valor de compra e depois apagar.').css("display", "inline").fadeOut(6000);
-            $('#precoVenda').val('');
-            $("#precoCompra").focus();
-        } else if ($("#precoCompra").val() != '' && $("#Lucro").val() != '') {
-            atualizarPrecoVenda();
-        }
-    });
-
-    $("#Lucro").keyup(function() {
-        this.value = this.value.replace(/[^0-9.]/g, '');
-        if ($("#precoCompra").val() == null || $("#precoCompra").val() == '') {
-            $('#errorAlert').text('Preencher valor da compra primeiro.').css("display", "inline").fadeOut(5000);
-            $('#Lucro').val('');
-            $('#precoVenda').val('');
-            $("#precoCompra").focus();
-
-        } else if (Number($("#Lucro").val()) >= 0) {
-            $('#precoVenda').val(calcLucro(Number($("#precoCompra").val()), Number($("#Lucro").val())));
-        } else {
-            $('#errorAlert').text('Não é permitido número negativo.').css("display", "inline").fadeOut(5000);
-            $('#Lucro').val('');
-            $('#precoVenda').val('');
-        }
-    });
-
-    $('#precoVenda').focusout(function () {
-        if (Number($('#precoVenda').val()) < Number($("#precoCompra").val())) {
-            $('#errorAlert').text('Preço de venda não pode ser menor que o preço de compra.').css("display", "inline").fadeOut(6000);
-            $('#precoVenda').val('');
-            if($("#margemLucro").val() != "" || $("#margemLucro").val() != null){
-                $('#precoVenda').val(calcLucro(Number($("#precoCompra").val()), Number($("#margemLucro").val())));
+    function atualizarLucro() {
+        var precoCompra = Number($("#precoCompra").val());
+        var precoVenda = Number($("#precoVenda").val());
+        var lucroTipo = $('#selectLucro').val();
+        
+        if (precoCompra > 0 && precoVenda > 0) {
+            var lucro;
+            if (lucroTipo === 'markup') {
+                lucro = (((precoVenda - precoCompra) / precoCompra) * 100).toFixed(1);
+            } else if (lucroTipo === 'margemLucro') {
+                lucro = (((precoVenda - precoCompra) / precoVenda) * 100).toFixed(1);
+            }
+            if (!isNaN(lucro)) {
+                $("#Lucro").val(lucro);
             }
         }
-    });
+    }
 
     $(document).ready(function() {
         $(".money").maskMoney();
-        $.getJSON('<?php echo base_url() ?>assets/json/tabela_medidas.json', function(data) {
-            for (i in data.medidas) {
-                $('#unidade').append(new Option(data.medidas[i].descricao, data.medidas[i].sigla));
-                $("#unidade option[value=" + '<?php echo $result->unidade; ?>' + "]").prop("selected", true);
+        
+        $.getJSON('<?php echo base_url() ?>assets/json/unidades.json', function(data) {
+            for (var i in data) {
+                $("#unidade").append(new Option(data[i].descricao, data[i].unidade));
+            }
+            var curUnit = '<?php echo $result->unidade; ?>';
+            if (curUnit) {
+                $("#unidade option[value=" + curUnit + "]").prop("selected", true);
             }
         });
+
+        $('#selectLucro').change(function() {
+            atualizarPrecoVenda();
+        });
+
+        $('#precoCompra, #Lucro').keyup(function() {
+            atualizarPrecoVenda();
+        });
+
+        $('#precoVenda').keyup(function() {
+            atualizarLucro();
+        });
+
         $('#formProduto').validate({
             rules: {
                 descricao: {
@@ -239,7 +248,6 @@
                     required: 'Campo Requerido.'
                 }
             },
-
             errorClass: "help-inline",
             errorElement: "span",
             highlight: function(element, errorClass, validClass) {
@@ -247,7 +255,6 @@
             },
             unhighlight: function(element, errorClass, validClass) {
                 $(element).parents('.control-group').removeClass('error');
-                $(element).parents('.control-group').addClass('success');
             }
         });
     });

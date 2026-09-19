@@ -6,56 +6,81 @@
 <script type="text/javascript" src="<?php echo base_url() ?>assets/trumbowyg/trumbowyg.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ?>assets/trumbowyg/langs/pt_br.js"></script>
 
-<div class="row-fluid" style="margin-top:0">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title">
-                <span class="icon">
-                    <i class="fas fa-book"></i>
-                </span>
-                <h5>Cadastro Termo de Garantia</h5>
+<div class="amura-page">
+    <!-- Header -->
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-book"></i>
             </div>
-            <div class="widget-content">
-
-                <?php if ($custom_error == true) { ?>
-                    <div class="span12 alert alert-danger" id="divInfo" style="padding: 1%;">Dados incompletos, verifique os campos com asterisco.</div>
-                <?php
-                } ?>
-                <form action="<?php echo current_url(); ?>" method="post" id="formGarantia">
-                    <div class="span12">
-                        <div class="span2">
-                            <label for="dataGarantia">Data<span class="required">*</span></label>
-                            <input id="dataGarantia" class="span12 datepicker" type="text" name="dataGarantia" value="<?php echo date('d/m/Y'); ?>" disabled />
-                        </div>
-                        <div class="span3">
-                            <label for="usuarios_id">Responsável<span class="required">*</span></label>
-                            <input id="usuarios_id" class="span12" type="text" name="usuarios_id" value="<?php echo $this->session->userdata('nome_admin') ?>" disabled />
-                        </div>
-                        <div class="span7">
-                            <label for="refGarantia">Ref Garantia<span class="required">*</span></label>
-                            <input type="text" class="span12" name="refGarantia" required placeholder="Informe uma referência: Exemplos: TV, Notebook, Celular">
-                        </div>
-                        <div class="span12" style="margin-left: 0">
-                            <label for="textoGarantia">
-                                <h4 class="text-center">Termo de Garantia<span class="required">*</span></h4>
-                            </label>
-                            <textarea required class="span12 editor" name="textoGarantia" id="textoGarantia" cols="30" rows="5"></textarea></textarea>
-                        </div>
-                    </div>
-                    <div class="span12" style="padding: 1%; margin-left: 0">
-                        <div class="span6 offset3" style="display:flex;justify-content: center">
-                            <button class="button btn btn-success" id="btnContinuar">
-                              <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Adicionar</span></button>
-                            <a href="<?php echo base_url() ?>index.php/garantias" class="button btn btn-mini btn-warning">
-                              <span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
-                        </div>
-                    </div>
-                </form>
-                .
+            <div>
+                <h1 class="amura-header-title">Adicionar Termo de Garantia</h1>
+                <p class="amura-header-subtitle">Crie um modelo padronizado de termo de garantia para vincular a serviços e produtos</p>
             </div>
         </div>
+        <div class="amura-header-actions">
+            <a href="<?= base_url('index.php/garantias'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar para Lista
+            </a>
+        </div>
+    </div>
+
+    <?php if ($custom_error == true) { ?>
+        <div class="alert alert-danger" style="background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; border-radius: 6px; padding: 12px 16px;">
+            Dados incompletos, por favor verifique os campos obrigatórios.
+        </div>
+    <?php } ?>
+
+    <!-- Card do Formulário -->
+    <div class="amura-form-card">
+        <form action="<?php echo current_url(); ?>" method="post" id="formGarantia">
+            <div class="amura-form-section">
+                <h3 class="amura-form-section-title">
+                    <i class="bx bx-info-circle"></i> Informações Básicas
+                </h3>
+
+                <div style="display: grid; grid-template-columns: 140px 220px 1fr; gap: 14px; margin-bottom: 16px;">
+                    <div class="control-group amura-form-group">
+                        <label for="dataGarantia" class="control-label amura-form-label">Data <span class="required">*</span></label>
+                        <div class="controls">
+                            <input id="dataGarantia" class="amura-form-input datepicker" type="text" name="dataGarantia" value="<?php echo date('d/m/Y'); ?>" disabled style="opacity: 0.7;" />
+                        </div>
+                    </div>
+                    <div class="control-group amura-form-group">
+                        <label for="usuarios_id" class="control-label amura-form-label">Responsável <span class="required">*</span></label>
+                        <div class="controls">
+                            <input id="usuarios_id" class="amura-form-input" type="text" name="usuarios_id" value="<?php echo $this->session->userdata('nome_admin') ?>" disabled style="opacity: 0.7;" />
+                        </div>
+                    </div>
+                    <div class="control-group amura-form-group">
+                        <label for="refGarantia" class="control-label amura-form-label">Referência da Garantia <span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="text" class="amura-form-input" id="refGarantia" name="refGarantia" required placeholder="Exemplo: Notebooks, Smartphones, TVs..." />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group amura-form-group">
+                    <label for="textoGarantia" class="control-label amura-form-label">Texto Integral do Termo de Garantia <span class="required">*</span></label>
+                    <div class="controls" style="margin-top: 6px;">
+                        <textarea required class="editor" name="textoGarantia" id="textoGarantia" cols="30" rows="8"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ações -->
+            <div class="amura-form-actions">
+                <a href="<?php echo base_url('index.php/garantias') ?>" class="btn-amura-secondary">
+                    <i class="bx bx-x"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-amura-primary" id="btnContinuar">
+                    <i class='bx bx-plus-circle'></i> Salvar Termo de Garantia
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $("#cliente").autocomplete({
@@ -74,34 +99,16 @@
         });
         $("#formGarantia").validate({
             rules: {
-                dataGarantia: {
-                    required: true
-                },
-                usuarios_id: {
-                    required: true
-                },
-                refGarantia: {
-                    required: true
-                },
-                textoGarantia: {
-                    required: true
-                }
-
+                dataGarantia: { required: true },
+                usuarios_id: { required: true },
+                refGarantia: { required: true },
+                textoGarantia: { required: true }
             },
             messages: {
-                dataGarantia: {
-                    required: 'Campo Requerido.'
-                },
-                usuarios_id: {
-                    required: 'Campo Requerido.'
-                },
-                refGarantia: {
-                    required: 'Campo Requerido.'
-                },
-                textoGarantia: {
-                    required: 'Preencha com o termo de garantia'
-                }
-
+                dataGarantia: { required: 'Campo Requerido.' },
+                usuarios_id: { required: 'Campo Requerido.' },
+                refGarantia: { required: 'Campo Requerido.' },
+                textoGarantia: { required: 'Preencha com o termo de garantia' }
             },
             errorClass: "help-inline",
             errorElement: "span",
@@ -110,7 +117,6 @@
             },
             unhighlight: function(element, errorClass, validClass) {
                 $(element).parents('.control-group').removeClass('error');
-                $(element).parents('.control-group').addClass('success');
             }
         });
         $(".datepicker").datepicker({
@@ -118,7 +124,7 @@
         });
         $('.editor').trumbowyg({
             lang: 'pt_br',
-            semantic: { 'strikethrough': 's', }
+            semantic: { 'strikethrough': 's' }
         });
     });
 </script>

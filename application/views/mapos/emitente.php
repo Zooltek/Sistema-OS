@@ -54,22 +54,42 @@
     }
 </style>
 
-<?php if (!isset($dados) || $dados == null) { ?>
-    <div class="row-fluid" style="margin-top:0">
-        <div class="span12">
-            <div class="widget-box">
-                <div class="widget-title">
-                    <h5>Dados do Emitente</h5>
-                </div>
-                <div class="widget-content ">
-                    <div class="alert alert-danger">Nenhum dado foi cadastrado até o momento. Essas informações estarão disponíveis na tela de impressão de OS.</div>
-                    <a href="#modalCadastrar" data-toggle="modal" role="button" class="button btn btn-success" style="max-width: 150px"> <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Cadastrar Dados</span></a>
-                </div>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-building"></i>
             </div>
+            <div>
+                <h1 class="amura-header-title">Dados do Emitente</h1>
+                <p class="amura-header-subtitle">Informações da sua empresa e logotipo impressos em ordens de serviço e relatórios</p>
+            </div>
+        </div>
+        <div class="amura-header-actions">
+            <?php if (isset($dados) && $dados != null) { ?>
+                <a href="#modalAlterar" data-toggle="modal" role="button" class="btn-amura-primary">
+                    <i class='bx bx-edit'></i> Atualizar Dados
+                </a>
+                <a href="#modalLogo" data-toggle="modal" role="button" class="btn-amura-secondary">
+                    <i class='bx bx-upload'></i> Alterar Logo
+                </a>
+            <?php } else { ?>
+                <a href="#modalCadastrar" data-toggle="modal" role="button" class="btn-amura-primary">
+                    <i class='bx bx-plus-circle'></i> Cadastrar Dados
+                </a>
+            <?php } ?>
         </div>
     </div>
 
-    <div id="modalCadastrar" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<?php if (!isset($dados) || $dados == null) { ?>
+    <div class="amura-form-card" style="padding: 24px;">
+        <div class="alert alert-danger" style="margin-bottom: 16px;">Nenhum dado foi cadastrado até o momento. Essas informações estarão disponíveis na tela de impressão de OS.</div>
+        <a href="#modalCadastrar" data-toggle="modal" role="button" class="btn-amura-primary" style="display: inline-flex; align-items: center; gap: 6px;">
+            <i class='bx bx-plus-circle'></i> Cadastrar Dados
+        </a>
+    </div>
+
+    <div id="modalCadastrar" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <form action="<?= site_url('sistema/cadastrarEmitente'); ?>" id="formCadastrar" enctype="multipart/form-data" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -161,45 +181,41 @@
     </div>
 
     <?php } else { ?>
-    <div class="row-fluid" style="margin-top:0">
-        <div class="span12">
-            <div class="widget-box">
-                <div class="widget-title" style="margin: -20px 0 0">
-                    <span class="icon">
-                        <i class="fas fa-align-justify"></i>
-                    </span>
-                    <h5>Dados do Emitente</h5>
-                </div>
-                <div class="widget-content ">
-                    <div class="alert alert-info">Os dados abaixo serão utilizados no cabeçalho das telas de impressão.</div>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td style="width: 25%"><img src="<?= $dados->url_logo; ?>"></td>
-                                <td>
-                                    <span style="font-size: 20px; "><b><?= $dados->nome; ?></b></span></br>
-                                    <i class="fas fa-fingerprint" style="margin:5px 1px"></i> <?= $dados->cnpj; ?> <?php if (!empty($dados->ie)) {
-                                        echo ' - IE:' . $dados->ie;
-                                    } ?></br>
-                                    <i class="fas fa-map-marker-alt" style="margin:4px 3px"></i> <?= $dados->rua . ', ' . $dados->numero . ', ' . $dados->bairro . ' - ' . $dados->cep . ', ' . $dados->cidade . '/' . $dados->uf; ?></br>
-                                    <i class="fas fa-phone" style="margin:5px 1px"></i> <?= $dados->telefone; ?></br>
-                                    <i class="fas fa-envelope" style="margin:5px 1px"></i> <?= $dados->email; ?></br>
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div style="display:flex">
-                        <a href="#modalAlterar" data-toggle="modal" role="button" class="button btn btn-success"><span class="button__icon"><i class='bx bx-edit'></i></span><span class="button__text2">Atualizar Dados</span></a>
-                        <a href="#modalLogo" data-toggle="modal" role="button" class="button btn btn-inverse"><span class="button__icon"><i class='bx bx-upload'></i></span> <span class="button__text2">Alterar Logo</span></a>
+    <div class="amura-form-card" style="padding: 24px;">
+        <div class="alert alert-info" style="margin-bottom: 20px;">Os dados abaixo serão utilizados no cabeçalho das telas de impressão.</div>
+        <div style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap;">
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid #232d3b; border-radius: 8px; padding: 16px; text-align: center; min-width: 160px; max-width: 200px;">
+                <img src="<?= $dados->url_logo; ?>" alt="Logo" style="max-width: 140px; max-height: 140px; object-fit: contain; border-radius: 4px;">
+            </div>
+            <div style="flex: 1; min-width: 280px;">
+                <h3 style="margin: 0 0 12px 0; font-size: 1.3rem; color: #ff9204; font-weight: 700;"><?= $dados->nome; ?></h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 20px;">
+                    <div style="font-size: 0.88rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-fingerprint" style="color: #ff9204; width: 16px;"></i>
+                        <span><strong>CNPJ:</strong> <?= $dados->cnpj; ?><?= !empty($dados->ie) ? ' &bull; <strong>IE:</strong> ' . $dados->ie : ''; ?></span>
                     </div>
+                    <div style="font-size: 0.88rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-phone" style="color: #25d366; width: 16px;"></i>
+                        <span><strong>Telefone:</strong> <?= $dados->telefone; ?></span>
+                    </div>
+                    <div style="font-size: 0.88rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-envelope" style="color: #58a6ff; width: 16px;"></i>
+                        <span><strong>E-mail:</strong> <?= $dados->email; ?></span>
+                    </div>
+                    <div style="font-size: 0.88rem; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-map-marker-alt" style="color: #f85149; width: 16px;"></i>
+                        <span><?= $dados->rua . ', ' . $dados->numero . ', ' . $dados->bairro . ' - ' . $dados->cep . ', ' . $dados->cidade . '/' . $dados->uf; ?></span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="#modalAlterar" data-toggle="modal" role="button" class="btn-amura-primary"><i class='bx bx-edit'></i> Atualizar Dados</a>
+                    <a href="#modalLogo" data-toggle="modal" role="button" class="btn-amura-secondary"><i class='bx bx-upload'></i> Alterar Logo</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="modalAlterar" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div id="modalAlterar" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true">
         <form action="<?= site_url('sistema/editarEmitente'); ?>" id="formAlterar" enctype="multipart/form-data" method="post" class="form-horizontal">
             <div class="modal-header">
@@ -288,7 +304,7 @@
         </form>
     </div>
 
-    <div id="modalLogo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="modalLogo" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <form action="<?= site_url('sistema/editarLogo'); ?>" id="formLogo" enctype="multipart/form-data" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -311,6 +327,7 @@
         </form>
     </div>
 <?php } ?>
+</div>
 
 <script type="text/javascript" src="<?= base_url() ?>assets/js/jquery.validate.js"></script>
 <script type="text/javascript">

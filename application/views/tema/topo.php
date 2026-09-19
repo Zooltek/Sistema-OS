@@ -33,6 +33,7 @@
   <?php if ($configuration['app_theme'] == 'whiteblack') { ?>
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-white-black.css" />
   <?php } ?>
+  <link rel="stylesheet" href="<?= base_url(); ?>assets/css/amura-screens.css" />
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;700&display=swap' rel='stylesheet' type='text/css'>
   <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
@@ -42,6 +43,7 @@
   <script type="text/javascript" src="<?= base_url(); ?>assets/js/datatables.min.js"></script>
   <script type="text/javascript" src="<?= base_url(); ?>assets/js/sweetalert.min.js"></script>
   <script type="text/javascript" src="<?= base_url(); ?>assets/js/csrf.js"></script>
+  <script type="text/javascript" src="<?= base_url(); ?>assets/js/sidebar-controller.js"></script>
   <script type="text/javascript">
     shortcut.add("escape", function() {
       location.href = '<?= base_url(); ?>';
@@ -89,7 +91,7 @@
           </ul>
         </li>
         <li class="dropdown">
-          <a href="#" class="tip-right dropdown-toggle" data-toggle="dropdown" title="Relatórios"><i class='bx bx-pie-chart-alt-2 iconN'></i><span class="text"></span></a>
+          <a href="#" class="tip-right dropdown-toggle" data-toggle="dropdown" title="Relatórios"><i class='bx bx-printer iconN'></i><span class="text"></span></a>
           <ul class="dropdown-menu">
             <li><a href="<?= site_url('relatorios/clientes') ?>">Clientes</a></li>
             <li><a href="<?= site_url('relatorios/produtos') ?>">Produtos</a></li>
@@ -111,6 +113,11 @@
             <li><a href="<?= site_url('auditoria') ?>">Auditoria</a></li>
             <li><a href="<?= site_url('sistema/emails') ?>">Emails</a></li>
           </ul>
+        </li>
+        <li class="">
+          <a href="<?= site_url('sistema/alternarTema') ?>" class="theme-toggle-btn tip-bottom" title="<?= ($configuration['app_theme'] == 'white') ? 'Alternar para Tema Escuro' : 'Alternar para Tema Claro' ?>">
+            <i class='bx <?= ($configuration['app_theme'] == 'white') ? 'bx-moon' : 'bx-sun' ?> iconN'></i>
+          </a>
         </li>
       </ul>
     </div>

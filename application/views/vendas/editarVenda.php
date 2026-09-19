@@ -8,33 +8,36 @@
 
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css" />
 
-<div class="row-fluid" style="margin-top: 15px">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: 0; padding: 0 15px; display: flex; align-items: center; justify-content: space-between; height: auto; min-height: 40px;">
-                <div style="display: flex; align-items: center;">
-                    <span class="icon" style="padding: 9px 10px 7px 11px;">
-                        <i class="fas fa-cash-register"></i>
-                    </span>
-                    <h5 style="margin: 0; line-height: 38px;">Editar Venda #<?php echo $result->idVendas; ?></h5>
-                </div>
-                <div class="buttons" style="margin: 0; display: flex; gap: 8px; align-items: center; float: none; padding-top: 4px; padding-bottom: 4px;">
-                    <?php if ($result->faturado == 0) { ?>
-                        <a href="#modal-faturar" id="btn-faturar-header" role="button" data-toggle="modal" class="button btn btn-mini btn-danger" style="margin: 0;">
-                            <span class="button__icon"><i class='bx bx-dollar'></i></span> <span class="button__text">Faturar</span>
-                        </a>
-                    <?php } else { ?>
-                        <span class="badge badge-success" style="margin: 0;"><i class="fas fa-check"></i> Faturada</span>
-                    <?php } ?>
-                    <a title="Visualizar Venda" class="button btn btn-mini btn-primary" href="<?php echo site_url() ?>/vendas/visualizar/<?php echo $result->idVendas; ?>" style="margin: 0;">
-                        <span class="button__icon"><i class="bx bx-show"></i></span><span class="button__text">Visualizar</span>
-                    </a>
-                    <a title="Voltar para Vendas" class="button btn btn-mini btn-warning" href="<?php echo site_url() ?>/vendas" style="margin: 0;">
-                        <span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text">Voltar</span>
-                    </a>
-                </div>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-cash-register"></i>
             </div>
-            <div class="widget-content nopadding tab-content">
+            <div>
+                <h1 class="amura-header-title">Editar Venda #<?php echo $result->idVendas; ?></h1>
+                <p class="amura-header-subtitle">Cliente: <strong><?php echo htmlspecialchars($result->nomeCliente); ?></strong> | Status: <span class="badge badge-default"><?php echo $result->status; ?></span></p>
+            </div>
+        </div>
+        <div class="amura-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <?php if ($result->faturado == 0) { ?>
+                <a href="#modal-faturar" id="btn-faturar-header" role="button" data-toggle="modal" class="btn-amura-danger">
+                    <i class='bx bx-dollar'></i> Faturar
+                </a>
+            <?php } else { ?>
+                <span class="badge badge-success" style="margin: 0; padding: 6px 12px; font-size: 0.85rem;"><i class="fas fa-check"></i> Faturada</span>
+            <?php } ?>
+            <a title="Visualizar Venda" class="btn-amura-secondary" href="<?php echo site_url() ?>/vendas/visualizar/<?php echo $result->idVendas; ?>">
+                <i class="bx bx-show"></i> Visualizar
+            </a>
+            <a title="Voltar para Vendas" class="btn-amura-secondary" href="<?php echo site_url() ?>/vendas">
+                <i class="bx bx-arrow-back"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="amura-form-card" style="padding: 0; overflow: visible;">
+        <div class="tab-content" style="overflow: visible;">
                 <div class="span12" id="divProdutosServicos" style=" margin-left: 0">
                     <ul class="nav nav-tabs">
                         <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab"><i class="fas fa-file-invoice"></i> Detalhes da Venda</a></li>
@@ -193,7 +196,7 @@
                                 </div>
                             </div>
                             <div class="span12" id="divProdutos" style="margin-left: 0">
-                                <table class="table table-bordered" id="tblProdutos">
+                                <table class="table table-bordered amura-table" id="tblProdutos">
                                     <thead>
                                         <tr>
                                             <th>Produto</th>
@@ -208,10 +211,10 @@
                                         $total = 0;
                                         if (empty($produtos)) { ?>
                                             <tr id="linhaSemProdutos">
-                                                <td colspan="5" style="text-align: center; padding: 25px; color: #666; background-color: #fbfbfb;">
-                                                    <i class="fas fa-shopping-basket" style="font-size: 32px; color: #b0bec5; display: block; margin-bottom: 8px;"></i>
+                                                <td colspan="5" style="text-align: center; padding: 25px; color: #8c97a8;">
+                                                    <i class="fas fa-shopping-basket" style="font-size: 32px; color: #ff9204; display: block; margin-bottom: 8px;"></i>
                                                     <strong>Nenhum produto adicionado nesta venda ainda.</strong><br>
-                                                    <span style="font-size: 13px; color: #888;">Digite o nome ou bipe o código de barras acima, ou clique no botão <strong>Abrir Catálogo de Produtos</strong> para incluir itens.</span>
+                                                    <span style="font-size: 13px; color: #8c97a8;">Digite o nome ou bipe o código de barras acima, ou clique no botão <strong>Abrir Catálogo de Produtos</strong> para incluir itens.</span>
                                                 </td>
                                             </tr>
                                         <?php } else {
@@ -220,10 +223,10 @@
                                                 $total = $total + $p->subTotal;
                                                 echo '<tr>';
                                                 echo '<td>' . $p->descricao . '</td>';
-                                                echo '<td><div align="center">' . $p->quantidade . '</td>';
-                                                echo '<td><div align="center">R$: ' . $preco . '</td>';
-                                                echo '<td><div align="center"><a href="" idAcao="' . $p->idItens . '" prodAcao="' . $p->idProdutos . '" quantAcao="' . $p->quantidade . '" title="Excluir Produto" class="btn-nwe4"><i class="bx bx-trash-alt"></i></a></td>';
-                                                echo '<td><div align="center">R$: ' . number_format($p->subTotal, 2, '.', '') . '</td>';
+                                                echo '<td><div align="center">' . $p->quantidade . '</div></td>';
+                                                echo '<td><div align="center">R$: ' . $preco . '</div></td>';
+                                                echo '<td><div align="center"><a href="" idAcao="' . $p->idItens . '" prodAcao="' . $p->idProdutos . '" quantAcao="' . $p->quantidade . '" title="Excluir Produto" class="btn-nwe4 amura-action-btn delete"><i class="bx bx-trash-alt"></i></a></div></td>';
+                                                echo '<td><div align="center">R$: ' . number_format($p->subTotal, 2, '.', '') . '</div></td>';
                                                 echo '</tr>';
                                             }
                                         } ?>
@@ -254,29 +257,26 @@
                                     </tfoot>
                                 </table>
 
-                                <div class="span12" style="margin-left: 0; margin-top: 15px; margin-bottom: 25px; padding: 16px 20px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.06);">
+                                <div class="span12" style="margin-left: 0; margin-top: 15px; margin-bottom: 25px; padding: 16px 20px; background: rgba(255, 146, 4, 0.05); border: 1px solid rgba(255, 146, 4, 0.2); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
                                     <div>
-                                        <h5 style="margin: 0 0 4px 0; color: #1e293b; font-size: 15px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Produtos Lançados</h5>
-                                        <span style="font-size: 13px; color: #64748b;">
+                                        <h5 style="margin: 0 0 4px 0; color: #ff9204; font-size: 15px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Produtos Lançados</h5>
+                                        <span style="font-size: 13px; color: #8c97a8;">
                                             Os produtos e descontos já foram salvos nesta venda. Escolha o próximo passo:
                                         </span>
                                     </div>
                                     <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                                         <?php if ($result->faturado == 0) { ?>
-                                            <a href="#modal-faturar" id="btn-faturar-tab2" role="button" data-toggle="modal" class="button btn btn-success" style="padding: 9px 20px; font-size: 14px; font-weight: bold; border-radius: 5px;">
-                                                <span class="button__icon"><i class='bx bx-dollar'></i></span> 
-                                                <span class="button__text2">Faturar Venda / Pagamento</span>
+                                            <a href="#modal-faturar" id="btn-faturar-tab2" role="button" data-toggle="modal" class="btn-amura-primary" style="padding: 8px 18px;">
+                                                <i class='bx bx-dollar'></i> Faturar Venda / Pagamento
                                             </a>
                                         <?php } else { ?>
                                             <span class="badge badge-success" style="padding: 8px 14px; font-size: 13px;"><i class="fas fa-check"></i> Venda Faturada</span>
                                         <?php } ?>
-                                        <a href="<?php echo base_url() ?>index.php/vendas/visualizar/<?php echo $result->idVendas; ?>" class="button btn btn-primary" style="padding: 9px 18px; border-radius: 5px;">
-                                            <span class="button__icon"><i class="bx bx-show"></i></span>
-                                            <span class="button__text2">Visualizar / Imprimir</span>
+                                        <a href="<?php echo base_url() ?>index.php/vendas/visualizar/<?php echo $result->idVendas; ?>" class="btn-amura-secondary" style="padding: 8px 16px;">
+                                            <i class="bx bx-show"></i> Visualizar / Imprimir
                                         </a>
-                                        <a href="<?php echo base_url() ?>index.php/vendas" class="button btn btn-warning" style="padding: 9px 18px; border-radius: 5px;">
-                                            <span class="button__icon"><i class="bx bx-undo"></i></span>
-                                            <span class="button__text2">Voltar para Vendas</span>
+                                        <a href="<?php echo base_url() ?>index.php/vendas" class="btn-amura-secondary" style="padding: 8px 16px;">
+                                            <i class="bx bx-undo"></i> Voltar para Vendas
                                         </a>
                                     </div>
                                 </div>
@@ -284,27 +284,26 @@
                         </div>
                     </div>
                 </div>
-                &nbsp
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal Catálogo de Produtos -->
-<div id="modal-catalogo-produtos" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" style="width: 860px; margin-left: -430px; border-radius: 8px;">
-    <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; border-bottom: 1px solid #e9ecef; padding: 12px 20px;">
-        <h4 style="margin: 0; color: #2c3e50;"><i class="fas fa-boxes" style="color: #0088cc;"></i> Catálogo de Produtos</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top: -2px;">×</button>
+<div id="modal-catalogo-produtos" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-hidden="true" style="width: 860px; margin-left: -430px; border-radius: 8px;">
+    <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;">
+        <h4 style="margin: 0; color: #ff9204;"><i class="fas fa-boxes"></i> Catálogo de Produtos</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     </div>
     <div class="modal-body" style="padding: 15px 20px; max-height: 480px;">
         <div style="margin-bottom: 12px; position: relative;">
-            <input type="text" id="filtroCatalogo" class="span12" placeholder="Digite o nome ou código de barras para filtrar..." autocomplete="off" style="padding: 10px 35px 10px 12px; font-size: 14px; border-radius: 6px; box-shadow: none; border: 1px solid #ccc; margin-bottom: 0;">
+            <input type="text" id="filtroCatalogo" class="span12" placeholder="Digite o nome ou código de barras para filtrar..." autocomplete="off" style="padding: 10px 35px 10px 12px; font-size: 14px; border-radius: 6px; box-shadow: none; margin-bottom: 0;">
             <i class="fas fa-search" style="position: absolute; right: 12px; top: 12px; color: #888;"></i>
         </div>
-        <div style="overflow-y: auto; max-height: 380px; border: 1px solid #e0e0e0; border-radius: 4px;">
-            <table class="table table-bordered table-striped table-hover" id="tblCatalogoProdutos" style="margin-bottom: 0;">
+        <div style="overflow-y: auto; max-height: 380px; border: 1px solid #232d3b; border-radius: 4px;">
+            <table class="table table-bordered amura-table" id="tblCatalogoProdutos" style="margin-bottom: 0;">
                 <thead>
-                    <tr style="background: #f1f5f9;">
+                    <tr>
                         <th width="18%">Cód. Barras</th>
                         <th>Descrição</th>
                         <th width="14%">Estoque</th>
@@ -322,13 +321,13 @@
             </table>
         </div>
     </div>
-    <div class="modal-footer" style="background: #f8f9fa; padding: 10px 20px;">
-        <button class="btn btn-default" data-dismiss="modal"><i class="fas fa-times"></i> Fechar</button>
+    <div class="modal-footer" style="padding: 10px 20px;">
+        <button class="btn" data-dismiss="modal"><i class="fas fa-times"></i> Fechar</button>
     </div>
 </div>
 
 <!-- Modal Faturar-->
-<div id="modal-faturar" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modal-faturar" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form id="formFaturar" action="<?php echo current_url() ?>" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

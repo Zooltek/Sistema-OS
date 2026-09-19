@@ -1,48 +1,59 @@
 <?php $totalProdutos = 0; ?>
-<div class="row-fluid" style="margin-top: 0">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: 10px 0 0">
-                    <div class="buttons">
-                        <?php
-                        $editavel = $this->vendas_model->isEditable($result->idVendas);
-if (($result->faturado != 1 || $editavel) && $this->permission->checkPermission($this->session->userdata('permissao'), 'eVenda')): ?>
-                            <a title="Editar Venda" class="button btn btn-mini btn-success" href="<?php echo base_url() . 'index.php/vendas/editar/' . $result->idVendas; ?>">
-                                <span class="button__icon"><i class="bx bx-edit"></i></span>
-                                <span class="button__text">Editar</span>
-                            </a>
-                        <?php endif; ?>
-
-                        <div class="button-container">
-                            <a target="_blank" title="Imprimir Venda" class="button btn btn-mini btn-inverse">
-                                <span class="button__icon"><i class="bx bx-printer"></i></span><span class="button__text">Imprimir</span>
-                            </a>
-                            <div class="cascading-buttons">
-                                <a target="_blank" title="Imprimir Orcamento A4" class="button btn btn-mini btn-inverse" href="<?php echo site_url() . '/vendas/imprimirVendaOrcamento/' . $result->idVendas; ?>">
-                                    <span class="button__icon"><i class="bx bx-printer"></i></span>
-                                    <span class="button__text">Orçamento</span>
-                                </a>
-                                <a target="_blank" title="Impressão em Papel A4" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/vendas/imprimir/<?php echo $result->idVendas; ?>">
-                                    <span class="button__icon"><i class='bx bx-file'></i></span> <span class="button__text">Papel A4</span>
-                                </a>
-                                <a target="_blank" title="Impressão Cupom Não Fiscal" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/vendas/imprimirTermica/<?php echo $result->idVendas; ?>">
-                                    <span class="button__icon"><i class='bx bx-receipt'></i></span> <span class="button__text">Cupom 80mm</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <a href="#modal-gerar-pagamento" id="btn-forma-pagamento" role="button" data-toggle="modal" class="button btn btn-mini btn-primary">
-                            <span class="button__icon"><i class='bx bx-dollar'></i></span><span class="button__text">Gerar Pagamento</span>
-                        </a>
-
-                        <?php if ($qrCode): ?>
-                            <a href="#modal-pix" id="btn-pix" role="button" data-toggle="modal" class="button btn btn-mini btn-info">
-                                <span class="button__icon"><i class='bx bx-qr'></i></span><span class="button__text">Chave PIX</span>
-                            </a>
-                        <?php endif; ?>
-                    </div>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-shopping-cart"></i>
             </div>
-            <div class="widget-content" id="printOs">
+            <div>
+                <h1 class="amura-header-title">Venda #<?php echo sprintf('%04d', $result->idVendas) ?></h1>
+                <p class="amura-header-subtitle">Cliente: <strong><?php echo htmlspecialchars($result->nomeCliente); ?></strong> | Status: <span class="badge badge-default"><?php echo $result->status; ?></span></p>
+            </div>
+        </div>
+        <div class="amura-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <?php
+            $editavel = $this->vendas_model->isEditable($result->idVendas);
+            if (($result->faturado != 1 || $editavel) && $this->permission->checkPermission($this->session->userdata('permissao'), 'eVenda')): ?>
+                <a title="Editar Venda" class="btn-amura-primary" href="<?php echo base_url() . 'index.php/vendas/editar/' . $result->idVendas; ?>">
+                    <i class="bx bx-edit"></i> Editar
+                </a>
+            <?php endif; ?>
+
+            <div class="button-container">
+                <a target="_blank" title="Imprimir Venda" class="btn-amura-secondary">
+                    <i class="bx bx-printer"></i> Imprimir
+                </a>
+                <div class="cascading-buttons">
+                    <a target="_blank" title="Imprimir Orcamento A4" href="<?php echo site_url() . '/vendas/imprimirVendaOrcamento/' . $result->idVendas; ?>">
+                        <i class="bx bx-printer"></i> Orçamento
+                    </a>
+                    <a target="_blank" title="Impressão em Papel A4" href="<?php echo site_url() ?>/vendas/imprimir/<?php echo $result->idVendas; ?>">
+                        <i class='bx bx-file'></i> Papel A4
+                    </a>
+                    <a target="_blank" title="Impressão Cupom Não Fiscal" href="<?php echo site_url() ?>/vendas/imprimirTermica/<?php echo $result->idVendas; ?>">
+                        <i class='bx bx-receipt'></i> Cupom 80mm
+                    </a>
+                </div>
+            </div>
+
+            <a href="#modal-gerar-pagamento" id="btn-forma-pagamento" role="button" data-toggle="modal" class="btn-amura-secondary">
+                <i class='bx bx-dollar'></i> Pagamento
+            </a>
+
+            <?php if ($qrCode): ?>
+                <a href="#modal-pix" id="btn-pix" role="button" data-toggle="modal" class="btn-amura-secondary">
+                    <i class='bx bx-qr'></i> PIX
+                </a>
+            <?php endif; ?>
+
+            <a href="<?= base_url('index.php/vendas'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="amura-form-card" style="padding: 24px;">
+        <div class="widget-content" id="printOs">
                 <div class="invoice-content">
                     <div class="invoice-head">
                         <table class="table">
@@ -194,12 +205,11 @@ if (!empty($result->cidade) || !empty($result->estado) || !empty($result->cep)) 
             </div>
         </div>
     </div>
-</div>
 
 <?= $modalGerarPagamento ?>
 
 <!-- Modal PIX -->
-<div id="modal-pix" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="modal-pix" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>

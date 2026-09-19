@@ -224,6 +224,33 @@ body {
   text-shadow: none;
 }
 
+#user-nav > ul.nav > li.dropdown > a.dropdown-toggle,
+#user-nav > ul.nav > li > a.theme-toggle-btn {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #3b4554 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+#user-nav > ul.nav > li.dropdown > a.dropdown-toggle .iconN,
+#user-nav > ul.nav > li > a.theme-toggle-btn .iconN {
+  color: #5a6578 !important;
+}
+
+#user-nav > ul.nav > li.dropdown > a.dropdown-toggle:hover,
+#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle,
+#user-nav > ul.nav > li > a.theme-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(255, 146, 4, 0.6) !important;
+  color: #111827 !important;
+}
+
+#user-nav > ul.nav > li.dropdown > a.dropdown-toggle:hover .iconN,
+#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle .iconN,
+#user-nav > ul.nav > li > a.theme-toggle-btn:hover .iconN {
+  color: #e07f00 !important;
+}
+
 #sidebar .search-box {
   background: var(--bodycolor-w);
   border    : 1px solid rgb(0 0 0 / 20%);
@@ -356,4 +383,94 @@ body {
   #sidebar > ul li span {
     color: #000;
   }
+}
+
+/* ==========================================================================
+   Tema Claro (white) - Overrides para Componentes Modernos
+   ========================================================================== */
+
+.navebarn {
+  background-color: #f4f5f9 !important;
+  border-bottom: 1px solid rgba(0,0,0,0.07) !important;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06) !important;
+}
+
+#user-nav > ul.nav > li > a.dropdown-toggle,
+#user-nav > ul.nav > li > a.theme-toggle-btn {
+  background: rgba(0,0,0,0.04) !important;
+  border: 1px solid rgba(0,0,0,0.1) !important;
+  color: #3b4554 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+#user-nav > ul.nav > li > a.dropdown-toggle .iconN,
+#user-nav > ul.nav > li > a.theme-toggle-btn .iconN {
+  color: #5a6578 !important;
+}
+
+#user-nav > ul.nav > li > a.dropdown-toggle:hover,
+#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle,
+#user-nav > ul.nav > li > a.theme-toggle-btn:hover {
+  background: rgba(0,0,0,0.08) !important;
+  border-color: rgba(234,123,0,0.5) !important;
+  color: #111827 !important;
+  box-shadow: 0 3px 10px rgba(234,123,0,0.12) !important;
+}
+
+#user-nav > ul.nav > li > a.dropdown-toggle:hover .iconN,
+#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle .iconN,
+#user-nav > ul.nav > li > a.theme-toggle-btn:hover .iconN {
+  color: #c47000 !important;
+}
+
+#user-nav .dropdown-menu {
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,0.1) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+#user-nav .dropdown-menu > li > a {
+  color: #3b4554 !important;
+}
+
+#user-nav .dropdown-menu > li > a:hover {
+  background: rgba(234,123,0,0.07) !important;
+  color: #c47000 !important;
+  padding-left: 18px !important;
+}
+
+#user-nav .dropdown-menu .divider {
+  background: rgba(0,0,0,0.07) !important;
+}
+
+#user-nav .dropdown-menu > li > a i {
+  color: #8a909b;
+}
+
+#user-nav .dropdown-menu > li > a:hover i {
+  color: #c47000;
+}
+
+#breadcrumb a {
+  color: #374151 !important;
+  background: rgba(0,0,0,0.04) !important;
+  border: 1px solid rgba(0,0,0,0.1) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+}
+
+#breadcrumb a:hover {
+  background: rgba(234,123,0,0.08) !important;
+  border-color: rgba(234,123,0,0.35) !important;
+  color: #c47000 !important;
+}
+
+#breadcrumb a.current {
+  color: #c47000 !important;
+  background: rgba(234,123,0,0.08) !important;
+  border: 1px solid rgba(234,123,0,0.28) !important;
+}
+
+#userr .userT0,
+#userr .userT {
+  color: #4a5568 !important;
 }

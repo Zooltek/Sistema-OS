@@ -5,115 +5,140 @@
 <script type="text/javascript" src="<?php echo base_url() ?>assets/trumbowyg/trumbowyg.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ?>assets/trumbowyg/langs/pt_br.js"></script>
 
-<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/custom.css" />
-
-<div class="row-fluid" style="margin-top: 15px">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: 0; padding: 0 10px; min-height: 42px; display: flex; align-items: center;">
-                <span class="icon">
-                    <i class="fas fa-cash-register"></i>
-                </span>
-                <h5 style="margin: 0; line-height: 38px;">Iniciar venda</h5>
+<div class="amura-page">
+    <!-- Header -->
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-cart-plus"></i>
             </div>
-            <div class="widget-content nopadding tab-content">
-                <div class="span12" id="divProdutosServicos" style=" margin-left: 0">
-                    <ul class="nav nav-tabs">
-                        <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Detalhes da venda</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab1">
-                            <div class="span12" id="divCadastrarOs">
-                                <div class="alert alert-info" style="margin: 10px 1% 15px 1%; border-radius: 6px; display: flex; align-items: center; gap: 12px; background-color: #e8f4fd; border: 1px solid #b8daff; color: #004085; padding: 12px;">
-                                    <i class="fas fa-info-circle" style="font-size: 22px; color: #0056b3;"></i>
-                                    <div>
-                                        <strong>Etapa 1 de 2:</strong> Preencha o cliente e dados iniciais da venda. Em seguida, clique em <strong>"Continuar para Adicionar Produtos"</strong> para incluir, bipar ou consultar os itens da venda.
-                                    </div>
-                                </div>
-                                <?php if ($custom_error == true) { ?>
-                                    <div class="span12 alert alert-danger" id="divInfo" style="padding: 1%;">Dados incompletos, verifique os campos com asterisco ou se selecionou corretamente cliente e responsável.</div>
+            <div>
+                <h1 class="amura-header-title">Iniciar Nova Venda</h1>
+                <p class="amura-header-subtitle">Etapa 1 de 2: Definição de cliente, vendedor, status comercial e notas</p>
+            </div>
+        </div>
+        <div class="amura-header-actions">
+            <a href="<?= base_url('index.php/vendas'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar para Lista
+            </a>
+        </div>
+    </div>
+
+    <!-- Card do Formulário -->
+    <div class="amura-form-card">
+        <form action="<?php echo current_url(); ?>" method="post" id="formVendas">
+            <div class="amura-form-section">
+                <div style="background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.86rem; display: flex; align-items: center; gap: 10px;">
+                    <i class="bx bx-info-circle" style="font-size: 1.3rem; color: #60a5fa;"></i>
+                    <div>
+                        <strong>Fluxo de Venda (Etapa 1):</strong> Selecione o cliente e parâmetros da venda. Ao clicar em <strong>"Continuar para Adicionar Produtos"</strong>, você poderá bipar códigos de barra ou incluir itens do estoque.
+                    </div>
+                </div>
+
+                <?php if ($custom_error == true) { ?>
+                    <div class="alert alert-danger" style="background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; border-radius: 6px; padding: 12px 16px; margin-bottom: 16px;">
+                        Dados incompletos, verifique os campos obrigatórios ou selecione cliente e responsável corretamente.
+                    </div>
+                <?php } ?>
+
+                <h3 class="amura-form-section-title">
+                    <i class="bx bx-file"></i> Dados da Venda
+                </h3>
+
+                <div style="display: grid; grid-template-columns: 140px 1.5fr 1.5fr 150px 120px; gap: 12px; margin-bottom: 16px;">
+                    <div class="control-group amura-form-group">
+                        <label for="dataVenda" class="control-label amura-form-label">Data Venda <span class="required">*</span></label>
+                        <div class="controls">
+                            <input id="dataVenda" class="amura-form-input datepicker" type="text" name="dataVenda" value="<?php echo date('d/m/Y'); ?>" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="control-group amura-form-group">
+                        <label for="cliente" class="control-label amura-form-label">Cliente <span class="required">*</span></label>
+                        <div class="controls" style="position: relative;">
+                            <input id="cliente" class="amura-form-input" type="text" name="cliente" value="" placeholder="Digite o nome do cliente..." autocomplete="off" />
+                            <input id="clientes_id" type="hidden" name="clientes_id" value="" />
+                            <div class="addclient" style="position: absolute; top: 100%; left: 0; z-index: 10; margin-top: 4px;">
+                                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) { ?>
+                                    <a href="<?php echo base_url(); ?>index.php/clientes/adicionar" target="_blank" class="btn-amura-primary" style="padding: 4px 10px; font-size: 0.78rem;">
+                                        <i class="fas fa-plus"></i> Cadastrar Novo Cliente
+                                    </a>
                                 <?php } ?>
-                                <form action="<?php echo current_url(); ?>" method="post" id="formVendas">
-                                    <div class="span12" style="padding: 1%">
-                                        <div class="span2">
-                                            <label for="dataInicial">Data da Venda<span class="required">*</span></label>
-                                            <input id="dataVenda" class="span12 datepicker" type="text" name="dataVenda" value="<?php echo date('d/m/Y'); ?>" />
-                                        </div>
-                                        <div class="span3">
-                                            <label for="cliente">Cliente<span class="required">*</span></label>
-                                            <input id="cliente" class="span12" type="text" name="cliente" value="" />
-                                            <input id="clientes_id" class="span12" type="hidden" name="clientes_id" value="" />
-                                            <div class="addclient"><?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) { ?>
-                                              <a href="<?php echo base_url(); ?>index.php/clientes/adicionar" class="btn btn-success"><i class="fas fa-plus"></i> Adicionar Cliente</a><?php } ?></div>
-                                        </div>
-                                        <div class="span3">
-                                            <label for="tecnico">Vendedor<span class="required">*</span></label>
-                                            <input id="tecnico" class="span12" type="text" name="tecnico" value="<?= $this->session->userdata('nome_admin'); ?>" />
-                                            <input id="usuarios_id" class="span12" type="hidden" name="usuarios_id" value="<?= $this->session->userdata('id_admin'); ?>" />
-                                        </div>
-                                        <div class="span2">
-                                            <label for="status">Status<span class="required">*</span></label>
-                                            <select class="span12" name="status" id="status" value="">
-                                                <option value="Orçamento">Orçamento</option>
-                                                <option value="Aberto">Aberto</option>
-                                                <option value="Faturado">Faturado</option>
-                                                <option value="Em Andamento">Em Andamento</option>
-                                                <option value="Finalizado">Finalizado</option>
-                                                <option value="Cancelado">Cancelado</option>
-                                                <option value="Aguardando Peças">Aguardando Peças</option>
-                                                <option value="Aprovado">Aprovado</option>
-                                            </select>
-                                        </div>
-                                        <div class="span2">
-                                            <label for="garantia">Garantia (dias)</label>
-                                            <input id="garantia" type="number" placeholder="Em Dias" min="0" max="9999" class="span12" name="garantia" value="" />
-                                            <?php echo form_error('garantia'); ?>
-                                        </div>
-
-                                    <div class="span6" style="padding: 1%; margin-left: 0">
-                                        <label for="observacoes">
-                                            <h4>Observações Internas</h4>
-                                        </label>
-                                        <textarea class="editor" name="observacoes" id="observacoes" cols="30" rows="5"></textarea>
-                                    </div>
-
-                                    <div class="span6" style="padding: 1%; margin-left: 0">
-                                        <label for="observacoes_cliente">
-                                            <h4>Observações ao Cliente</h4>
-                                        </label>
-                                        <textarea class="editor" name="observacoes_cliente" id="observacoes_cliente" cols="30" rows="5"></textarea>
-                                    </div>
-
-                                    <div class="span12" style="padding: 1%; margin-left: 0">
-                                        <div class="span8 offset2" style="display:flex;justify-content: center; gap: 10px;">
-                                          <button class="button btn btn-success" id="btnContinuar"><span class="button__icon"><i class='bx bx-chevrons-right'></i></span><span class="button__text2">Continuar para Adicionar Produtos</span></button>
-                                            <a href="<?php echo base_url() ?>index.php/vendas" class="button btn btn-mini btn-warning"><span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
+                        </div>
+                    </div>
+                    <div class="control-group amura-form-group">
+                        <label for="tecnico" class="control-label amura-form-label">Vendedor / Resp. <span class="required">*</span></label>
+                        <div class="controls">
+                            <input id="tecnico" class="amura-form-input" type="text" name="tecnico" value="<?= $this->session->userdata('nome_admin'); ?>" placeholder="Nome do vendedor" autocomplete="off" />
+                            <input id="usuarios_id" type="hidden" name="usuarios_id" value="<?= $this->session->userdata('id_admin'); ?>" />
+                        </div>
+                    </div>
+                    <div class="control-group amura-form-group">
+                        <label for="status" class="control-label amura-form-label">Status <span class="required">*</span></label>
+                        <div class="controls">
+                            <select class="amura-form-select" name="status" id="status">
+                                <option value="Orçamento">Orçamento</option>
+                                <option value="Aberto">Aberto</option>
+                                <option value="Faturado">Faturado</option>
+                                <option value="Em Andamento">Em Andamento</option>
+                                <option value="Finalizado">Finalizado</option>
+                                <option value="Cancelado">Cancelado</option>
+                                <option value="Aguardando Peças">Aguardando Peças</option>
+                                <option value="Aprovado">Aprovado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group amura-form-group">
+                        <label for="garantia" class="control-label amura-form-label">Garantia (dias)</label>
+                        <div class="controls">
+                            <input id="garantia" type="number" placeholder="Ex: 90" min="0" max="9999" class="amura-form-input" name="garantia" value="" />
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px;">
+                    <div class="control-group amura-form-group">
+                        <label for="observacoes" class="control-label amura-form-label">Observações Internas (Uso da Empresa)</label>
+                        <div class="controls">
+                            <textarea class="editor" name="observacoes" id="observacoes" cols="30" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group amura-form-group">
+                        <label for="observacoes_cliente" class="control-label amura-form-label">Observações ao Cliente (Impressas no Pedido)</label>
+                        <div class="controls">
+                            <textarea class="editor" name="observacoes_cliente" id="observacoes_cliente" cols="30" rows="5"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Ações -->
+            <div class="amura-form-actions">
+                <a href="<?php echo base_url('index.php/vendas') ?>" class="btn-amura-secondary">
+                    <i class="bx bx-x"></i> Cancelar
+                </a>
+                <button type="submit" class="btn-amura-primary" id="btnContinuar">
+                    <i class='bx bx-chevrons-right'></i> Continuar para Adicionar Produtos
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.addclient').hide();
         $("#cliente").autocomplete({
             source: "<?php echo base_url(); ?>index.php/vendas/autoCompleteCliente",
             minLength: 1,
-            close: function(ui) { if(ui.label == 'Adicionar cliente...')ui.target.value = '';},
+            close: function(ui) { if(ui.label == 'Adicionar cliente...') ui.target.value = ''; },
             select: function(event, ui) {
-                if(ui.item.label == 'Adicionar cliente...')
+                if (ui.item.label == 'Adicionar cliente...') {
                     $('.addclient').show();
-                else
-                    {
-                        $("#clientes_id").val(ui.item.id);
-                        $('.addclient').hide();
-                    }
+                } else {
+                    $("#clientes_id").val(ui.item.id);
+                    $('.addclient').hide();
+                }
             }
         });
         $("#tecnico").autocomplete({
@@ -125,26 +150,14 @@
         });
         $("#formVendas").validate({
             rules: {
-                cliente: {
-                    required: true
-                },
-                tecnico: {
-                    required: true
-                },
-                dataVenda: {
-                    required: true
-                }
+                cliente: { required: true },
+                tecnico: { required: true },
+                dataVenda: { required: true }
             },
             messages: {
-                cliente: {
-                    required: 'Campo Requerido.'
-                },
-                tecnico: {
-                    required: 'Campo Requerido.'
-                },
-                dataVenda: {
-                    required: 'Campo Requerido.'
-                }
+                cliente: { required: 'Campo Requerido.' },
+                tecnico: { required: 'Campo Requerido.' },
+                dataVenda: { required: 'Campo Requerido.' }
             },
             errorClass: "help-inline",
             errorElement: "span",
@@ -153,7 +166,6 @@
             },
             unhighlight: function(element, errorClass, validClass) {
                 $(element).parents('.control-group').removeClass('error');
-                $(element).parents('.control-group').addClass('success');
             }
         });
         $(".datepicker").datepicker({
@@ -161,7 +173,7 @@
         });
         $('.editor').trumbowyg({
             lang: 'pt_br',
-            semantic: { 'strikethrough': 's', }
+            semantic: { 'strikethrough': 's' }
         });
         $('.addclient').hide();
     });

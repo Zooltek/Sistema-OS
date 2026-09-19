@@ -1,22 +1,32 @@
 <?php $totalProdutos = 0; ?>
-<div class="row-fluid" style="margin-top: 0">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: -20px 0 0">
-                <span class="icon">
-                    <i class="fas fa-book"></i>
-                </span>
-                <h5>Termo de Garantia</h5>
-                <div class="buttons">
-                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eGarantia')) {
-                        echo '<a title="Editar Termo de Garantia" class="button btn btn-mini btn-success" href="' . base_url() . 'index.php/garantias/editar/' . $result->idGarantias . '">
-    <span class="button__icon"><i class="bx bx-edit"></i> </span> <span class="button__text">Editar</span></a>';
-                    } ?>
-                    <a target="_blank" title="Imprimir" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/garantias/imprimir/<?php echo $result->idGarantias; ?>">
-                      <span class="button__icon"><i class="bx bx-printer"></i></span> <span class="button__text">Imprimir</span></a>
-                </div>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-book"></i>
             </div>
-            <div class="widget-content" id="printOs">
+            <div>
+                <h1 class="amura-header-title">Termo de Garantia #<?php echo $result->idGarantias; ?></h1>
+                <p class="amura-header-subtitle">Referência: <strong><?php echo htmlspecialchars($result->refGarantia); ?></strong> | Responsável: <?php echo htmlspecialchars($result->nome); ?></p>
+            </div>
+        </div>
+        <div class="amura-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eGarantia')) { ?>
+                <a title="Editar Termo de Garantia" class="btn-amura-primary" href="<?php echo base_url() . 'index.php/garantias/editar/' . $result->idGarantias; ?>">
+                    <i class="bx bx-edit"></i> Editar
+                </a>
+            <?php } ?>
+            <a target="_blank" title="Imprimir" class="btn-amura-secondary" href="<?php echo site_url() ?>/garantias/imprimir/<?php echo $result->idGarantias; ?>">
+                <i class="bx bx-printer"></i> Imprimir
+            </a>
+            <a href="<?php echo site_url('garantias'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="amura-form-card" style="padding: 24px;">
+        <div class="widget-content" id="printOs">
                 <div class="invoice-content">
                     <div class="invoice-head">
                         <table class="table">
@@ -106,4 +116,3 @@
             </div>
         </div>
     </div>
-</div>

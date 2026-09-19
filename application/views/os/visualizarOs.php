@@ -1,63 +1,78 @@
 <link href="<?= base_url('assets/css/custom.css'); ?>" rel="stylesheet">
-<div class="row-fluid" style="margin-top: 0">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title" style="margin: 10px 0 0">
-                <div class="buttons">
-                    <?php if ($editavel) {
-                        echo '<a title="Editar OS" class="button btn btn-mini btn-success" href="' . base_url() . 'index.php/os/editar/' . $result->idOs . '">
-                            <span class="button__icon"><i class="bx bx-edit"></i> </span> <span class="button__text">Editar</span>
-                        </a>';
-                    } ?>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-file-invoice"></i>
+            </div>
+            <div>
+                <h1 class="amura-header-title">Ordem de Serviço #<?php echo sprintf('%04d', $result->idOs) ?></h1>
+                <p class="amura-header-subtitle">Cliente: <strong><?php echo htmlspecialchars($result->nomeCliente); ?></strong> | Status: <span class="badge badge-default"><?php echo $result->status; ?></span></p>
+            </div>
+        </div>
+        <div class="amura-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <?php if ($editavel) {
+                echo '<a title="Editar OS" class="btn-amura-primary" href="' . base_url() . 'index.php/os/editar/' . $result->idOs . '">
+                    <i class="bx bx-edit"></i> Editar
+                </a>';
+            } ?>
 
-                    <div class="button-container">
-                        <a target="_blank" title="Imprimir Ordem de Serviço" class="button btn btn-mini btn-inverse"> <span class="button__icon"><i class="bx bx-printer"></i></span><span class="button__text">Imprimir</span></a>
-                        <div class="cascading-buttons">
-                            <a target="_blank" title="Impressão em Papel A4" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/os/imprimir/<?php echo $result->idOs; ?>">
-                                <span class="button__icon"><i class='bx bx-file'></i></span> <span class="button__text">Papel A4</span>
-                            </a>
-                            <a target="_blank" title="Impressão Cupom Não Fical" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/os/imprimirTermica/<?php echo $result->idOs; ?>">
-                                <span class="button__icon"><i class='bx bx-receipt'></i></span> <span class="button__text">Cupom 80mm</span>
-                            </a>
-                            <a target="_blank" title="Imprimir Etiqueta de Garantia (Adesiva / Térmica)" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/os/imprimirEtiquetaGarantia/<?php echo $result->idOs; ?>">
-                                <span class="button__icon"><i class='bx bx-purchase-tag'></i></span> <span class="button__text">Etiqueta Garantia</span>
-                            </a>
-                            <?php if ($result->garantias_id) { ?>
-                                <a target="_blank" title="Imprimir Termo de Garantia" class="button btn btn-mini btn-inverse" href="<?php echo site_url() ?>/garantias/imprimirGarantiaOs/<?php echo $result->idOs; ?>">
-                                    <span class="button__icon"><i class="bx bx-paperclip"></i></span> <span class="button__text">Termo Garantia</span>
-                                </a>
-                            <?php } ?>
-                        </div>
-                    </div>
-
-                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
-                        $this->load->model('os_model');
-                        $zapnumber = preg_replace("/[^0-9]/", "", $result->celular_cliente);
-                        $troca = [$result->nomeCliente, $result->idOs, $result->status, 'R$ ' . ($result->desconto != 0 && $result->valor_desconto != 0 ? number_format($result->valor_desconto, 2, ',', '.') : number_format($totalProdutos + $totalServico, 2, ',', '.')), strip_tags($result->descricaoProduto), ($emitente ? $emitente->nome : ''), ($emitente ? $emitente->telefone : ''), strip_tags($result->observacoes), strip_tags($result->defeito), strip_tags($result->laudoTecnico), date('d/m/Y', strtotime($result->dataFinal)), date('d/m/Y', strtotime($result->dataInicial)), $result->garantia . ' dias'];
-                        $texto_de_notificacao = $this->os_model->criarTextoWhats($texto_de_notificacao, $troca);
-                        if (!empty($zapnumber)) {
-                            echo '<a title="Enviar Por WhatsApp" class="button btn btn-mini btn-success" id="enviarWhatsApp" target="_blank" href="https://api.whatsapp.com/send?phone=55' . $zapnumber . '&text=' . $texto_de_notificacao . '">
-                                <span class="button__icon"><i class="bx bxl-whatsapp"></i></span> <span class="button__text">WhatsApp</span>
-                            </a>';
-                        }
-                    } ?>
-
-                    <a title="Enviar OS por E-mail" class="button btn btn-mini btn-warning" href="<?php echo site_url() ?>/os/enviar_email/<?php echo $result->idOs; ?>">
-                        <span class="button__icon"><i class="bx bx-envelope"></i></span> <span class="button__text">via E-mail</span>
+            <div class="button-container">
+                <a target="_blank" title="Imprimir Ordem de Serviço" class="btn-amura-secondary">
+                    <i class="bx bx-printer"></i> Imprimir
+                </a>
+                <div class="cascading-buttons">
+                    <a target="_blank" title="Impressão em Papel A4" href="<?php echo site_url() ?>/os/imprimir/<?php echo $result->idOs; ?>">
+                        <i class='bx bx-file'></i> Papel A4
                     </a>
-
-                    <a href="#modal-gerar-pagamento" id="btn-forma-pagamento" role="button" data-toggle="modal" class="button btn btn-mini btn-primary">
-                        <span class="button__icon"><i class='bx bx-dollar'></i></span><span class="button__text">Gerar Pagamento</span>
+                    <a target="_blank" title="Impressão Cupom Não Fiscal" href="<?php echo site_url() ?>/os/imprimirTermica/<?php echo $result->idOs; ?>">
+                        <i class='bx bx-receipt'></i> Cupom 80mm
                     </a>
-
-                    <?php if ($qrCode): ?>
-                        <a href="#modal-pix" id="btn-pix" role="button" data-toggle="modal" class="button btn btn-mini btn-info">
-                            <span class="button__icon"><i class='bx bx-qr'></i></span><span class="button__text">Chave PIX</span>
+                    <a target="_blank" title="Imprimir Etiqueta de Garantia (Adesiva / Térmica)" href="<?php echo site_url() ?>/os/imprimirEtiquetaGarantia/<?php echo $result->idOs; ?>">
+                        <i class='bx bx-purchase-tag'></i> Etiqueta Garantia
+                    </a>
+                    <?php if ($result->garantias_id) { ?>
+                        <a target="_blank" title="Imprimir Termo de Garantia" href="<?php echo site_url() ?>/garantias/imprimirGarantiaOs/<?php echo $result->idOs; ?>">
+                            <i class="bx bx-paperclip"></i> Termo Garantia
                         </a>
-                    <?php endif ?>
+                    <?php } ?>
                 </div>
             </div>
-            <div class="widget-content" id="printOs">
+
+            <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
+                $this->load->model('os_model');
+                $zapnumber = preg_replace("/[^0-9]/", "", $result->celular_cliente);
+                $troca = [$result->nomeCliente, $result->idOs, $result->status, 'R$ ' . ($result->desconto != 0 && $result->valor_desconto != 0 ? number_format($result->valor_desconto, 2, ',', '.') : number_format($totalProdutos + $totalServico, 2, ',', '.')), strip_tags($result->descricaoProduto), ($emitente ? $emitente->nome : ''), ($emitente ? $emitente->telefone : ''), strip_tags($result->observacoes), strip_tags($result->defeito), strip_tags($result->laudoTecnico), date('d/m/Y', strtotime($result->dataFinal)), date('d/m/Y', strtotime($result->dataInicial)), $result->garantia . ' dias'];
+                $texto_de_notificacao = $this->os_model->criarTextoWhats($texto_de_notificacao, $troca);
+                if (!empty($zapnumber)) {
+                    echo '<a title="Enviar Por WhatsApp" class="btn-amura-secondary" style="color: #25D366; border-color: rgba(37,211,102,0.3);" id="enviarWhatsApp" target="_blank" href="https://api.whatsapp.com/send?phone=55' . $zapnumber . '&text=' . $texto_de_notificacao . '">
+                        <i class="bx bxl-whatsapp"></i> WhatsApp
+                    </a>';
+                }
+            } ?>
+
+            <a title="Enviar OS por E-mail" class="btn-amura-secondary" href="<?php echo site_url() ?>/os/enviar_email/<?php echo $result->idOs; ?>">
+                <i class="bx bx-envelope"></i> E-mail
+            </a>
+
+            <a href="#modal-gerar-pagamento" id="btn-forma-pagamento" role="button" data-toggle="modal" class="btn-amura-secondary">
+                <i class='bx bx-dollar'></i> Pagamento
+            </a>
+
+            <?php if ($qrCode): ?>
+                <a href="#modal-pix" id="btn-pix" role="button" data-toggle="modal" class="btn-amura-secondary">
+                    <i class='bx bx-qr'></i> PIX
+                </a>
+            <?php endif ?>
+
+            <a href="<?= base_url('index.php/os'); ?>" class="btn-amura-secondary">
+                <i class="bx bx-arrow-back"></i> Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="amura-form-card" style="padding: 24px;">
+        <div class="widget-content" id="printOs">
                 <div class="invoice-content">
                     <div class="invoice-head" style="margin-bottom: 0; margin-top:-30px">
                         <table class="table table-condensed">
@@ -334,12 +349,11 @@ if (!empty($result->cidade) || !empty($result->estado) || !empty($result->cep)) 
             </div>
         </div>
     </div>
-</div>
 
 <?= $modalGerarPagamento ?>
 
 <!-- Modal visualizar anexo -->
-<div id="modal-anexo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="modal-anexo" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -360,7 +374,7 @@ if (!empty($result->cidade) || !empty($result->estado) || !empty($result->cep)) 
 </div>
 
 <!-- Modal PIX -->
-<div id="modal-pix" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="modal-pix" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
     aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>

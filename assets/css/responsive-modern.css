@@ -14,10 +14,14 @@ img {
 }
 
 /* 2. Containers e Estrutura Principal */
+/* As margens do conteúdo são controladas via sidebar-controller.js
+   que aplica margin-left igual à largura real do sidebar via inline style.
+   As classes body.sidebar-* controlam a exibição da logo.               */
 #content {
   min-height: 100vh;
   transition: margin-left 0.3s ease, width 0.3s ease;
   overflow-x: hidden;
+  padding: 0 24px 24px 24px !important;
 }
 
 .container-fluid {
@@ -188,14 +192,15 @@ table.table td {
     padding: 0 !important;
   }
 
-  /* Sidebar recolhido no mobile */
+  /* Sidebar no mobile */
   #sidebar {
     left: 0;
     width: 65px;
     z-index: 1050;
   }
 
-  #sidebar.active {
+  #sidebar.active,
+  #sidebar.open {
     width: 250px;
   }
 
@@ -211,6 +216,7 @@ table.table td {
     align-items: center;
     padding: 5px 10px !important;
     min-height: 52px;
+    margin-left: 0 !important;
   }
 
   #user-nav {
@@ -225,11 +231,10 @@ table.table td {
     gap: 4px;
   }
 
+  /* Mantem botoes perfeitamente alinhados e centralizados */
   #user-nav > ul > li > a {
-    padding: 8px 10px !important;
     font-size: 16px;
   }
-
   #user-nav > ul > li > a > span.text {
     display: none !important;
   }
@@ -400,82 +405,230 @@ table.table td {
 /* ==========================================================================
    Header Top Actions (Perfil, Relatórios, Configurações) - Modern Premium Style
    ========================================================================== */
+/* ==========================================================================
+   Navebarn (Header Topo) — margem controlada pelo sidebar-controller.js
+   via inline style com largura real do sidebar.
+   ========================================================================== */
+.navebarn {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 10px 24px !important;
+  background-color: var(--bodycolor) !important;
+  margin-bottom: 12px !important;
+  position: relative !important;
+  z-index: 1060 !important;
+  transition: margin-left 0.3s ease !important;
+}
+
+/* ==========================================================================
+   Logo da Sidebar — controlada por body.sidebar-* (largura real do sidebar)
+   ========================================================================== */
+#sidebar #newlog {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 12px 10px !important;
+  top: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+/* Sidebar expandida → mostra logo grande (title1), esconde ícone (icon2) */
+body.sidebar-expanded #sidebar #newlog .title1 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+body.sidebar-expanded #sidebar #newlog .title1 img {
+  max-width: 190px !important;
+  max-height: 48px !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+body.sidebar-expanded #sidebar #newlog .icon2 {
+  display: none !important;
+}
+
+/* Sidebar colapsada → mostra só ícone (icon2), esconde logo grande (title1) */
+body.sidebar-collapsed #sidebar #newlog .title1 {
+  display: none !important;
+}
+
+body.sidebar-collapsed #sidebar #newlog .icon2 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+body.sidebar-collapsed #sidebar #newlog .icon2 img {
+  max-width: 38px !important;
+  max-height: 38px !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+/* Fallback: sem classe no body (JS ainda nao rodou), usa padrao desktop: logo grande */
+body:not(.sidebar-expanded):not(.sidebar-collapsed) #sidebar #newlog .title1 {
+  display: flex !important;
+}
+body:not(.sidebar-expanded):not(.sidebar-collapsed) #sidebar #newlog .icon2 {
+  display: none !important;
+}
+/* Nota: margem de .navebarn e #content e aplicada via JS (sidebar-controller.js) */
+
 #user-nav {
   margin: 0 !important;
-  padding: 0;
+  padding: 0 !important;
 }
 
 #user-nav > ul.nav {
   display: flex !important;
-  align-items: center;
-  gap: 8px;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
   margin: 0 !important;
   padding: 0 !important;
-  list-style: none;
+  list-style: none !important;
 }
 
-#user-nav > ul.nav > li.dropdown {
-  position: relative;
-  margin: 0;
-  padding: 0;
-}
-
-#user-nav > ul.nav > li.dropdown > a.dropdown-toggle {
+#user-nav > ul.nav > li {
+  margin: 0 !important;
+  padding: 0 !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 38px;
-  height: 38px;
-  padding: 0 !important;
-  margin: 0;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #caced8 !important;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
 }
 
-#user-nav > ul.nav > li.dropdown > a.dropdown-toggle .iconN {
-  font-size: 20px;
-  color: #a2a6ae;
+#user-nav > ul.nav > li.dropdown {
+  position: relative !important;
+}
+
+#user-nav > ul.nav > li > a.dropdown-toggle,
+#user-nav > ul.nav > li > a.theme-toggle-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  min-width: 38px !important;
+  max-width: 38px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #caced8 !important;
+  text-decoration: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+}
+
+#user-nav > ul.nav > li > a.dropdown-toggle .iconN,
+#user-nav > ul.nav > li > a.theme-toggle-btn .iconN {
+  font-size: 20px !important;
+  color: #a2a6ae !important;
   margin: 0 !important;
   padding: 0 !important;
-  transition: all 0.25s ease;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.25s ease !important;
 }
 
-#user-nav > ul.nav > li.dropdown > a.dropdown-toggle:hover,
-#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle {
+#user-nav > ul.nav > li > a.dropdown-toggle:hover,
+#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle,
+#user-nav > ul.nav > li > a.theme-toggle-btn:hover {
   background: rgba(255, 255, 255, 0.12) !important;
   border-color: rgba(255, 146, 4, 0.5) !important;
   color: #ffffff !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(255, 146, 4, 0.2);
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 14px rgba(255, 146, 4, 0.2) !important;
 }
 
-#user-nav > ul.nav > li.dropdown > a.dropdown-toggle:hover .iconN,
-#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle .iconN {
+#user-nav > ul.nav > li > a.dropdown-toggle:hover .iconN,
+#user-nav > ul.nav > li.dropdown.open > a.dropdown-toggle .iconN,
+#user-nav > ul.nav > li > a.theme-toggle-btn:hover .iconN {
   color: #ff9204 !important;
-  transform: scale(1.08);
+  transform: scale(1.08) !important;
 }
 
-#user-nav > ul.nav > li.dropdown:active > a.dropdown-toggle {
-  transform: translateY(0);
+#user-nav > ul.nav > li > a.dropdown-toggle:active,
+#user-nav > ul.nav > li > a.theme-toggle-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* Breadcrumb com alto contraste e legibilidade */
+#breadcrumb {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 0 10px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+#breadcrumb a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: #e2e8f0 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 5px 12px !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+#breadcrumb a:hover {
+  background: rgba(255, 146, 4, 0.15) !important;
+  border-color: rgba(255, 146, 4, 0.45) !important;
+  color: #ff9204 !important;
+}
+
+#breadcrumb a.current {
+  color: #ff9204 !important;
+  background: rgba(255, 146, 4, 0.12) !important;
+  border: 1px solid rgba(255, 146, 4, 0.35) !important;
+  font-weight: 600 !important;
 }
 
 /* Dropdown Menu Flutuante Moderno */
 #user-nav .dropdown-menu {
   top: calc(100% + 8px) !important;
-  right: 0 !important;
-  left: auto !important;
+  left: 0 !important;
+  right: auto !important;
   background: #1e1e2d !important;
   border: 1px solid #323248 !important;
   border-radius: 10px !important;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 1px rgba(255, 255, 255, 0.1) !important;
   padding: 6px 0 !important;
   min-width: 190px !important;
+  z-index: 1070 !important;
   animation: fadeInDownMenu 0.2s ease-out;
 }
 

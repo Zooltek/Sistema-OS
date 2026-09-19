@@ -151,13 +151,9 @@ body {
     color        : var(--dark-azul);
 }
 
-#newlog {
-    filter: invert(100%);
-}
-
-#newlog .icon2,
-#newlog .title1 {
-    filter: invert(100%);
+#newlog .icon2 img,
+#newlog .title1 img {
+    filter: none;
 }
 
 #sidebar li .icon,

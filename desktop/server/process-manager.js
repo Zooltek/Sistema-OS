@@ -35,8 +35,16 @@ class ProcessManager {
 
     // Determinar diretório de dados persistentes
     const isPortable = !!process.env.PORTABLE_EXECUTABLE_DIR;
+    const exeDir = process.env.PORTABLE_EXECUTABLE_DIR || (this.isPackaged ? path.dirname(process.execPath) : null);
+    const adjacentDataDir = exeDir ? path.join(exeDir, 'AmuraOS_Data') : null;
+    const distDataDir = path.join(this.appRoot, 'dist', 'AmuraOS_Data');
+
     if (isPortable) {
       this.dataDir = path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'AmuraOS_Data');
+    } else if (adjacentDataDir && fs.existsSync(adjacentDataDir)) {
+      this.dataDir = adjacentDataDir;
+    } else if (fs.existsSync(distDataDir)) {
+      this.dataDir = distDataDir;
     } else if (this.isPackaged) {
       this.dataDir = path.join(this.app.getPath('userData'), 'AmuraOS_Data');
     } else {

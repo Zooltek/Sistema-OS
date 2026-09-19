@@ -617,6 +617,18 @@ class AmuraOS extends MY_Controller
         return $this->layout();
     }
 
+    public function alternarTema()
+    {
+        $currentTheme = $this->db->get_where('configuracoes', ['config' => 'app_theme'])->row();
+        $newTheme = ($currentTheme && $currentTheme->valor === 'white') ? 'puredark' : 'white';
+
+        $this->load->model('mapos_model');
+        $this->mapos_model->saveConfiguracao(['app_theme' => $newTheme]);
+
+        $redirectUrl = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : site_url();
+        redirect($redirectUrl);
+    }
+
     public function atualizarBanco()
     {
         if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'cSistema')) {

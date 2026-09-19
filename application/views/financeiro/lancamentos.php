@@ -25,24 +25,30 @@ $periodo = $this->input->get('periodo');
     }
 </style>
 
-<div class="new122">
-    <div class="widget-title">
-                <span class="icon">
-                    <i class="fas fa-hand-holding-usd"></i>
-                </span>
-                <h5>Lançamentos Financeiros</h5>
-    </div>
-    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aLancamento')) { ?>
-        <div class="" style="display:flex">
-            <a href="#modalReceita" data-toggle="modal" role="button" class="button btn btn-mini btn-success" style="width: 230px">
-                <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2" title="Cadastrar nova receita ou despesa"> Receita/Despesa</span></a>
+<div class="amura-page">
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <div>
+                <h1 class="amura-header-title">Lançamentos Financeiros</h1>
+                <p class="amura-header-subtitle">Gestão de contas a pagar e receber, fluxo de caixa e conciliação financeira</p>
+            </div>
         </div>
-    <?php } ?>
+        <div class="amura-header-actions">
+            <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aLancamento')) { ?>
+                <a href="#modalReceita" data-toggle="modal" role="button" class="btn-amura-primary">
+                    <i class='bx bx-plus-circle'></i> Nova Receita / Despesa
+                </a>
+            <?php } ?>
+        </div>
+    </div>
 
-    <div class="span12" style="margin-left: 0;margin-top: 1rem;">
-        <form action="<?php echo current_url(); ?>" method="get">
-            <div class="span2" style="margin-left: 0">
-                <label>Período</label>
+    <div class="amura-filter-bar">
+        <form action="<?php echo current_url(); ?>" method="get" class="amura-filter-form" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; width: 100%;">
+            <div style="flex: 1; min-width: 130px;">
+                <label style="font-size: 0.78rem; font-weight: 600; color: #8c97a8; margin-bottom: 4px; display: block;">Período</label>
                 <select id="periodo" name="periodo" class="span12">
                     <option value="dia" <?= $this->input->get('periodo') === 'dia' ? 'selected' : '' ?>>Dia</option>
                     <option value="semana" <?= $this->input->get('periodo') === 'semana' ? 'selected' : '' ?>>Semana</option>
@@ -54,29 +60,27 @@ $periodo = $this->input->get('periodo');
                 </select>
             </div>
 
-            <div class="span2">
-                <label>Vencimento (de)</label>
+            <div style="flex: 1; min-width: 120px;">
+                <label style="font-size: 0.78rem; font-weight: 600; color: #8c97a8; margin-bottom: 4px; display: block;">Vencimento (de)</label>
                 <input id="vencimento_de" type="text" class="span12 datepicker" name="vencimento_de" value="<?= html_escape($this->input->get('vencimento_de') ? $this->input->get('vencimento_de') : date('d/m/Y')) ?>">
             </div>
 
-            <div class="span2">
-                <label>Vencimento (até)</label>
+            <div style="flex: 1; min-width: 120px;">
+                <label style="font-size: 0.78rem; font-weight: 600; color: #8c97a8; margin-bottom: 4px; display: block;">Vencimento (até)</label>
                 <input id="vencimento_ate" type="text" class="span12 datepicker" name="vencimento_ate" value="<?= html_escape($this->input->get('vencimento_ate') ? $this->input->get('vencimento_ate') : date('d/m/Y')) ?>">
             </div>
 
-            <div class="span2">
-                <label>Tipo</label>
+            <div style="flex: 1; min-width: 110px;">
+                <label style="font-size: 0.78rem; font-weight: 600; color: #8c97a8; margin-bottom: 4px; display: block;">Tipo</label>
                 <select name="tipo" class="span12">
                     <option value="">Todos</option>
-                    <option value="receita" <?= $this->input->get('tipo') === 'receita' ? 'selected' : '' ?>>Receita
-                    </option>
-                    <option value="despesa" <?= $this->input->get('tipo') === 'despesa' ? 'selected' : '' ?>>Despesa
-                    </option>
+                    <option value="receita" <?= $this->input->get('tipo') === 'receita' ? 'selected' : '' ?>>Receita</option>
+                    <option value="despesa" <?= $this->input->get('tipo') === 'despesa' ? 'selected' : '' ?>>Despesa</option>
                 </select>
             </div>
 
-            <div class="span2">
-                <label>Status</label>
+            <div style="flex: 1; min-width: 130px;">
+                <label style="font-size: 0.78rem; font-weight: 600; color: #8c97a8; margin-bottom: 4px; display: block;">Status</label>
                 <select name="status" class="span12">
                     <option value="">Todos (Pendente e Pago)</option>
                     <option value="0" <?= $this->input->get('status') === '0' ? 'selected' : '' ?>>Pendente</option>
@@ -84,25 +88,22 @@ $periodo = $this->input->get('periodo');
                 </select>
             </div>
 
-            <div class="span2">
-                <label>Cliente/Fornecedor</label>
-                <input id="cliente_busca" type="text" class="span12" name="cliente" value="<?= html_escape($this->input->get('cliente')) ?>">
+            <div style="flex: 1.5; min-width: 160px;">
+                <label style="font-size: 0.78rem; font-weight: 600; color: #8c97a8; margin-bottom: 4px; display: block;">Cliente / Fornecedor</label>
+                <input id="cliente_busca" type="text" class="span12" name="cliente" value="<?= html_escape($this->input->get('cliente')) ?>" placeholder="Nome...">
             </div>
 
-            <div class="span2 pull-right">
-                <button type="submit" class="button btn btn-primary btn-sm" style="min-width: 120px">
-                    <span class="button__icon"><i class='bx bx-filter-alt'></i></span><span class="button__text2">Filtrar</span></a></button>
+            <div>
+                <button type="submit" class="btn-amura-primary" style="height: 38px;">
+                    <i class='bx bx-filter-alt'></i> Filtrar
+                </button>
             </div>
         </form>
     </div>
 
-    <div>
-        <div class="widget-box">
-
-            <div class="widget-content nopadding tab-content">
-
-
-                <table class="table table-bordered " id="divLancamentos">
+    <div class="amura-table-card">
+        <div class="table-responsive">
+            <table class="table table-bordered amura-table" id="divLancamentos">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -131,18 +132,18 @@ foreach ($results as $r) {
     $vencimento = date(('d/m/Y'), strtotime($r->data_vencimento));
                            
     if ($r->baixado == 0) {
-        $status = 'Pendente';
+        $status = '<span class="amura-badge status-warning">Pendente</span>';
     } else {
-        $status = 'Pago';
+        $status = '<span class="amura-badge status-success">Pago</span>';
     };
     if ($r->tipo == 'receita') {
-        $label = 'success';
+        $tipo_badge = '<span class="amura-badge status-success">Receita</span>';
     } else {
-        $label = 'important';
+        $tipo_badge = '<span class="amura-badge status-danger">Despesa</span>';
     }
     echo '<tr>';
     echo '<td>' . $r->idLancamentos . '</td>';
-    echo '<td><span class="label label-' . $label . '">' . ucfirst($r->tipo) . '</span></td>';
+    echo '<td>' . $tipo_badge . '</td>';
     echo '<td>' . $r->cliente_fornecedor . '</td>';
     echo '<td>' . $r->descricao . '</td>';
     echo '<td>' . $vencimento . '</td>';
@@ -153,7 +154,7 @@ foreach ($results as $r) {
     echo  $r->tipo_desconto == "real" ? '<td>' . "R$ ".$r->desconto . '</td>' : ($r->tipo_desconto == "porcento" ? '<td>' . $r->desconto." %" . '</td>' : '<td>' . "0" . '</td>'); // valor do desconto
     echo $r->valor_desconto != 0 ? '<td> R$ ' . number_format($r->valor_desconto, 2, ',', '.') . '</td>' : '<td> R$ ' . number_format($r->valor, 2, ',', '.') . '</td>'; // valor total  com o desconto
                            
-    echo '<td>';
+    echo '<td><div style="display:flex; gap: 4px;">';
     if ($r->data_pagamento == "0000-00-00") {
         $data_pagamento = "";
     } else {
@@ -161,13 +162,13 @@ foreach ($results as $r) {
     }
 
     if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eLancamento')) {
-        echo '<a href="#modalEditar" style="margin-right: 1%" data-toggle="modal" role="button" idLancamento="' . $r->idLancamentos . '" descricao="' . $r->descricao . '" valor="' . $r->valor . '" vencimento="' . date('d/m/Y', strtotime($r->data_vencimento)) . '" pagamento="' . $data_pagamento . '" baixado="' . $r->baixado . '" cliente="' . $r->cliente_fornecedor . '" formaPgto="' . $r->forma_pgto . '" tipo="' . $r->tipo . '" observacoes="' . $r->observacoes . '" descontos_editar="' . $r->desconto . '" valor_desconto_editar="' . ($r->valor_desconto != 0 ? $r->valor_desconto : $r->valor) . '" usuario="' . $r->nome . '" class="btn-nwe3 editar" title="Editar OS"><i class="bx bx-edit"></i></a>';
+        echo '<a href="#modalEditar" data-toggle="modal" role="button" idLancamento="' . $r->idLancamentos . '" descricao="' . $r->descricao . '" valor="' . $r->valor . '" vencimento="' . date('d/m/Y', strtotime($r->data_vencimento)) . '" pagamento="' . $data_pagamento . '" baixado="' . $r->baixado . '" cliente="' . $r->cliente_fornecedor . '" formaPgto="' . $r->forma_pgto . '" tipo="' . $r->tipo . '" observacoes="' . $r->observacoes . '" descontos_editar="' . $r->desconto . '" valor_desconto_editar="' . ($r->valor_desconto != 0 ? $r->valor_desconto : $r->valor) . '" usuario="' . $r->nome . '" class="btn-nwe3 editar amura-action-btn edit" title="Editar Lançamento"><i class="bx bx-edit"></i></a>';
     }
     if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dLancamento')) {
-        echo '<a href="#modalExcluir" data-toggle="modal" role="button" idLancamento="' . $r->idLancamentos . '" class="btn-nwe4 excluir" title="Excluir OS"><i class="bx bx-trash-alt"></i></a>';
+        echo '<a href="#modalExcluir" data-toggle="modal" role="button" idLancamento="' . $r->idLancamentos . '" class="btn-nwe4 excluir amura-action-btn delete" title="Excluir Lançamento"><i class="bx bx-trash-alt"></i></a>';
     }
 
-    echo '</td>';
+    echo '</div></td>';
     echo '</tr>';
 } ?>
                     </tbody>
@@ -242,13 +243,15 @@ echo number_format($soma_descontos_pagos, 2, ',', '.')?></strong></td>
                 </table>
             </div>
         </div>
-    </div>
 
-    <?php echo $this->pagination->create_links(); ?>
+        <div class="amura-pagination">
+            <?php echo $this->pagination->create_links(); ?>
+        </div>
+    </div>
 </div>
 
 <!-- Modal nova receita e despesa -->
-<div id="modalReceita" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modalReceita" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form id="formReceita" action="<?php echo base_url() ?>index.php/financeiro/adicionarReceita" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -567,7 +570,7 @@ echo number_format($soma_descontos_pagos, 2, ',', '.')?></strong></td>
  -->
 
 <!-- Modal editar lançamento -->
-<div id="modalEditar" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modalEditar" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form id="formEditar" action="<?php echo base_url() ?>index.php/financeiro/editar" method="post">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -670,7 +673,7 @@ echo number_format($soma_descontos_pagos, 2, ',', '.')?></strong></td>
 </div>
 
 <!-- Modal Excluir lançamento-->
-<div id="modalExcluir" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modalExcluir" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Excluir Lançamento</h3>

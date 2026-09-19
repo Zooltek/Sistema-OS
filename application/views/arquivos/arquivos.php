@@ -1,119 +1,143 @@
-<div class="new122">
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/js/jquery-ui/css/smoothness/jquery-ui-1.9.2.custom.css" />
-    <script type="text/javascript" src="<?= base_url() ?>assets/js/jquery-ui/js/jquery-ui-1.9.2.custom.js"></script>
+<link rel="stylesheet" href="<?= base_url(); ?>assets/js/jquery-ui/css/smoothness/jquery-ui-1.9.2.custom.css" />
+<script type="text/javascript" src="<?= base_url() ?>assets/js/jquery-ui/js/jquery-ui-1.9.2.custom.js"></script>
 
-    <div class="span12" style="margin-left: 0">
-    <div class="widget-title" style="margin: -20px 0 0">
-                <span class="icon">
-                    <i class="fas fa-hdd"></i>
-                </span>
-                <h5>Arquivos</h5>
+<div class="amura-page">
+    <!-- Header -->
+    <div class="amura-header">
+        <div class="amura-header-left">
+            <div class="amura-header-icon">
+                <i class="fas fa-hdd"></i>
             </div>
-        <form method="get" action="<?= current_url(); ?>">
+            <div>
+                <h1 class="amura-header-title">Arquivos</h1>
+                <p class="amura-header-subtitle">Gestão de documentos digitais, imagens e anexos do sistema</p>
+            </div>
+        </div>
+        <div class="amura-header-actions">
             <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aArquivo')) : ?>
-                <div class="span3">
-                    <a href="<?= base_url(); ?>index.php/arquivos/adicionar" class="button btn btn-mini btn-success" style="max-width:150px">
-                        <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Arquivo</span></a>
-                </div>
+                <a href="<?= base_url(); ?>index.php/arquivos/adicionar" class="btn-amura-primary">
+                    <i class='bx bx-plus-circle'></i> Novo Arquivo
+                </a>
             <?php endif ?>
-
-            <div class="span5">
-                <input type="text" name="pesquisa" id="pesquisa" placeholder="Digite o nome do documento para pesquisar" class="span12" value="<?= html_escape($this->input->get('pesquisa')) ?>">
-            </div>
-            <div class="span3">
-                <input type="text" name="data" id="data" placeholder="Data de" class="span6 datepicker" value="<?= html_escape($this->input->get('data')) ?>">
-                <input type="text" name="data2" id="data2" placeholder="Data até" class="span6 datepicker" value="<?= html_escape($this->input->get('data2')) ?>">
-            </div>
-            <div class="span1">
-                <button class="button btn btn-mini btn-warning" style="min-width: 30px"><span class="button__icon"><i class='bx bx-search-alt'></i></span></button>
-            </div>
-        </form>
-    </div>
-
-    <div>
-        <div class="widget-box">
-            <div class="widget-content nopadding tab-content">
-                <table id="tabela" width="100%" class="table table-bordered ">
-                    <thead>
-                        <tr>
-                            <th width="5%">#</th>
-                            <th width="10%">Miniatura</th>
-                            <th width="10%">Nome</th>
-                            <th width="8%">Data</th>
-                            <th>Descrição</th>
-                            <th width="8%">Tamanho</th>
-                            <th width="5%">Extensão</th>
-                            <th width="14%">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-
-                        if (!$results) {
-                            echo '<tr>
-                                <td colspan="8">Nenhum Arquivo Encontrado</td>
-                            </tr>';
-                        }
-    foreach ($results as $r) : ?>
-                            <tr>
-                                <td><?= $r->idDocumentos ?></td>
-                                <td>
-                                    <?php if (@getimagesize($r->path)) : ?>
-                                        <a href="<?= $r->url ?>"> <img src="<?= $r->url ?> "></a>
-                                    <?php else : ?>
-                                        <span>-</span>
-                                    <?php endif ?>
-                                </td>
-                                <td><?= $r->documento ?></td>
-                                <td><?= date('d/m/Y', strtotime($r->cadastro)) ?></td>
-                                <td><?= $r->descricao ?></td>
-                                <td><?= $r->tamanho ?> KB</td>
-                                <td><?= $r->tipo ?></td>
-                                <td><?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vArquivo')) : ?>
-                                        <a href="<?= base_url() ?>index.php/arquivos/download/<?= $r->idDocumentos; ?>" class="btn-nwe" title="Baixar Arquivo"><i class="bx bx-download"></i>
-                                        <?php endif ?>
-
-                                        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')) : ?>
-                                            <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>" class="btn-nwe3" title="Editar"><i class="bx bx-edit"></i></a>
-                                        <?php endif ?>
-
-                                        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')) : ?>
-                                            <a href="#modal-excluir" style="margin-right: 1%" role="button" data-toggle="modal" arquivo="<?= $r->idDocumentos ?>" class="btn-nwe4" title="Excluir"><i class="bx bx-trash-alt"></i></a>
-                                        </a>
-                                    <?php endif ?>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 
-    <?= $this->pagination->create_links() ?>
-
-    <div id="modal-excluir" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <form action="<?= base_url() ?>index.php/arquivos/excluir" method="post">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h5 id="myModalLabel">Excluir Arquivo</h5>
+    <!-- Filtros -->
+    <div class="amura-filter-card">
+        <form class="amura-filter-form" method="get" action="<?= current_url(); ?>">
+            <div class="amura-filter-group" style="flex: 2 1 300px;">
+                <label class="amura-filter-label">Nome do Documento</label>
+                <input type="text" name="pesquisa" id="pesquisa" placeholder="Digite o nome do documento para pesquisar..." class="amura-input" value="<?= html_escape($this->input->get('pesquisa')) ?>">
             </div>
-            <div class="modal-body">
-                <input type="hidden" id="idDocumento" name="id" value="" />
-                <h5 style="text-align: center">Deseja realmente excluir este arquivo?</h5>
+            <div class="amura-filter-group" style="flex: 1 1 150px;">
+                <label class="amura-filter-label">Data Inicial</label>
+                <input type="text" name="data" id="data" placeholder="dd/mm/aaaa" class="amura-input datepicker" autocomplete="off" value="<?= html_escape($this->input->get('data')) ?>">
             </div>
-            <div class="modal-footer" style="display:flex;justify-content: center">
-                <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true">
-                    <span class="button__icon"><i class="bx bx-x"></i></span><span class="button__text2">Cancelar</span></button>
-                <button class="button btn btn-danger"><span class="button__icon"><i class='bx bx-trash'></i></span> <span class="button__text2">Excluir</span></button>
+            <div class="amura-filter-group" style="flex: 1 1 150px;">
+                <label class="amura-filter-label">Data Final</label>
+                <input type="text" name="data2" id="data2" placeholder="dd/mm/aaaa" class="amura-input datepicker" autocomplete="off" value="<?= html_escape($this->input->get('data2')) ?>">
+            </div>
+            <div class="amura-filter-group-btn">
+                <button type="submit" class="amura-filter-search-btn">
+                    <i class='bx bx-search-alt'></i><span>Pesquisar</span>
+                </button>
             </div>
         </form>
     </div>
+
+    <!-- Tabela -->
+    <div class="amura-table-card">
+        <div class="amura-table-wrapper">
+            <table id="tabela" class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">#</th>
+                        <th style="width: 70px; text-align: center;">Miniatura</th>
+                        <th>Nome do Documento</th>
+                        <th style="width: 95px;">Cadastro</th>
+                        <th>Descrição</th>
+                        <th style="width: 90px; text-align: right;">Tamanho</th>
+                        <th style="width: 80px; text-align: center;">Tipo</th>
+                        <th style="width: 130px; text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (!$results) {
+                        echo '<tr><td colspan="8" style="text-align: center; padding: 24px; color: #8c97a8;">Nenhum arquivo encontrado</td></tr>';
+                    }
+                    foreach ($results as $r) : ?>
+                        <tr>
+                            <td><strong>#<?= $r->idDocumentos ?></strong></td>
+                            <td style="text-align: center;">
+                                <?php if (@getimagesize($r->path)) : ?>
+                                    <a href="<?= $r->url ?>" target="_blank">
+                                        <img src="<?= $r->url ?>" style="width: 38px; height: 38px; object-fit: cover; border-radius: 4px; border: 1px solid #334255;">
+                                    </a>
+                                <?php else : ?>
+                                    <span style="color: #64748b;"><i class='bx bx-file' style="font-size: 1.4rem;"></i></span>
+                                <?php endif ?>
+                            </td>
+                            <td><strong><?= html_escape($r->documento) ?></strong></td>
+                            <td><?= date('d/m/Y', strtotime($r->cadastro)) ?></td>
+                            <td><?= html_escape($r->descricao) ?></td>
+                            <td style="text-align: right;"><?= $r->tamanho ?> KB</td>
+                            <td style="text-align: center;"><span class="amura-badge amura-badge-neutral"><?= strtoupper($r->tipo) ?></span></td>
+                            <td style="text-align: center;">
+                                <div class="amura-actions-cell" style="justify-content: center;">
+                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vArquivo')) : ?>
+                                        <a href="<?= base_url() ?>index.php/arquivos/download/<?= $r->idDocumentos; ?>" class="amura-action-btn amura-action-view" title="Baixar Arquivo"><i class="bx bx-download"></i></a>
+                                    <?php endif ?>
+
+                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')) : ?>
+                                        <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>" class="amura-action-btn amura-action-edit" title="Editar"><i class="bx bx-edit"></i></a>
+                                    <?php endif ?>
+
+                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')) : ?>
+                                        <a href="#modal-excluir" role="button" data-toggle="modal" arquivo="<?= $r->idDocumentos ?>" class="amura-action-btn amura-action-delete" title="Excluir"><i class="bx bx-trash-alt"></i></a>
+                                    <?php endif ?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Paginação -->
+    <div class="amura-pagination">
+        <?= $this->pagination->create_links() ?>
+    </div>
+</div>
+
+<!-- Modal Excluir -->
+<div id="modal-excluir" class="modal hide fade amura-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form action="<?= base_url() ?>index.php/arquivos/excluir" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 id="myModalLabel"><i class="bx bx-trash" style="color: #f87171; margin-right: 6px;"></i> Excluir Arquivo</h5>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="idDocumento" name="id" value="" />
+            <p style="text-align: center; margin: 10px 0; font-size: 0.95rem;">
+                Deseja realmente excluir este arquivo anexado?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-amura-secondary" data-dismiss="modal" aria-hidden="true">
+                <i class="bx bx-x"></i> Cancelar
+            </button>
+            <button type="submit" class="btn-amura-danger">
+                <i class='bx bx-trash'></i> Excluir
+            </button>
+        </div>
+    </form>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $(document).on('click', 'a', function(event) {
+        $(document).on('click', 'a[arquivo]', function(event) {
             var arquivo = $(this).attr('arquivo');
             $('#idDocumento').val(arquivo);
         });

@@ -69,6 +69,15 @@ if (file_exists($envFile) && file_exists($composerAutoloadFile)) {
     $dotenv->load();
 }
 
+// Sincroniza variáveis de ambiente do $_SERVER para $_ENV caso variables_order no PHP não contenha 'E'
+if (!empty($_SERVER)) {
+    foreach ($_SERVER as $key => $value) {
+        if (!isset($_ENV[$key]) && is_string($value)) {
+            $_ENV[$key] = $value;
+        }
+    }
+}
+
 //set the environment to production after installation
 define('ENVIRONMENT', $_ENV['APP_ENVIRONMENT'] ?? 'pre_installation');
 

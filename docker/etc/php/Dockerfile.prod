@@ -1,0 +1,70 @@
+FROM php:8.2-fpm
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    g++ \
+    libbz2-dev \
+    libcurl4-gnutls-dev \
+    libfreetype6-dev \
+    libicu-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libpq-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libreadline-dev \
+    libxslt1-dev \
+    libzip-dev \
+    libwebp-dev \
+    wget \
+    unzip \
+    zlib1g-dev \
+    supervisor \
+    cron \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install -j$(nproc) \
+    bcmath \
+    bz2 \
+    calendar \
+    exif \
+    gettext \
+    mysqli \
+    opcache \
+    pdo_mysql \
+    xsl \
+    intl \
+    zip \
+    sockets
+
+# Configure and install GD
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
+    && docker-php-ext-install -j$(nproc) gd
+
+# Install Redis via PECL
+RUN pecl install redis && docker-php-ext-enable redis
+
+# Install Imagick
+RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
+    && rm -rf /var/lib/apt/lists/*
+
+# Permission for PHP to write in volumes
+RUN usermod -u 1000 www-data
+
+# Setup cron jobs
+RUN touch /var/log/cron.log
+COPY cron-jobs /etc/cron.d/cron-jobs
+RUN chmod 0644 /etc/cron.d/cron-jobs
+RUN crontab /etc/cron.d/cron-jobs
+
+# Supervisor
+RUN mkdir -p /var/log/supervisor
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+CMD ["/usr/bin/supervisord"]

@@ -1,0 +1,48 @@
+services:
+
+  app:
+    image: webdevops/php-apache:8.2
+    container_name: amura-os-app
+    restart: always
+    ports:
+      - "8002:80"
+    environment:
+      - WEB_DOCUMENT_ROOT=/app
+      - PHP_DISPLAY_ERRORS=0
+      - PHP_MEMORY_LIMIT=128M
+      - PHP_MAX_EXECUTION_TIME=60
+      - php.mysqli.default_socket=
+      - DB_HOSTNAME=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=amura
+      - DB_PASSWORD=amura
+      - DB_DATABASE=amura_os
+      - APP_BASEURL=http://161.153.99.207:8002/
+      - APP_ENCRYPTION_KEY=AmuraOSKey2026SecureKey
+      - APP_TIMEZONE=America/Sao_Paulo
+    volumes:
+      - "../:/app"
+      - "./etc/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mariadb:10.6
+    container_name: amura-os-mysql
+    restart: always
+    environment:
+      - MARIADB_DATABASE=amura_os
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_USER=amura
+      - MARIADB_PASSWORD=amura
+    volumes:
+      - amura_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  amura_mysql_data:

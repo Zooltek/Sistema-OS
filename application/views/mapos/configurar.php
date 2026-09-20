@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="amura-form-card">
+    <div class="amura-form-card amura-config-card">
         <ul class="nav nav-tabs amura-tabs">
             <li class="active"><a data-toggle="tab" href="#home"><i class='bx bx-cog'></i> Gerais</a></li>
             <li><a data-toggle="tab" href="#menu1"><i class='bx bx-dollar'></i> Financeiro</a></li>

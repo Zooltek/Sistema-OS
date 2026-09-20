@@ -69,7 +69,6 @@
                         <th style="width: 95px;">Data Venda</th>
                         <th style="width: 110px; text-align: center;">Garantia</th>
                         <th style="text-align: right;">Total</th>
-                        <th style="text-align: right;">Desconto</th>
                         <th style="text-align: right;">Com Desc.</th>
                         <th style="width: 105px; text-align: center;">Status</th>
                         <th style="width: 75px; text-align: center;">Faturado</th>
@@ -79,7 +78,7 @@
                 <tbody>
                     <?php
                     if (!$results) {
-                        echo '<tr><td colspan="11" style="text-align: center; padding: 24px; color: #8c97a8;">Nenhuma venda encontrada</td></tr>';
+                        echo '<tr><td colspan="10" style="text-align: center; padding: 24px; color: #8c97a8;">Nenhuma venda encontrada</td></tr>';
                     }
                     foreach ($results as $r) {
                         $dataVenda = date(('d/m/Y'), strtotime($r->dataVenda));
@@ -132,7 +131,6 @@
                         echo '<td>' . $dataVenda . '</td>';
                         echo '<td style="text-align: center;"><span class="amura-badge ' . $garantiaBadgeClass . '">' . ($vencGarantia ?: '-') . '</span></td>';
                         echo '<td style="text-align: right;">' . $valorTotal . '</td>';
-                        echo '<td style="text-align: right; color: #f87171;">' . $valorDesconto . '</td>';
                         echo '<td style="text-align: right;"><strong>' . $valorFinal . '</strong></td>';
                         echo '<td style="text-align: center;"><span class="amura-badge ' . $statusBadgeClass . '">' . html_escape($r->status) . '</span></td>';
                         echo '<td style="text-align: center;">' . $faturadoBadge . '</td>';

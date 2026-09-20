@@ -108,6 +108,7 @@ table.table td {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   border-bottom: 2px solid #e0e0e0;
   margin-bottom: 15px;

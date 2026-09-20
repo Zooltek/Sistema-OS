@@ -126,8 +126,10 @@
 
 /* Célula do botão Pesquisar: alinha ao fim do eixo vertical sem label fantasma */
 .os-filter-btn-wrap {
-  justify-content: flex-end;
+  display: flex;
+  align-items: flex-end;
 }
+
 
 .os-filter-label {
   font-size: 0.76rem;

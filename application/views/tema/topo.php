@@ -12,28 +12,28 @@
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-responsive.min.css" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/matrix-style.css" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/matrix-media.css" />
-  <link rel="stylesheet" href="<?= base_url(); ?>assets/css/responsive-modern.css" />
+  <link rel="stylesheet" href="<?= base_url(); ?>assets/css/responsive-modern.css?v=1.0.2" />
   <link href="<?= base_url(); ?>assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/fullcalendar.css" />
   <?php if ($configuration['app_theme'] == 'white') { ?>
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-white.css" />
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-white.css?v=1.0.2" />
   <?php } ?>
   <?php if ($configuration['app_theme'] == 'puredark') { ?>
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-pure-dark.css" />
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-pure-dark.css?v=1.0.2" />
   <?php } ?>
   <?php if ($configuration['app_theme'] == 'darkviolet') { ?>
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-dark-violet.css" />
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-dark-violet.css?v=1.0.2" />
   <?php } ?>
   <?php if ($configuration['app_theme'] == 'darkorange') { ?>
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-dark-orange.css" />
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-dark-orange.css?v=1.0.2" />
   <?php } ?>
   <?php if ($configuration['app_theme'] == 'whitegreen') { ?>
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-white-green.css" />
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-white-green.css?v=1.0.2" />
   <?php } ?>
   <?php if ($configuration['app_theme'] == 'whiteblack') { ?>
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-white-black.css" />
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/tema-white-black.css?v=1.0.2" />
   <?php } ?>
-  <link rel="stylesheet" href="<?= base_url(); ?>assets/css/amura-screens.css" />
+  <link rel="stylesheet" href="<?= base_url(); ?>assets/css/amura-screens.css?v=1.0.2" />
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;700&display=swap' rel='stylesheet' type='text/css'>
   <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
@@ -76,7 +76,7 @@
   </script>
 </head>
 
-<body>
+<body class="<?= $configuration['app_theme']; ?>">
   <!--top-Header-menu-->
   <div class="navebarn">
     <div id="user-nav" class="navbar navbar-inverse">

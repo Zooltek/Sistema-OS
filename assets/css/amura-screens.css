@@ -163,42 +163,49 @@
 }
 
 .amura-filter-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: flex-end;
-  margin: 0;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  align-items: flex-end !important;
+  margin: 0 !important;
 }
 
 .amura-filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
   flex: 1 1 180px;
   min-width: 0;
+  margin: 0 !important;
 }
 
 .amura-filter-group-btn {
-  display: flex;
-  align-items: center;
-  align-self: flex-end;
-  flex: 0 0 auto;
+  display: flex !important;
+  align-items: flex-end !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
 }
 
 .amura-filter-label {
-  font-size: 0.73rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #8c97a8;
-  margin: 0;
+  font-size: 0.73rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  color: #8c97a8 !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
 }
 
 .amura-input,
 .amura-select {
   width: 100% !important;
   height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  line-height: 22px !important;
   padding: 6px 12px !important;
+  margin: 0 !important;
+  margin-bottom: 0 !important;
   font-size: 0.84rem !important;
   background: #0d1218 !important;
   border: 1px solid #283344 !important;
@@ -218,7 +225,12 @@
 
 .amura-filter-search-btn {
   height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  line-height: 34px !important;
   padding: 0 18px !important;
+  margin: 0 !important;
+  margin-bottom: 0 !important;
   background: #1f2a38 !important;
   color: #dce3ec !important;
   border: 1px solid #334255 !important;
@@ -1166,6 +1178,68 @@ body.white .amura-modal .modal-footer {
 body.white .amura-form-actions {
   background: #f4f5f9 !important;
   border-top-color: rgba(0,0,0,0.06) !important;
+}
+
+/* --------------------------------------------------------------------------
+   11.8 TEMA CLARO — Tela de Ordens de Serviço (.os-*)
+   -------------------------------------------------------------------------- */
+body.white .os-header-container,
+body.white .os-table-card {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+}
+
+body.white .os-filter-card {
+  background: #f4f5f9 !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+body.white .os-header-title { color: #1a202c !important; }
+body.white .os-header-subtitle { color: #6b7280 !important; }
+body.white .os-header-icon {
+  background: rgba(234,123,0,0.08) !important;
+  border-color: rgba(234,123,0,0.2) !important;
+}
+
+body.white .os-input,
+body.white .os-select {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #1a202c !important;
+}
+
+body.white .btn-filter-search {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #374151 !important;
+}
+body.white .btn-filter-search:hover {
+  border-color: rgba(234,123,0,0.5) !important;
+  color: #c47000 !important;
+}
+
+body.white .os-table thead th {
+  background: #f4f5f9 !important;
+  color: #374151 !important;
+  border-bottom-color: rgba(0,0,0,0.08) !important;
+}
+
+body.white .os-table tbody td {
+  color: #374151 !important;
+  border-bottom-color: rgba(0,0,0,0.05) !important;
+}
+
+body.white .os-table tbody tr:hover td {
+  background: rgba(234,123,0,0.04) !important;
+}
+
+body.white .os-table tbody td a:not(.os-action-btn) {
+  color: #2563eb !important;
+}
+
+body.white .os-filter-label {
+  color: #6b7280 !important;
 }
 
 /* --------------------------------------------------------------------------

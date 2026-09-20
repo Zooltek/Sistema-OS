@@ -132,19 +132,25 @@
 
 
 .os-filter-label {
-  font-size: 0.76rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  color: #8c97a8;
-  margin: 0;
+  font-size: 0.76rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.4px !important;
+  color: #8c97a8 !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
 }
 
 .os-input,
 .os-select {
   width: 100% !important;
   height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  line-height: 22px !important;
   padding: 6px 12px !important;
+  margin: 0 !important;
+  margin-bottom: 0 !important;
   font-size: 0.85rem !important;
   background: #0d1218 !important;
   border: 1px solid #283344 !important;
@@ -170,6 +176,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  margin: 0 !important;
 }
 
 .os-periodo-sep {
@@ -180,8 +187,12 @@
 
 .btn-filter-search {
   height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
   line-height: 34px !important;
   padding: 0 18px !important;
+  margin: 0 !important;
+  margin-bottom: 0 !important;
   background: #1f2a38 !important;
   color: #dce3ec !important;
   border: 1px solid #334255 !important;
@@ -196,7 +207,6 @@
   transition: all 0.2s !important;
   white-space: nowrap !important;
   box-sizing: border-box !important;
-  margin: 0 !important;
 }
 
 .btn-filter-search:hover {

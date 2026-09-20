@@ -229,6 +229,49 @@
                                         .toggle-editor-btn:hover {
                                             color: #ff9204;
                                         }
+
+                                        /* Modo Claro (body.white) */
+                                        body.white .os-modern-card {
+                                            background: #ffffff !important;
+                                            border-color: rgba(0, 0, 0, 0.08) !important;
+                                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+                                        }
+                                        body.white .os-card-header {
+                                            border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+                                        }
+                                        body.white .os-card-title {
+                                            color: #c47000 !important;
+                                        }
+                                        body.white .quick-tag-btn {
+                                            background: #f1f5f9 !important;
+                                            color: #475569 !important;
+                                            border-color: #cbd5e1 !important;
+                                        }
+                                        body.white .quick-tag-btn:hover {
+                                            background: #ea7b00 !important;
+                                            color: #fff !important;
+                                            border-color: #ea7b00 !important;
+                                        }
+                                        body.white .modern-textarea {
+                                            background: #ffffff !important;
+                                            border-color: #cbd5e1 !important;
+                                            color: #1a202c !important;
+                                        }
+                                        body.white .modern-textarea:focus {
+                                            border-color: #ea7b00 !important;
+                                            box-shadow: 0 0 0 2px rgba(234, 123, 0, 0.15) !important;
+                                        }
+                                        body.white .toggle-editor-btn {
+                                            color: #64748b !important;
+                                        }
+                                        body.white .toggle-editor-btn:hover {
+                                            color: #ea7b00 !important;
+                                        }
+                                        body.white .os-modern-card label,
+                                        body.white .os-modern-card label span,
+                                        body.white #divEditarOs label {
+                                            color: #1a202c !important;
+                                        }
                                     </style>
 
                                     <div class="span12" style="margin-left: 0; padding: 0 1%;">

@@ -20,7 +20,7 @@
                     <i class="bx bx-user"></i> Informações do Perfil
                 </h3>
 
-                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px; padding: 14px; background: #0d1218; border-radius: 8px; border: 1px solid #1c2a38;">
+                <div class="profile-avatar-card">
                     <div style="position: relative; width: 80px; height: 80px; flex-shrink: 0;">
                         <img src="<?= (!$usuario->url_image_user || !is_file(FCPATH . "assets/userImage/" . $usuario->url_image_user)) ? base_url() . "assets/img/User.png" : base_url() . "assets/userImage/" . $usuario->url_image_user ?>" alt="Foto" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #ff9204;" />
                         <a href="#modalImageUser" data-toggle="modal" role="button" style="position: absolute; bottom: 0; right: 0; background: #ff9204; color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; text-decoration: none;" title="Alterar Foto">
@@ -28,19 +28,19 @@
                         </a>
                     </div>
                     <div>
-                        <h4 style="margin: 0; font-size: 1.15rem; color: #f1f4f9; font-weight: 700;"><?= html_escape($usuario->nome) ?></h4>
-                        <p style="margin: 3px 0 0 0; color: #8c97a8; font-size: 0.82rem;"><?= html_escape($usuario->email) ?></p>
+                        <h4 class="profile-user-name"><?= html_escape($usuario->nome) ?></h4>
+                        <p class="profile-user-email"><?= html_escape($usuario->email) ?></p>
                         <span class="amura-badge amura-badge-purple" style="margin-top: 6px;"><?= html_escape($usuario->permissao) ?></span>
                     </div>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <div style="display: flex; justify-content: space-between; padding: 10px 14px; background: #0f141a; border-radius: 6px; border: 1px solid #1c2430; font-size: 0.85rem;">
-                        <span style="color: #8c97a8;"><i class='bx bx-phone'></i> Telefone:</span>
-                        <strong style="color: #e2e8f0;"><?= html_escape($usuario->telefone) ?: 'Não informado' ?></strong>
+                    <div class="profile-info-row">
+                        <span class="profile-info-label"><i class='bx bx-phone'></i> Telefone:</span>
+                        <strong class="profile-info-val"><?= html_escape($usuario->telefone) ?: 'Não informado' ?></strong>
                     </div>
-                    <div style="display: flex; justify-content: space-between; padding: 10px 14px; background: #0f141a; border-radius: 6px; border: 1px solid #1c2430; font-size: 0.85rem;">
-                        <span style="color: #8c97a8;"><i class='bx bx-calendar'></i> Acesso Expira em:</span>
+                    <div class="profile-info-row">
+                        <span class="profile-info-label"><i class='bx bx-calendar'></i> Acesso Expira em:</span>
                         <strong style="color: #4ade80;"><?= date('d/m/Y', strtotime($usuario->dataExpiracao)) ?></strong>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
             <div class="control-group amura-form-group">
                 <label for="userfile" class="control-label amura-form-label">Arquivo de Foto <span class="required">*</span></label>
                 <div class="controls">
-                    <input type="file" name="userfile" style="color: #cbd5e1;" />
+                    <input type="file" name="userfile" />
                 </div>
             </div>
         </div>

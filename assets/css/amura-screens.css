@@ -767,6 +767,55 @@
 }
 
 /* --------------------------------------------------------------------------
+   9.3 CARDS DE BACKUP E ATUALIZAÇÃO
+   -------------------------------------------------------------------------- */
+.amura-backup-card {
+  background: #212130;
+  border: 1px solid #323248;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.amura-backup-card h4 {
+  color: #ff9204;
+}
+.amura-backup-card p {
+  color: #a2a3b7;
+}
+.amura-backup-card h5 {
+  color: #e4e6ef;
+}
+.amura-backup-card hr {
+  border: none;
+  border-top: 1px solid #323248;
+}
+.amura-backup-card input[type="file"] {
+  color: #a2a3b7;
+}
+
+.amura-backup-subcard {
+  background: #1a1a27;
+  border: 1px solid #2e2e42;
+}
+.amura-backup-subcard h5 {
+  color: #e4e6ef;
+}
+.amura-backup-subcard p {
+  color: #8c8c9e;
+}
+.amura-backup-tip {
+  margin-top: 20px;
+  padding: 12px;
+  background: rgba(54, 153, 255, 0.08);
+  border-left: 3px solid #3699ff;
+  border-radius: 4px;
+  color: #a2a3b7;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.amura-backup-tip strong {
+  color: #e4e6ef;
+}
+
+/* --------------------------------------------------------------------------
    10. FORMULÁRIOS
    -------------------------------------------------------------------------- */
 .amura-form-card {
@@ -851,6 +900,46 @@
   padding: 14px 22px;
   border-top: 1px solid #1c2a38;
   background: #0f141a;
+}
+
+/* --------------------------------------------------------------------------
+   10.1 PERFIL DO USUÁRIO (Minha Conta)
+   -------------------------------------------------------------------------- */
+.profile-avatar-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 14px;
+  background: #0d1218;
+  border-radius: 8px;
+  border: 1px solid #1c2a38;
+}
+.profile-user-name {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #f1f4f9;
+  font-weight: 700;
+}
+.profile-user-email {
+  margin: 3px 0 0 0;
+  color: #8c97a8;
+  font-size: 0.82rem;
+}
+.profile-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #0f141a;
+  border-radius: 6px;
+  border: 1px solid #1c2430;
+  font-size: 0.85rem;
+}
+.profile-info-label {
+  color: #8c97a8;
+}
+.profile-info-val {
+  color: #e2e8f0;
 }
 
 /* --------------------------------------------------------------------------
@@ -1240,6 +1329,164 @@ body.white .os-table tbody td a:not(.os-action-btn) {
 
 body.white .os-filter-label {
   color: #6b7280 !important;
+}
+
+/* Detalhamento de OS (Adicionar e Editar OS) */
+body.white .os-modern-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+body.white .os-card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.white .os-card-title {
+  color: #c47000 !important;
+}
+
+body.white .os-modern-card label,
+body.white .os-modern-card label span,
+body.white #divCadastrarOs label,
+body.white #divEditarOs label {
+  color: #1a202c !important;
+}
+
+body.white .quick-tag-btn {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+body.white .quick-tag-btn:hover {
+  background: #ea7b00 !important;
+  color: #ffffff !important;
+  border-color: #ea7b00 !important;
+}
+
+body.white .modern-textarea {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1a202c !important;
+}
+
+body.white .modern-textarea:focus {
+  border-color: #ea7b00 !important;
+  box-shadow: 0 0 0 2px rgba(234, 123, 0, 0.15) !important;
+}
+
+body.white .toggle-editor-btn {
+  color: #64748b !important;
+}
+
+body.white .toggle-editor-btn:hover {
+  color: #ea7b00 !important;
+}
+
+body.white #divCadastrarOs input[type="text"],
+body.white #divCadastrarOs input[type="number"],
+body.white #divCadastrarOs select,
+body.white #divEditarOs input[type="text"],
+body.white #divEditarOs input[type="number"],
+body.white #divEditarOs select {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #1a202c !important;
+}
+
+/* --------------------------------------------------------------------------
+   11.9 TEMA CLARO — Backup e Atualizações (Configurações)
+   -------------------------------------------------------------------------- */
+body.white .amura-backup-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+}
+body.white .amura-backup-card h4 {
+  color: #c47000 !important;
+}
+body.white .amura-backup-card p {
+  color: #64748b !important;
+}
+body.white .amura-backup-card h5 {
+  color: #1a202c !important;
+}
+body.white .amura-backup-card hr {
+  border: none !important;
+  border-top: 1px solid rgba(0,0,0,0.08) !important;
+}
+body.white .amura-backup-card input[type="file"] {
+  color: #1a202c !important;
+}
+
+body.white .amura-backup-subcard {
+  background: #f8fafc !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+}
+body.white .amura-backup-subcard h5 {
+  color: #1a202c !important;
+}
+body.white .amura-backup-subcard p {
+  color: #64748b !important;
+}
+body.white .amura-backup-subcard input[type="file"] {
+  color: #1a202c !important;
+}
+
+body.white .amura-backup-tip {
+  background: rgba(54, 153, 255, 0.06) !important;
+  border-left-color: #3699ff !important;
+  color: #475569 !important;
+}
+body.white .amura-backup-tip strong {
+  color: #1e293b !important;
+}
+
+/* Fallback garantido por ID */
+body.white #menuBackup .span12,
+body.white #menu4 .span12 {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.white #menuBackup .span6 {
+  background: #f8fafc !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+body.white #menuBackup p,
+body.white #menu4 p {
+  color: #64748b !important;
+}
+body.white #menuBackup h5,
+body.white #menu4 h5 {
+  color: #1a202c !important;
+}
+
+/* --------------------------------------------------------------------------
+   11.10 TEMA CLARO — Perfil do Usuário (Minha Conta)
+   -------------------------------------------------------------------------- */
+body.white .profile-avatar-card {
+  background: #f8f9fc !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+body.white .profile-user-name {
+  color: #1a202c !important;
+}
+body.white .profile-user-email {
+  color: #64748b !important;
+}
+body.white .profile-info-row {
+  background: #f8f9fc !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+body.white .profile-info-label {
+  color: #64748b !important;
+}
+body.white .profile-info-val {
+  color: #1a202c !important;
+}
+body.white #modalImageUser input[type="file"] {
+  color: #1a202c !important;
 }
 
 /* --------------------------------------------------------------------------

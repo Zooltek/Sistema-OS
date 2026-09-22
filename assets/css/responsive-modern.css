@@ -680,172 +680,396 @@ body:not(.sidebar-expanded):not(.sidebar-collapsed) #sidebar #newlog .icon2 {
 }
 
 /* ==========================================================================
-   Modern Dashboard Shortcut Cards (.cardBox .card) - Preservando Cores e Posições
+   Modern Dashboard Shortcut Cards (.cardBox .card) - Light & Dark Theme
    ========================================================================== */
 .cardBox {
   display: grid !important;
   grid-template-columns: repeat(6, 1fr) !important;
   gap: 16px !important;
   padding: 0 !important;
-  margin: 0 0 22px 0 !important;
+  margin: 0 0 24px 0 !important;
   list-style: none !important;
 }
 
 .cardBox .card {
   position: relative !important;
-  border-radius: 16px !important;
-  padding: 16px 18px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.25) !important;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  border-radius: 14px !important;
+  padding: 24px 14px 20px 14px !important;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease !important;
   cursor: pointer !important;
+  min-height: 165px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
 }
 
 .cardBox .card::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  height: 40% !important;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 100%) !important;
-  pointer-events: none !important;
+  display: none !important;
 }
 
 .cardBox .card .cardLink {
   display: flex !important;
-  justify-content: space-between !important;
+  flex-direction: column !important;
   align-items: center !important;
+  justify-content: space-between !important;
   text-decoration: none !important;
   width: 100% !important;
   height: 100% !important;
+  gap: 10px !important;
 }
 
-.cardBox .card .grid-blak {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  z-index: 2 !important;
-}
-
-.cardBox .card .numbers.N-tittle {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  color: #1a1e2d !important;
-  letter-spacing: -0.2px !important;
-  line-height: 1.2 !important;
-  margin-bottom: 8px !important;
-}
-
-.cardBox .card .cardName {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: fit-content !important;
-  padding: 2px 8px !important;
-  border-radius: 6px !important;
-  background: rgba(26, 30, 45, 0.12) !important;
-  border: 1px solid rgba(26, 30, 45, 0.15) !important;
-  color: #1a1e2d !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.5px !important;
-  line-height: 1.4 !important;
-  margin: 0 !important;
-  transition: all 0.2s ease !important;
-}
-
-/* Ícones em Glassmorphism */
-.cardBox .card [class^="lord-icon"] {
+/* Container do Ícone */
+.cardBox .card .shortcut-icon-wrapper {
   width: 44px !important;
   height: 44px !important;
   border-radius: 12px !important;
-  background: rgba(255, 255, 255, 0.32) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  transition: all 0.25s ease !important;
   margin: 0 !important;
-  padding: 0 !important;
-  z-index: 2 !important;
-  transition: transform 0.3s ease, background 0.3s ease !important;
 }
 
-.cardBox .card [class^="lord-icon"] i {
+.cardBox .card .shortcut-icon-wrapper i {
   font-size: 22px !important;
+  line-height: 1 !important;
+  transition: transform 0.25s ease !important;
+}
+
+/* Título */
+.cardBox .card .shortcut-title {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.2px !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 38px !important;
+}
+
+/* Badge / Tecla de Atalho */
+.cardBox .card .shortcut-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 28px !important;
+  height: 22px !important;
+  padding: 2px 8px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.4px !important;
+  border-radius: 6px !important;
+  margin: 0 !important;
+  transition: all 0.25s ease !important;
+}
+
+/* ==========================================
+   TEMA ESCURO (Dark Mode - Default / puredark / darkviolet / darkorange)
+   ========================================== */
+body:not(.white) .cardBox .card {
+  background: #171825 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.07) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
+body:not(.white) .cardBox .card .shortcut-title {
+  color: #ffffff !important;
+}
+
+body:not(.white) .cardBox .card .shortcut-badge {
+  background: #10111a !important;
+  border: 1px solid #232536 !important;
+  border-bottom: 2px solid #0a0b12 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Cores dos Ícones e Badges no Modo Escuro */
+body:not(.white) .card-shortcut-clientes .shortcut-icon-wrapper {
+  background: rgba(59, 130, 246, 0.12) !important;
+}
+body:not(.white) .card-shortcut-clientes .shortcut-icon-wrapper i {
+  color: #60a5fa !important;
+}
+body:not(.white) .card-shortcut-clientes .shortcut-badge {
+  color: #60a5fa !important;
+}
+
+body:not(.white) .card-shortcut-produtos .shortcut-icon-wrapper {
+  background: rgba(245, 158, 11, 0.12) !important;
+}
+body:not(.white) .card-shortcut-produtos .shortcut-icon-wrapper i {
+  color: #f59e0b !important;
+}
+body:not(.white) .card-shortcut-produtos .shortcut-badge {
+  color: #f59e0b !important;
+}
+
+body:not(.white) .card-shortcut-servicos .shortcut-icon-wrapper {
+  background: rgba(20, 184, 166, 0.12) !important;
+}
+body:not(.white) .card-shortcut-servicos .shortcut-icon-wrapper i {
+  color: #2dd4bf !important;
+}
+body:not(.white) .card-shortcut-servicos .shortcut-badge {
+  color: #2dd4bf !important;
+}
+
+body:not(.white) .card-shortcut-os .shortcut-icon-wrapper {
+  background: rgba(236, 72, 153, 0.12) !important;
+}
+body:not(.white) .card-shortcut-os .shortcut-icon-wrapper i {
+  color: #f472b6 !important;
+}
+body:not(.white) .card-shortcut-os .shortcut-badge {
+  color: #f472b6 !important;
+}
+
+body:not(.white) .card-shortcut-vendas .shortcut-icon-wrapper {
+  background: rgba(16, 185, 129, 0.12) !important;
+}
+body:not(.white) .card-shortcut-vendas .shortcut-icon-wrapper i {
+  color: #34d399 !important;
+}
+body:not(.white) .card-shortcut-vendas .shortcut-badge {
+  color: #34d399 !important;
+}
+
+body:not(.white) .card-shortcut-lancamentos .shortcut-icon-wrapper {
+  background: rgba(234, 179, 8, 0.12) !important;
+}
+body:not(.white) .card-shortcut-lancamentos .shortcut-icon-wrapper i {
+  color: #facc15 !important;
+}
+body:not(.white) .card-shortcut-lancamentos .shortcut-badge {
+  color: #facc15 !important;
+}
+
+/* Hover no Modo Escuro: elevação + borda iluminada com glow */
+body:not(.white) .cardBox .card:hover {
+  transform: translateY(-5px) !important;
+}
+
+body:not(.white) .card-shortcut-clientes:hover {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 10px 25px -4px rgba(59, 130, 246, 0.45), 0 0 12px rgba(59, 130, 246, 0.25) !important;
+}
+body:not(.white) .card-shortcut-produtos:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 10px 25px -4px rgba(245, 158, 11, 0.45), 0 0 12px rgba(245, 158, 11, 0.25) !important;
+}
+body:not(.white) .card-shortcut-servicos:hover {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 10px 25px -4px rgba(6, 182, 212, 0.45), 0 0 12px rgba(6, 182, 212, 0.25) !important;
+}
+body:not(.white) .card-shortcut-os:hover {
+  border-color: #ec4899 !important;
+  box-shadow: 0 10px 25px -4px rgba(236, 72, 153, 0.45), 0 0 12px rgba(236, 72, 153, 0.25) !important;
+}
+body:not(.white) .card-shortcut-vendas:hover {
+  border-color: #10b981 !important;
+  box-shadow: 0 10px 25px -4px rgba(16, 185, 129, 0.45), 0 0 12px rgba(16, 185, 129, 0.25) !important;
+}
+body:not(.white) .card-shortcut-lancamentos:hover {
+  border-color: #eab308 !important;
+  box-shadow: 0 10px 25px -4px rgba(234, 179, 8, 0.45), 0 0 12px rgba(234, 179, 8, 0.25) !important;
+}
+
+/* ==========================================
+   TEMA CLARO (Light Mode - body.white / whitegreen / whiteblack)
+   ========================================== */
+body.white .cardBox .card,
+body.whitegreen .cardBox .card,
+body.whiteblack .cardBox .card {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.white .cardBox .card .shortcut-title,
+body.whitegreen .cardBox .card .shortcut-title,
+body.whiteblack .cardBox .card .shortcut-title {
   color: #1a1e2d !important;
-  transition: transform 0.3s ease !important;
 }
 
-/* Cores e Posições Originais com Gradientes Refinados */
-/* 1. Clientes (Azul) */
-.cardBox .card:nth-child(1) {
-  background: linear-gradient(135deg, #5c75f4 0%, #8ec5fc 100%) !important;
-}
-.cardBox .card:nth-child(1):hover {
-  box-shadow: 0 14px 28px -4px rgba(92, 117, 244, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
-}
-
-/* 2. Produtos (Laranja) */
-.cardBox .card:nth-child(2) {
-  background: linear-gradient(135deg, #e88636 0%, #ffc985 100%) !important;
-}
-.cardBox .card:nth-child(2):hover {
-  box-shadow: 0 14px 28px -4px rgba(232, 134, 54, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+body.white .cardBox .card .shortcut-badge,
+body.whitegreen .cardBox .card .shortcut-badge,
+body.whiteblack .cardBox .card .shortcut-badge {
+  background: #f1f4f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
 }
 
-/* 3. Serviços (Ciano) */
-.cardBox .card:nth-child(3) {
-  background: linear-gradient(135deg, #0da3b3 0%, #4ee3de 100%) !important;
+/* Ícones no Modo Claro */
+body.white .card-shortcut-clientes .shortcut-icon-wrapper,
+body.whitegreen .card-shortcut-clientes .shortcut-icon-wrapper,
+body.whiteblack .card-shortcut-clientes .shortcut-icon-wrapper {
+  background: #edf4fe !important;
 }
-.cardBox .card:nth-child(3):hover {
-  box-shadow: 0 14px 28px -4px rgba(13, 163, 179, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
-}
-
-/* 4. OS (Rosa) */
-.cardBox .card:nth-child(4) {
-  background: linear-gradient(135deg, #e4266e 0%, #fc92a8 100%) !important;
-}
-.cardBox .card:nth-child(4):hover {
-  box-shadow: 0 14px 28px -4px rgba(228, 38, 110, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+body.white .card-shortcut-clientes .shortcut-icon-wrapper i,
+body.whitegreen .card-shortcut-clientes .shortcut-icon-wrapper i,
+body.whiteblack .card-shortcut-clientes .shortcut-icon-wrapper i {
+  color: #3b82f6 !important;
 }
 
-/* 5. Vendas (Verde) */
-.cardBox .card:nth-child(5) {
-  background: linear-gradient(135deg, #11b093 0%, #5ce5a1 100%) !important;
+body.white .card-shortcut-produtos .shortcut-icon-wrapper,
+body.whitegreen .card-shortcut-produtos .shortcut-icon-wrapper,
+body.whiteblack .card-shortcut-produtos .shortcut-icon-wrapper {
+  background: #fef8ed !important;
 }
-.cardBox .card:nth-child(5):hover {
-  box-shadow: 0 14px 28px -4px rgba(17, 176, 147, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
-}
-
-/* 6. Lançamentos (Amarelo) */
-.cardBox .card:nth-child(6) {
-  background: linear-gradient(135deg, #e6a806 0%, #fbd64e 100%) !important;
-}
-.cardBox .card:nth-child(6):hover {
-  box-shadow: 0 14px 28px -4px rgba(230, 168, 6, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.4) !important;
+body.white .card-shortcut-produtos .shortcut-icon-wrapper i,
+body.whitegreen .card-shortcut-produtos .shortcut-icon-wrapper i,
+body.whiteblack .card-shortcut-produtos .shortcut-icon-wrapper i {
+  color: #d97706 !important;
 }
 
-/* Efeito Hover Geral nos Cards */
-.cardBox .card:hover {
-  transform: translateY(-4px) scale(1.015) !important;
-  opacity: 1 !important;
+body.white .card-shortcut-servicos .shortcut-icon-wrapper,
+body.whitegreen .card-shortcut-servicos .shortcut-icon-wrapper,
+body.whiteblack .card-shortcut-servicos .shortcut-icon-wrapper {
+  background: #eefcfb !important;
+}
+body.white .card-shortcut-servicos .shortcut-icon-wrapper i,
+body.whitegreen .card-shortcut-servicos .shortcut-icon-wrapper i,
+body.whiteblack .card-shortcut-servicos .shortcut-icon-wrapper i {
+  color: #0d9488 !important;
 }
 
-.cardBox .card:hover [class^="lord-icon"] {
-  background: rgba(255, 255, 255, 0.48) !important;
-  transform: scale(1.08) rotate(3deg) !important;
+body.white .card-shortcut-os .shortcut-icon-wrapper,
+body.whitegreen .card-shortcut-os .shortcut-icon-wrapper,
+body.whiteblack .card-shortcut-os .shortcut-icon-wrapper {
+  background: #fff0f5 !important;
+}
+body.white .card-shortcut-os .shortcut-icon-wrapper i,
+body.whitegreen .card-shortcut-os .shortcut-icon-wrapper i,
+body.whiteblack .card-shortcut-os .shortcut-icon-wrapper i {
+  color: #e11d48 !important;
 }
 
-.cardBox .card:hover .cardName {
-  background: rgba(26, 30, 45, 0.2) !important;
+body.white .card-shortcut-vendas .shortcut-icon-wrapper,
+body.whitegreen .card-shortcut-vendas .shortcut-icon-wrapper,
+body.whiteblack .card-shortcut-vendas .shortcut-icon-wrapper {
+  background: #ecfdf5 !important;
+}
+body.white .card-shortcut-vendas .shortcut-icon-wrapper i,
+body.whitegreen .card-shortcut-vendas .shortcut-icon-wrapper i,
+body.whiteblack .card-shortcut-vendas .shortcut-icon-wrapper i {
+  color: #059669 !important;
+}
+
+body.white .card-shortcut-lancamentos .shortcut-icon-wrapper,
+body.whitegreen .card-shortcut-lancamentos .shortcut-icon-wrapper,
+body.whiteblack .card-shortcut-lancamentos .shortcut-icon-wrapper {
+  background: #fefce8 !important;
+}
+body.white .card-shortcut-lancamentos .shortcut-icon-wrapper i,
+body.whitegreen .card-shortcut-lancamentos .shortcut-icon-wrapper i,
+body.whiteblack .card-shortcut-lancamentos .shortcut-icon-wrapper i {
+  color: #d97706 !important;
+}
+
+/* Hover no Modo Claro: elevação + borda iluminada + badge preenchido com a cor */
+body.white .cardBox .card:hover,
+body.whitegreen .cardBox .card:hover,
+body.whiteblack .cardBox .card:hover {
+  transform: translateY(-5px) !important;
+}
+
+body.white .card-shortcut-clientes:hover,
+body.whitegreen .card-shortcut-clientes:hover,
+body.whiteblack .card-shortcut-clientes:hover {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 12px 26px -4px rgba(59, 130, 246, 0.25), 0 0 8px rgba(59, 130, 246, 0.15) !important;
+}
+body.white .card-shortcut-clientes:hover .shortcut-badge,
+body.whitegreen .card-shortcut-clientes:hover .shortcut-badge,
+body.whiteblack .card-shortcut-clientes:hover .shortcut-badge {
+  background: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+body.white .card-shortcut-produtos:hover,
+body.whitegreen .card-shortcut-produtos:hover,
+body.whiteblack .card-shortcut-produtos:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 12px 26px -4px rgba(245, 158, 11, 0.25), 0 0 8px rgba(245, 158, 11, 0.15) !important;
+}
+body.white .card-shortcut-produtos:hover .shortcut-badge,
+body.whitegreen .card-shortcut-produtos:hover .shortcut-badge,
+body.whiteblack .card-shortcut-produtos:hover .shortcut-badge {
+  background: #f59e0b !important;
+  border-color: #f59e0b !important;
+  color: #ffffff !important;
+}
+
+body.white .card-shortcut-servicos:hover,
+body.whitegreen .card-shortcut-servicos:hover,
+body.whiteblack .card-shortcut-servicos:hover {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 12px 26px -4px rgba(6, 182, 212, 0.25), 0 0 8px rgba(6, 182, 212, 0.15) !important;
+}
+body.white .card-shortcut-servicos:hover .shortcut-badge,
+body.whitegreen .card-shortcut-servicos:hover .shortcut-badge,
+body.whiteblack .card-shortcut-servicos:hover .shortcut-badge {
+  background: #06b6d4 !important;
+  border-color: #06b6d4 !important;
+  color: #ffffff !important;
+}
+
+body.white .card-shortcut-os:hover,
+body.whitegreen .card-shortcut-os:hover,
+body.whiteblack .card-shortcut-os:hover {
+  border-color: #ec4899 !important;
+  box-shadow: 0 12px 26px -4px rgba(236, 72, 153, 0.25), 0 0 8px rgba(236, 72, 153, 0.15) !important;
+}
+body.white .card-shortcut-os:hover .shortcut-badge,
+body.whitegreen .card-shortcut-os:hover .shortcut-badge,
+body.whiteblack .card-shortcut-os:hover .shortcut-badge {
+  background: #ec4899 !important;
+  border-color: #ec4899 !important;
+  color: #ffffff !important;
+}
+
+body.white .card-shortcut-vendas:hover,
+body.whitegreen .card-shortcut-vendas:hover,
+body.whiteblack .card-shortcut-vendas:hover {
+  border-color: #10b981 !important;
+  box-shadow: 0 12px 26px -4px rgba(16, 185, 129, 0.25), 0 0 8px rgba(16, 185, 129, 0.15) !important;
+}
+body.white .card-shortcut-vendas:hover .shortcut-badge,
+body.whitegreen .card-shortcut-vendas:hover .shortcut-badge,
+body.whiteblack .card-shortcut-vendas:hover .shortcut-badge {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+body.white .card-shortcut-lancamentos:hover,
+body.whitegreen .card-shortcut-lancamentos:hover,
+body.whiteblack .card-shortcut-lancamentos:hover {
+  border-color: #eab308 !important;
+  box-shadow: 0 12px 26px -4px rgba(234, 179, 8, 0.25), 0 0 8px rgba(234, 179, 8, 0.15) !important;
+}
+body.white .card-shortcut-lancamentos:hover .shortcut-badge,
+body.whitegreen .card-shortcut-lancamentos:hover .shortcut-badge,
+body.whiteblack .card-shortcut-lancamentos:hover .shortcut-badge {
+  background: #eab308 !important;
+  border-color: #eab308 !important;
+  color: #ffffff !important;
+}
+
+/* Micro-interação no ícone */
+.cardBox .card:hover .shortcut-icon-wrapper {
+  transform: scale(1.08) !important;
 }
 
 .cardBox .card:active {
-  transform: translateY(-1px) scale(1) !important;
+  transform: translateY(-1px) !important;
 }

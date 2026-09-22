@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-responsive.min.css" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/matrix-style.css" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/matrix-media.css" />
-  <link rel="stylesheet" href="<?= base_url(); ?>assets/css/responsive-modern.css?v=1.0.2" />
+  <link rel="stylesheet" href="<?= base_url(); ?>assets/css/responsive-modern.css?v=1.0.3" />
   <link href="<?= base_url(); ?>assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/fullcalendar.css" />
   <?php if ($configuration['app_theme'] == 'white') { ?>

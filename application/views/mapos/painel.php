@@ -26,85 +26,73 @@
 <!-- Action boxes -->
 <ul class="cardBox">
     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) : ?>
-        <li class="card">
+        <li class="card card-shortcut card-shortcut-clientes">
             <a class="cardLink" href="<?= site_url('clientes') ?>">
-                <div class="grid-blak">
-                    <div class="numbers N-tittle">Clientes</div>
-                    <div class="cardName">F1</div>
+                <div class="shortcut-icon-wrapper">
+                    <i class='bx bx-user'></i>
                 </div>
-                <div class="lord-icon02">
-                    <i class='bx bx-user iconBx02'></i>
-                </div>
+                <div class="shortcut-title numbers N-tittle">Clientes</div>
+                <div class="shortcut-badge cardName">F1</div>
             </a>
         </li>
     <?php endif ?>
 
     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vProduto')) : ?>
-        <li class="card">
+        <li class="card card-shortcut card-shortcut-produtos">
             <a class="cardLink" href="<?= site_url('produtos') ?>">
-                <div class="grid-blak">
-                    <div class="numbers N-tittle">Produtos</div>
-                    <div class="cardName">F2</div>
+                <div class="shortcut-icon-wrapper">
+                    <i class='bx bx-package'></i>
                 </div>
-                <div class="lord-icon02">
-                    <i class='bx bx-basket iconBx02'></i>
-                </div>
+                <div class="shortcut-title numbers N-tittle">Produtos</div>
+                <div class="shortcut-badge cardName">F2</div>
             </a>
         </li>
     <?php endif ?>
 
     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) : ?>
-        <li class="card">
+        <li class="card card-shortcut card-shortcut-servicos">
             <a class="cardLink" href="<?= site_url('servicos') ?>">
-                <div class="grid-blak">
-                    <div class="numbers N-tittle">Serviços</div>
-                    <div class="cardName">F3</div>
+                <div class="shortcut-icon-wrapper">
+                    <i class='bx bx-wrench'></i>
                 </div>
-                <div class="lord-icon03">
-                    <i class='bx bx-wrench iconBx03'></i>
-                </div>
+                <div class="shortcut-title numbers N-tittle">Serviços</div>
+                <div class="shortcut-badge cardName">F3</div>
             </a>
         </li>
     <?php endif ?>
 
     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) : ?>
-        <li class="card">
+        <li class="card card-shortcut card-shortcut-os">
             <a class="cardLink" href="<?= site_url('os') ?>">
-                <div class="grid-blak">
-                    <div class="numbers N-tittle">OS</div>
-                    <div class="cardName">F4</div>
+                <div class="shortcut-icon-wrapper">
+                    <i class='bx bx-notepad'></i>
                 </div>
-                <div class="lord-icon04">
-                    <i class='bx bx-file iconBx04'></i>
-                </div>
+                <div class="shortcut-title numbers N-tittle">Ordens de<br>Serviço</div>
+                <div class="shortcut-badge cardName">F4</div>
             </a>
         </li>
     <?php endif ?>
 
     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) : ?>
-        <li class="card">
+        <li class="card card-shortcut card-shortcut-vendas">
             <a class="cardLink" href="<?= site_url('vendas/') ?>">
-                <div class="grid-blak">
-                    <div class="numbers N-tittle">Vendas</div>
-                    <div class="cardName">F6</div>
+                <div class="shortcut-icon-wrapper">
+                    <i class='bx bx-cart'></i>
                 </div>
-                <div class="lord-icon05">
-                    <i class='bx bx-cart-alt iconBx05'></i>
-                </div>
+                <div class="shortcut-title numbers N-tittle">Vendas</div>
+                <div class="shortcut-badge cardName">F6</div>
             </a>
         </li>
     <?php endif ?>
 
     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) : ?>
-        <li class="card">
+        <li class="card card-shortcut card-shortcut-lancamentos">
             <a class="cardLink" href="<?= site_url('financeiro/lancamentos') ?>">
-                <div class="grid-blak">
-                    <div class="numbers N-tittle">Lançamentos</div>
-                    <div class="cardName">F7</div>
+                <div class="shortcut-icon-wrapper">
+                    <i class='bx bx-bar-chart-alt-2'></i>
                 </div>
-                <div class="lord-icon06">
-                    <i class="bx bx-bar-chart-alt-2 iconBx06"></i>
-                </div>
+                <div class="shortcut-title numbers N-tittle">Lançamentos</div>
+                <div class="shortcut-badge cardName">F7</div>
             </a>
         </li>
     <?php endif ?>

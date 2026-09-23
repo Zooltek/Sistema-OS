@@ -9,7 +9,8 @@
     "electron:start": "electron .",
     "electron:build": "electron-builder --win --x64",
     "electron:build:portable": "electron-builder --win portable --x64",
-    "electron:build:all": "electron-builder --win nsis portable --x64"
+    "electron:build:all": "electron-builder --win nsis portable --x64",
+    "hot-update": "node desktop/scripts/generate-hot-update.js"
   },
   "build": {
     "appId": "com.amura.os",

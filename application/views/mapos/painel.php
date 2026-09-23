@@ -1160,74 +1160,261 @@
 </div>
 <!-- Fim Staus OS -->
 
+<!-- Estilos e Ajustes dos Modais da Agenda e Compromissos (Sem Scroll) -->
+<style>
+#modalNovoCompromisso.modal,
+#modalAcaoDia.modal,
+#calendarModal.modal {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    max-height: 90vh !important;
+    overflow: hidden !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid #323248 !important;
+    z-index: 1050 !important;
+}
+
+#modalNovoCompromisso.modal.fade,
+#modalAcaoDia.modal.fade,
+#calendarModal.modal.fade {
+    top: 45% !important;
+    opacity: 0;
+    transition: opacity 0.2s ease, top 0.2s ease !important;
+}
+
+#modalNovoCompromisso.modal.fade.in,
+#modalAcaoDia.modal.fade.in,
+#calendarModal.modal.fade.in {
+    top: 50% !important;
+    opacity: 1;
+}
+
+#modalNovoCompromisso {
+    width: 480px !important;
+    max-width: 95vw !important;
+}
+
+#modalAcaoDia {
+    width: 420px !important;
+    max-width: 95vw !important;
+}
+
+#calendarModal {
+    width: 520px !important;
+    max-width: 95vw !important;
+}
+
+#modalNovoCompromisso .modal-header,
+#modalAcaoDia .modal-header,
+#calendarModal .modal-header {
+    padding: 12px 18px !important;
+    background: #1a1a27 !important;
+    border-bottom: 1px solid #2e2e42 !important;
+}
+
+#modalNovoCompromisso .modal-header h4,
+#modalNovoCompromisso .modal-header h3,
+#modalAcaoDia .modal-header h4,
+#calendarModal .modal-header h3 {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    margin: 0 !important;
+}
+
+#modalNovoCompromisso .modal-body {
+    padding: 14px 18px !important;
+    max-height: calc(90vh - 110px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    background: #1e1e2d !important;
+}
+
+#modalNovoCompromisso .comp-form-group {
+    margin-bottom: 10px !important;
+}
+
+#modalNovoCompromisso .comp-form-label {
+    display: block !important;
+    color: #cbd5e1 !important;
+    font-weight: 600 !important;
+    font-size: 11.5px !important;
+    margin-bottom: 4px !important;
+    text-transform: none !important;
+}
+
+#modalNovoCompromisso input[type="text"],
+#modalNovoCompromisso input[type="date"],
+#modalNovoCompromisso input[type="time"],
+#modalNovoCompromisso select,
+#modalNovoCompromisso textarea {
+    background: #151521 !important;
+    border: 1px solid #2e2e42 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin-bottom: 0 !important;
+    font-size: 13px !important;
+}
+
+#modalNovoCompromisso input[type="text"],
+#modalNovoCompromisso input[type="date"],
+#modalNovoCompromisso input[type="time"],
+#modalNovoCompromisso select {
+    height: 34px !important;
+    padding: 6px 10px !important;
+}
+
+#modalNovoCompromisso textarea {
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 6px 10px !important;
+    resize: vertical !important;
+}
+
+#modalNovoCompromisso .modal-footer,
+#modalAcaoDia .modal-footer,
+#calendarModal .modal-footer {
+    padding: 10px 18px !important;
+    background: #161622 !important;
+    border-top: 1px solid #2e2e42 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Suporte ao Tema Claro (White Theme) */
+body.white #modalNovoCompromisso.modal,
+body.white #modalAcaoDia.modal,
+body.white #calendarModal.modal {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+}
+
+body.white #modalNovoCompromisso .modal-header,
+body.white #modalAcaoDia .modal-header,
+body.white #calendarModal .modal-header {
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+body.white #modalNovoCompromisso .modal-header h4,
+body.white #modalNovoCompromisso .modal-header h3,
+body.white #modalAcaoDia .modal-header h4,
+body.white #calendarModal .modal-header h3 {
+    color: #1e293b !important;
+}
+
+body.white #modalNovoCompromisso .modal-header .close,
+body.white #modalAcaoDia .modal-header .close,
+body.white #calendarModal .modal-header .close {
+    color: #64748b !important;
+}
+
+body.white #modalNovoCompromisso .modal-body,
+body.white #modalAcaoDia .modal-body,
+body.white #calendarModal .modal-body {
+    background: #ffffff !important;
+    color: #334155 !important;
+}
+
+body.white #modalNovoCompromisso .comp-form-label {
+    color: #475569 !important;
+}
+
+body.white #modalNovoCompromisso input[type="text"],
+body.white #modalNovoCompromisso input[type="date"],
+body.white #modalNovoCompromisso input[type="time"],
+body.white #modalNovoCompromisso select,
+body.white #modalNovoCompromisso textarea {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+}
+
+body.white #modalNovoCompromisso .modal-footer,
+body.white #modalAcaoDia .modal-footer,
+body.white #calendarModal .modal-footer {
+    background: #f1f5f9 !important;
+    border-top: 1px solid #e2e8f0 !important;
+}
+</style>
+
 <!-- Modal Opções ao Clicar no Dia -->
-<div id="modalAcaoDia" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" style="max-width: 440px; border-radius: 10px; background: #1e1e2d;">
-    <div class="modal-header" style="border-bottom: 1px solid #323248;">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">×</button>
-        <h4 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+<div id="modalAcaoDia" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4>
             <i class="bx bx-calendar-plus" style="color: #ff9204;"></i> <span id="labelDataSelecionada">Dia Selecionado</span>
         </h4>
     </div>
-    <div class="modal-body" style="padding: 20px; text-align: center;">
-        <p style="color: #a2a3b7; font-size: 13px; margin-bottom: 20px;">O que você deseja registrar para esta data?</p>
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-            <a href="#" id="btnAcaoCriarOs" class="button btn btn-primary btn-large" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 8px;">
-                <i class="bx bx-wrench" style="font-size: 20px;"></i>
-                <span style="font-size: 14px; font-weight: 600;">Abrir Nova Ordem de Serviço</span>
+    <div class="modal-body" style="padding: 18px; text-align: center;">
+        <p style="color: #a2a3b7; font-size: 13px; margin-bottom: 16px;">O que você deseja registrar para esta data?</p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="#" id="btnAcaoCriarOs" class="button btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 14px; border-radius: 8px;">
+                <i class="bx bx-wrench" style="font-size: 18px;"></i>
+                <span style="font-size: 13.5px; font-weight: 600;">Abrir Nova Ordem de Serviço</span>
             </a>
-            <button type="button" id="btnAcaoCriarCompromisso" class="button btn btn-warning btn-large" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 8px;">
-                <i class="bx bx-pin" style="font-size: 20px;"></i>
-                <span style="font-size: 14px; font-weight: 600;">Agendar Compromisso / Lembrete</span>
+            <button type="button" id="btnAcaoCriarCompromisso" class="button btn btn-warning" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 14px; border-radius: 8px;">
+                <i class="bx bx-pin" style="font-size: 18px;"></i>
+                <span style="font-size: 13.5px; font-weight: 600;">Agendar Compromisso / Lembrete</span>
             </button>
         </div>
     </div>
 </div>
 
 <!-- Modal Novo Compromisso -->
-<div id="modalNovoCompromisso" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true" style="max-width: 500px; border-radius: 10px; background: #1e1e2d;">
+<div id="modalNovoCompromisso" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
     <form id="formNovoCompromisso" style="margin: 0;">
-        <div class="modal-header" style="border-bottom: 1px solid #323248;">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color: #fff;">×</button>
-            <h4 style="color: #fff; margin: 0; display: flex; align-items: center; gap: 8px;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4>
                 <i class="bx bx-calendar-plus" style="color: #ff9204;"></i> Agendar Compromisso / Lembrete
             </h4>
         </div>
-        <div class="modal-body" style="padding: 20px;">
-            <div class="control-group" style="margin-bottom: 14px;">
-                <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Título do Compromisso / Lembrete *</label>
-                <input type="text" id="comp_titulo" name="titulo" required placeholder="Ex: Visita técnica, Entrega do aparelho, etc." class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px; padding: 8px 10px; height: auto;">
+        <div class="modal-body">
+            <div class="comp-form-group">
+                <label class="comp-form-label">Título do Compromisso / Lembrete *</label>
+                <input type="text" id="comp_titulo" name="titulo" required placeholder="Ex: Visita técnica, Entrega do aparelho, etc.">
             </div>
 
-            <div class="row-fluid" style="margin-bottom: 14px;">
-                <div class="span6">
-                    <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Data *</label>
-                    <input type="date" id="comp_data" name="data_inicio" required class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px; padding: 6px 10px; height: auto;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                <div>
+                    <label class="comp-form-label">Data *</label>
+                    <input type="date" id="comp_data" name="data_inicio" required>
                 </div>
-                <div class="span6">
-                    <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Horário</label>
-                    <input type="time" id="comp_hora" name="hora_inicio" value="09:00" class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px; padding: 6px 10px; height: auto;">
+                <div>
+                    <label class="comp-form-label">Horário</label>
+                    <input type="time" id="comp_hora" name="hora_inicio" value="09:00">
                 </div>
             </div>
 
-            <div class="control-group" style="margin-bottom: 14px;">
-                <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Cor de Destaque</label>
-                <select id="comp_cor" name="cor" class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px; height: 36px;">
-                    <option value="#ff9204" style="background: #ff9204; color: #fff;">Laranja (Padrão)</option>
-                    <option value="#3699ff" style="background: #3699ff; color: #fff;">Azul (Visita / Atendimento)</option>
-                    <option value="#10b981" style="background: #10b981; color: #fff;">Verde (Concluído / Prioridade Baixa)</option>
-                    <option value="#ef4444" style="background: #ef4444; color: #fff;">Vermelho (Urgente / Alerta)</option>
-                    <option value="#8b5cf6" style="background: #8b5cf6; color: #fff;">Roxo (Retorno / Garantia)</option>
+            <div class="comp-form-group">
+                <label class="comp-form-label">Cor de Destaque</label>
+                <select id="comp_cor" name="cor">
+                    <option value="#ff9204">Laranja (Padrão)</option>
+                    <option value="#3699ff">Azul (Visita / Atendimento)</option>
+                    <option value="#10b981">Verde (Concluído / Prioridade Baixa)</option>
+                    <option value="#ef4444">Vermelho (Urgente / Alerta)</option>
+                    <option value="#8b5cf6">Roxo (Retorno / Garantia)</option>
                 </select>
             </div>
 
-            <div class="control-group" style="margin-bottom: 0;">
-                <label style="color: #cbd5e1; font-weight: 600; font-size: 12px; margin-bottom: 4px;">Descrição / Observações</label>
-                <textarea id="comp_descricao" name="descricao" rows="3" placeholder="Informações adicionais, detalhes do cliente, etc." class="span12" style="background: #151521; border-color: #2e2e42; color: #fff; border-radius: 6px;"></textarea>
+            <div class="comp-form-group" style="margin-bottom: 0;">
+                <label class="comp-form-label">Descrição / Observações</label>
+                <textarea id="comp_descricao" name="descricao" rows="2" placeholder="Informações adicionais, detalhes do cliente, etc."></textarea>
             </div>
         </div>
-        <div class="modal-footer" style="background: #191924; border-top: 1px solid #323248; display: flex; justify-content: flex-end; gap: 8px;">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="submit" id="btnSalvarCompromisso" class="btn btn-success">Salvar Compromisso</button>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" style="border-radius: 6px;">Cancelar</button>
+            <button type="submit" id="btnSalvarCompromisso" class="btn btn-success" style="border-radius: 6px;">Salvar Compromisso</button>
         </div>
     </form>
 </div>
@@ -1658,6 +1845,15 @@
                     });
                 }
             });
+        });
+
+        // Prevenir scroll da tela de fundo quando modais da agenda estiverem abertos
+        $('#modalNovoCompromisso, #modalAcaoDia, #calendarModal').on('show', function() {
+            $('body').addClass('modal-open').css('overflow', 'hidden');
+        }).on('hidden', function() {
+            if (!$('#modalNovoCompromisso.in, #modalAcaoDia.in, #calendarModal.in').length) {
+                $('body').removeClass('modal-open').css('overflow', '');
+            }
         });
     });
 </script>

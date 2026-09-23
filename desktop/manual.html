@@ -339,7 +339,7 @@
         <h2>5. Agenda & Hub de Operações da Tela Inicial</h2>
         <p>A Agenda da tela inicial do Amura OS é uma central dinâmica de produtividade e acompanhamento:</p>
         <ul>
-          <li><b>Compromissos e Lembretes:</b> Clique no botão <code>+ Novo Compromisso</code> para registrar visitas técnicas, entregas e tarefas com horário e cor de destaque.</li>
+          <li><b>Compromissos e Lembretes:</b> Clique no botão <code>+ Novo Compromisso</code> para registrar visitas técnicas, entregas e tarefas. O modal abre perfeitamente centralizado, com campos de Data e Hora organizados lado a lado, layout compacto e eliminação total de barras de rolagem (scroll).</li>
           <li><b>Criação de OS em 1 Clique:</b> Clique em qualquer dia vazio do calendário para abrir uma Nova Ordem de Serviço com a data de entrega pré-selecionada.</li>
           <li><b>Reprogramação por Drag & Drop:</b> Arraste qualquer card de OS ou Compromisso para outro dia. O sistema atualiza o prazo no banco de dados automaticamente.</li>
           <li><b>Vencimentos Financeiros:</b> Contas a pagar (vermelho) e a receber (verde) são exibidas no dia do vencimento.</li>
@@ -367,7 +367,15 @@
           <li><b>Mensagem do WhatsApp:</b> Personalize o texto automático usando as variáveis <code>{CLIENTE_NOME}</code>, <code>{NUMERO_OS}</code>, <code>{STATUS_OS}</code>, <code>{VALOR_OS}</code>, <code>{DESCRI_PRODUTOS}</code> e <code>{TELEFONE_EMITENTE}</code>.</li>
         </ul>
 
-        <h3>6.3. Aba Backup e Atualizações:</h3>
+        <h3>6.3. Aba API:</h3>
+        <ul>
+          <li><b>Ativar acesso à API:</b> Liga ou desliga as rotas da API RESTful (<code>/api/v1/</code>) para integrações externas.</li>
+          <li><b>URL Base:</b> Exibe o endpoint base da API do sistema.</li>
+          <li><b>Tempo de Expiração:</b> Define a validade do Token de sessão JWT (1 minuto a 1 mês).</li>
+          <li><b>Resetar Token JWT:</b> Gera uma nova chave secreta criptográfica (<code>JWT_SECRET</code>), invalidando imediatamente tokens antigos por segurança.</li>
+        </ul>
+
+        <h3>6.4. Aba Backup e Atualizações:</h3>
         <ul>
           <li>Aba dedicada exclusivamente para criação e restauração de backups.</li>
           <li>Aba de atualizações para envio de pacotes <code>.zip</code> sem necessidade de recompilar instalador.</li>
@@ -416,6 +424,14 @@
       <!-- 9. Atualizações -->
       <section class="doc-section" id="atualizacoes">
         <h2>9. Guia de Atualização de Banco de Dados e Sistema</h2>
+        <h3>Pacotes Hot-Update (Modulares):</h3>
+        <p>Atualizações pontuais e modulares do Amura OS podem ser geradas e aplicadas sem reinstalação completa:</p>
+        <ul>
+          <li><b>Geração do Pacote:</b> Execute <code>npm run hot-update</code> no terminal para empacotar os arquivos modificados em formato <code>.zip</code> dentro da pasta <code>updates/hot-updates/</code>.</li>
+          <li><b>Instalação pelo Desktop:</b> Na janela do aplicativo, acesse o menu superior <b>Arquivo &rarr; Instalar Pacote de Atualização (.zip)...</b> e selecione o arquivo gerado. O sistema realiza um backup de segurança e recarrega os módulos na hora.</li>
+          <li><b>Instalação pelo Painel Web:</b> Você também pode enviar o pacote <code>.zip</code> via <b>Configurações &rarr; Atualizações</b>.</li>
+        </ul>
+
         <h3>Atualizando a Estrutura do Banco (Migrations):</h3>
         <p>Quando novas funcionalidades forem adicionadas ao sistema:</p>
         <ol>

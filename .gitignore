@@ -8,4 +8,6 @@ application/logs/*.php
 .env.local
 .DS_Store
 Thumbs.db
+updates/hot-updates/*.zip
+!updates/hot-updates/latest-hot-update.zip
 

@@ -87,7 +87,8 @@ A Agenda da tela inicial do Amura OS foi transformada em uma central completa de
 
 ### ⚡ Funções Integradas:
 1. **Compromissos e Lembretes Rápidos**:
-   - Clique no botão **"+ Novo Compromisso"** no canto superior da Agenda.
+   - Clique no botão **"+ Novo Compromisso"** no canto superior da Agenda ou dê um clique duplo em uma data.
+   - O modal abre perfeitamente centralizado na tela, com campos de Data e Hora organizados lado a lado, layout compacto e eliminação completa de barras de rolagem (scroll).
    - Defina o título, data, horário, cor de destaque (Laranja, Azul, Verde, Vermelho ou Roxo) e observações.
 2. **Criação de OS em 1 Clique**:
    - Ao clicar sobre qualquer dia do calendário, o sistema abre um menu com opções rápidas. Ao escolher **"Abrir Nova Ordem de Serviço"**, o formulário de abertura de OS já carrega a data de entrega pré-selecionada.
@@ -134,7 +135,10 @@ Acesse o menu **Configurações -> Sistema** (`/sistema/configurar`). O módulo 
 - Impressão em 2 vias e status de visualização padrão.
 
 ### 📍 6.8. Aba API
-- Ativação da API REST e gestão do tempo de expiração do Token JWT.
+- **Ativar acesso à API**: Ativa ou desativa globalmente os endpoints da API RESTful (`/api/v1/`) para integração externa.
+- **URL Base**: Exibe o endpoint base da API do sistema para configuração em aplicativos mobile ou parceiros.
+- **Tempo de Expiração**: Define a validade do Token JWT emitido no login (1 minuto a 1 mês).
+- **Resetar Token JWT**: Gera uma nova chave secreta criptográfica (`JWT_SECRET`), revogando imediatamente todos os tokens JWT antigos para segurança.
 
 ### 📍 6.9. Aba E-mail
 - Configuração de servidor SMTP para envio de e-mails automáticos.
@@ -179,7 +183,9 @@ O Amura OS conta com um portal exclusivo para que os clientes acompanhem ordens 
 
 ## 9. Guia de Atualização de Banco de Dados e Sistema
 
-- **Pacotes de Atualização (.zip)**: Envie arquivos de atualização diretamente pela aba **Configurações -> Atualizações** sem necessidade de compilar um novo instalador.
+- **Pacotes Hot-Update (Modulares)**: Atualizações pontuais do sistema podem ser geradas via comando `npm run hot-update` no terminal, empacotando automaticamente os arquivos modificados em `.zip` na pasta `updates/hot-updates/`.
+- **Instalação do Pacote no Amura OS Desktop**: No aplicativo Desktop, acesse o menu superior **Arquivo -> Instalar Pacote de Atualização (.zip)...** e selecione o arquivo. O sistema cria backup preventivo do banco, aplica os arquivos e recarrega instantaneamente.
+- **Pacotes via Painel Web**: Também é possível enviar pacotes diretamente pela aba **Configurações -> Atualizações**.
 - **Migrações de Banco de Dados**: Clique em **Executar Migrações do Banco** para atualizar schemas e tabelas.
 
 ---

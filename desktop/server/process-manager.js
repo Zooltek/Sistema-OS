@@ -1,4 +1,4 @@
-const { spawn, exec, execSync } = require('child_process');
+const { spawn, spawnSync, exec, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
@@ -37,12 +37,15 @@ class ProcessManager {
     const isPortable = !!process.env.PORTABLE_EXECUTABLE_DIR;
     const exeDir = process.env.PORTABLE_EXECUTABLE_DIR || (this.isPackaged ? path.dirname(process.execPath) : null);
     const adjacentDataDir = exeDir ? path.join(exeDir, 'AmuraOS_Data') : null;
+    const parentDataDir = exeDir ? path.join(path.dirname(exeDir), 'AmuraOS_Data') : null;
     const distDataDir = path.join(this.appRoot, 'dist', 'AmuraOS_Data');
 
     if (isPortable) {
       this.dataDir = path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'AmuraOS_Data');
     } else if (adjacentDataDir && fs.existsSync(adjacentDataDir)) {
       this.dataDir = adjacentDataDir;
+    } else if (parentDataDir && fs.existsSync(parentDataDir)) {
+      this.dataDir = parentDataDir;
     } else if (fs.existsSync(distDataDir)) {
       this.dataDir = distDataDir;
     } else if (this.isPackaged) {
@@ -137,9 +140,8 @@ class ProcessManager {
       if (onProgress) onProgress('Inicializando arquivos do MariaDB...');
       this.log('Inicializando estrutura do MariaDB com mariadb-install-db...');
       const cleanDbPath = this.dbDataDir.replace(/\\/g, '/');
-      const installCmd = `"${this.installDbExe}" --datadir="${cleanDbPath}"`;
       try {
-        execSync(installCmd, { stdio: 'inherit' });
+        spawnSync(this.installDbExe, [`--datadir=${cleanDbPath}`], { windowsHide: true, stdio: 'ignore' });
         this.log('Banco de dados inicializado com sucesso.');
       } catch (err) {
         this.log(`Aviso na inicialização do banco: ${err.message}`, 'AVISO');
@@ -206,60 +208,84 @@ class ProcessManager {
         }
       });
 
+      let isChecking = false;
       const checkPing = setInterval(() => {
+        if (isResolved || isChecking) return;
         attempts++;
-        exec(`"${this.mysqladminExe}" -h 127.0.0.1 -P 3307 -u root ping`, (err, stdout) => {
-          if (!err && stdout && stdout.includes('alive')) {
+        isChecking = true;
+        const pingChild = spawn(this.mysqladminExe, ['-h', '127.0.0.1', '-P', '3307', '-u', 'root', 'ping'], {
+          windowsHide: true
+        });
+        let pingOut = '';
+        if (pingChild.stdout) {
+          pingChild.stdout.on('data', (d) => { pingOut += d.toString(); });
+        }
+        pingChild.on('close', (code) => {
+          isChecking = false;
+          if (isResolved) return;
+          if (code === 0 && pingOut.includes('alive')) {
             this.log('MariaDB está pronto e respondendo (alive).');
             finish(true);
-          } else if (attempts >= 60) {
+          } else if (attempts >= 120) { // 30 segundos
             this.log('Atingiu limite de tentativas para MariaDB ping.', 'ERRO');
-            finish(false, 'Tempo limite excedido (9s) aguardando o banco de dados MariaDB na porta 3307.');
+            finish(false, 'Tempo limite excedido (30s) aguardando o banco de dados MariaDB na porta 3307.');
           }
         });
-      }, 150);
+        pingChild.on('error', () => {
+          isChecking = false;
+        });
+      }, 250);
     });
   }
 
   async importInitialSchemaIfNeeded(onProgress) {
-    return new Promise((resolve) => {
-      const checkDbCmd = `"${this.mysqlExe}" -h 127.0.0.1 -P 3307 -u root -e "SHOW DATABASES LIKE 'amura_os';"`;
-      exec(checkDbCmd, (err, stdout) => {
-        if (!stdout || !stdout.includes('amura_os')) {
-          if (onProgress) onProgress('Criando banco e importando dados iniciais...');
-          this.log('Banco amura_os não encontrado. Criando e importando banco.sql...');
-          
-          try {
-            execSync(`"${this.mysqlExe}" -h 127.0.0.1 -P 3307 -u root -e "CREATE DATABASE IF NOT EXISTS amura_os CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"`);
-            if (fs.existsSync(this.bancoSql)) {
-              execSync(`powershell -Command "Get-Content -Path '${this.bancoSql}' -Raw | & '${this.mysqlExe}' -h 127.0.0.1 -P 3307 -u root amura_os"`, { stdio: 'inherit' });
-              this.log('banco.sql importado com sucesso!');
-            }
-          } catch (importErr) {
-            this.log(`Erro na importação: ${importErr.message}`, 'ERRO');
-          }
-        } else {
-          this.log('Banco de dados amura_os já existe.');
-        }
-
-        // Sanitizar/Garantir credenciais do administrador padrão caso necessário
-        try {
-          const hashAdmin = '$2y$10$m/ST/CNtsHa63neTDTLMIOkadWFOpTdn.9p5jPOwnvLeZ96DB.pOi';
-          const fixUserSql = `
-            SET SESSION sql_mode = '';
-            UPDATE amura_os.permissoes SET data = CURDATE() WHERE idPermissao = 1 AND (data < '2000-01-01' OR data IS NULL);
-            UPDATE amura_os.usuarios SET nome = 'Administrador', email = 'admin@admin.com', senha = '${hashAdmin}', situacao = 1, dataExpiracao = '3000-01-01', dataCadastro = CURDATE() WHERE idUsuarios = 1 AND (email = 'admin_email' OR senha = 'admin_password');
-            INSERT IGNORE INTO amura_os.usuarios (idUsuarios, nome, rg, cpf, cep, rua, numero, bairro, cidade, estado, email, senha, telefone, celular, situacao, dataCadastro, permissoes_id, dataExpiracao)
-            VALUES (1, 'Administrador', 'MG-25.502.560', '600.021.520-87', '70005-115', 'Rua Acima', '12', 'Alvorada', 'Teste', 'MG', 'admin@admin.com', '${hashAdmin}', '000000-0000', '', 1, CURDATE(), 1, '3000-01-01');
-          `;
-          execSync(`"${this.mysqlExe}" -h 127.0.0.1 -P 3307 -u root -e "${fixUserSql.replace(/\r?\n/g, ' ')}"`, { stdio: 'ignore' });
-        } catch (sanityErr) {
-          this.log(`Aviso ao verificar credenciais de usuário: ${sanityErr.message}`, 'AVISO');
-        }
-
-        resolve();
+    try {
+      this.log('Verificando existência do banco de dados amura_os...');
+      const checkRes = spawnSync(this.mysqlExe, ['-h', '127.0.0.1', '-P', '3307', '-u', 'root', '-e', 'SHOW DATABASES LIKE "amura_os";'], {
+        encoding: 'utf8',
+        windowsHide: true
       });
-    });
+      const stdout = checkRes.stdout || '';
+
+      if (!stdout.includes('amura_os')) {
+        if (onProgress) onProgress('Criando banco e importando dados iniciais...');
+        this.log('Banco amura_os não encontrado. Criando e importando banco.sql...');
+
+        spawnSync(this.mysqlExe, ['-h', '127.0.0.1', '-P', '3307', '-u', 'root', '-e', 'CREATE DATABASE IF NOT EXISTS amura_os CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'], {
+          windowsHide: true
+        });
+
+        if (fs.existsSync(this.bancoSql)) {
+          const sqlContent = fs.readFileSync(this.bancoSql);
+          spawnSync(this.mysqlExe, ['-h', '127.0.0.1', '-P', '3307', '-u', 'root', 'amura_os'], {
+            input: sqlContent,
+            windowsHide: true
+          });
+          this.log('banco.sql importado com sucesso!');
+        }
+      } else {
+        this.log('Banco de dados amura_os já existe.');
+      }
+
+      // Sanitizar/Garantir credenciais do administrador padrão caso necessário
+      try {
+        const hashAdmin = '$2y$10$m/ST/CNtsHa63neTDTLMIOkadWFOpTdn.9p5jPOwnvLeZ96DB.pOi';
+        const fixUserSql = `
+          SET SESSION sql_mode = '';
+          UPDATE amura_os.permissoes SET data = CURDATE() WHERE idPermissao = 1 AND (data < '2000-01-01' OR data IS NULL);
+          UPDATE amura_os.usuarios SET nome = 'Administrador', email = 'admin@admin.com', senha = '${hashAdmin}', situacao = 1, dataExpiracao = '3000-01-01', dataCadastro = CURDATE() WHERE idUsuarios = 1 AND (email = 'admin_email' OR senha = 'admin_password');
+          INSERT IGNORE INTO amura_os.usuarios (idUsuarios, nome, rg, cpf, cep, rua, numero, bairro, cidade, estado, email, senha, telefone, celular, situacao, dataCadastro, permissoes_id, dataExpiracao)
+          VALUES (1, 'Administrador', 'MG-25.502.560', '600.021.520-87', '70005-115', 'Rua Acima', '12', 'Alvorada', 'Teste', 'MG', 'admin@admin.com', '${hashAdmin}', '000000-0000', '', 1, CURDATE(), 1, '3000-01-01');
+        `;
+        spawnSync(this.mysqlExe, ['-h', '127.0.0.1', '-P', '3307', '-u', 'root', '-e', fixUserSql.replace(/\r?\n/g, ' ')], {
+          windowsHide: true
+        });
+      } catch (sanityErr) {
+        this.log(`Aviso ao verificar credenciais de usuário: ${sanityErr.message}`, 'AVISO');
+      }
+    } catch (dbErr) {
+      this.log(`Erro ao verificar banco de dados: ${dbErr.message}`, 'AVISO');
+    }
   }
 
   async startPhpServer() {
@@ -327,21 +353,29 @@ class ProcessManager {
   async waitForHttpServer(url, maxSeconds = 30) {
     return new Promise((resolve, reject) => {
       let elapsed = 0;
+      let isDone = false;
       const interval = setInterval(() => {
-        elapsed += 0.15;
+        if (isDone) return;
+        elapsed += 0.25;
+        if (elapsed >= maxSeconds) {
+          isDone = true;
+          clearInterval(interval);
+          reject(new Error('Tempo limite excedido aguardando servidor web local.'));
+          return;
+        }
+
         http.get(url, (res) => {
+          if (isDone) return;
           if (res.statusCode >= 200 && res.statusCode < 500) {
+            isDone = true;
             clearInterval(interval);
             this.log(`Servidor web respondeu com status ${res.statusCode}.`);
             resolve();
           }
         }).on('error', () => {
-          if (elapsed >= maxSeconds) {
-            clearInterval(interval);
-            reject(new Error('Tempo limite excedido aguardando servidor web local.'));
-          }
+          // Servidor ainda não aceitando conexões
         });
-      }, 150);
+      }, 250);
     });
   }
 
@@ -529,20 +563,20 @@ class ProcessManager {
     clearTimeout(this.phpRestartTimeout);
     this.log('Encerrando serviços de suporte (PHP e MariaDB)...');
 
-    if (this.phpProcess) {
+    if (this.phpProcess && !this.phpProcess.killed) {
       try {
         this.phpProcess.kill();
-        exec(`taskkill /PID ${this.phpProcess.pid} /T /F`, () => {});
+        spawn('taskkill', ['/PID', String(this.phpProcess.pid), '/T', '/F'], { windowsHide: true });
       } catch (e) {}
     }
 
-    if (this.mysqlProcess) {
-      try {
-        execSync(`"${this.mysqladminExe}" -h 127.0.0.1 -P 3307 -u root shutdown`, { stdio: 'ignore' });
-      } catch (e) {
+    try {
+      spawnSync(this.mysqladminExe, ['-h', '127.0.0.1', '-P', '3307', '-u', 'root', 'shutdown'], { windowsHide: true, stdio: 'ignore' });
+    } catch (e) {
+      if (this.mysqlProcess && !this.mysqlProcess.killed) {
         try {
           this.mysqlProcess.kill();
-          exec(`taskkill /PID ${this.mysqlProcess.pid} /T /F`, () => {});
+          spawn('taskkill', ['/PID', String(this.mysqlProcess.pid), '/T', '/F'], { windowsHide: true });
         } catch (err) {}
       }
     }

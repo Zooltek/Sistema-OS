@@ -482,6 +482,18 @@ app.whenReady().then(async () => {
 
   processManager = new ProcessManager(app, app.isPackaged);
 
+  process.on('uncaughtException', (err) => {
+    if (processManager) {
+      processManager.log(`[UNCAUGHT EXCEPTION] ${err.stack || err.message}`, 'FATAL');
+    }
+  });
+
+  process.on('unhandledRejection', (reason) => {
+    if (processManager) {
+      processManager.log(`[UNHANDLED REJECTION] ${reason ? (reason.stack || reason.message || reason) : 'Unknown'}`, 'FATAL');
+    }
+  });
+
   try {
     await processManager.start((statusMessage) => {
       if (splashWindow && !splashWindow.isDestroyed() && splashWindow.webContents) {
@@ -493,14 +505,24 @@ app.whenReady().then(async () => {
     });
 
     mainWindow.loadURL(SERVER_URL);
-    mainWindow.once('ready-to-show', () => {
+
+    let hasShown = false;
+    const showMain = () => {
+      if (hasShown) return;
+      hasShown = true;
       if (splashWindow && !splashWindow.isDestroyed()) {
         splashWindow.close();
       }
       mainWindow.show();
       mainWindow.maximize();
-    });
+    };
+
+    mainWindow.once('ready-to-show', showMain);
+    setTimeout(showMain, 3500);
   } catch (err) {
+    if (processManager) {
+      processManager.log(`[FALHA DE INICIALIZAÇÃO] ${err.stack || err.message}`, 'FATAL');
+    }
     if (splashWindow && !splashWindow.isDestroyed()) {
       splashWindow.close();
     }

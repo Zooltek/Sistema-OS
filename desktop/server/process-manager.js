@@ -280,6 +280,25 @@ class ProcessManager {
         spawnSync(this.mysqlExe, ['-h', '127.0.0.1', '-P', '3307', '-u', 'root', '-e', fixUserSql.replace(/\r?\n/g, ' ')], {
           windowsHide: true
         });
+
+        // Garantir campos estendidos na tabela produtos caso ainda não existam
+        try {
+          const alterProdutosSql = `
+            ALTER TABLE amura_os.produtos 
+              ADD COLUMN IF NOT EXISTS categoria VARCHAR(80) NULL,
+              ADD COLUMN IF NOT EXISTS marca VARCHAR(80) NULL,
+              ADD COLUMN IF NOT EXISTS modelo VARCHAR(80) NULL,
+              ADD COLUMN IF NOT EXISTS codigo_identificacao VARCHAR(100) NULL,
+              ADD COLUMN IF NOT EXISTS localizacao VARCHAR(80) NULL,
+              ADD COLUMN IF NOT EXISTS garantia VARCHAR(45) NULL,
+              ADD COLUMN IF NOT EXISTS observacoes TEXT NULL;
+          `;
+          spawnSync(this.mysqlExe, ['-h', '127.0.0.1', '-P', '3307', '-u', 'root', '-e', alterProdutosSql.replace(/\r?\n/g, ' ')], {
+            windowsHide: true
+          });
+        } catch (alterErr) {
+          this.log(`Aviso ao verificar campos estendidos de produtos: ${alterErr.message}`, 'AVISO');
+        }
       } catch (sanityErr) {
         this.log(`Aviso ao verificar credenciais de usuário: ${sanityErr.message}`, 'AVISO');
       }

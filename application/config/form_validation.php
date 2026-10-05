@@ -106,6 +106,46 @@ $config = [
             'label' => 'Estoque Minimo',
             'rules' => 'trim',
         ],
+        [
+            'field' => 'codDeBarra',
+            'label' => 'Código de Barras',
+            'rules' => 'trim',
+        ],
+        [
+            'field' => 'categoria',
+            'label' => 'Categoria',
+            'rules' => 'trim',
+        ],
+        [
+            'field' => 'marca',
+            'label' => 'Marca',
+            'rules' => 'trim',
+        ],
+        [
+            'field' => 'modelo',
+            'label' => 'Modelo',
+            'rules' => 'trim',
+        ],
+        [
+            'field' => 'codigo_identificacao',
+            'label' => 'Código de Identificação',
+            'rules' => 'trim',
+        ],
+        [
+            'field' => 'localizacao',
+            'label' => 'Localização',
+            'rules' => 'trim',
+        ],
+        [
+            'field' => 'garantia',
+            'label' => 'Garantia',
+            'rules' => 'trim',
+        ],
+        [
+            'field' => 'observacoes',
+            'label' => 'Observações',
+            'rules' => 'trim',
+        ],
     ],
     'usuarios' => [
         [

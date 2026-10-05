@@ -1,0 +1,17 @@
+[
+  {"unidade": "UN", "descricao": "UN - Unidade"},
+  {"unidade": "PC", "descricao": "PC - Peça"},
+  {"unidade": "CX", "descricao": "CX - Caixa"},
+  {"unidade": "KG", "descricao": "KG - Quilograma"},
+  {"unidade": "GR", "descricao": "GR - Grama"},
+  {"unidade": "MT", "descricao": "MT - Metro"},
+  {"unidade": "CM", "descricao": "CM - Centímetro"},
+  {"unidade": "LT", "descricao": "LT - Litro"},
+  {"unidade": "ML", "descricao": "ML - Mililitro"},
+  {"unidade": "PAR", "descricao": "PAR - Par"},
+  {"unidade": "JG", "descricao": "JG - Jogo"},
+  {"unidade": "KIT", "descricao": "KIT - Kit"},
+  {"unidade": "FD", "descricao": "FD - Fardo"},
+  {"unidade": "RL", "descricao": "RL - Rolo"},
+  {"unidade": "SC", "descricao": "SC - Saco"}
+]

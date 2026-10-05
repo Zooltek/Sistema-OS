@@ -218,21 +218,23 @@ function buildApplicationMenu() {
       label: 'Rede Local',
       submenu: [
         {
-          label: 'Compartilhar na Rede Local (Ligar / Desligar)',
-          type: 'checkbox',
-          checked: !!(processManager && processManager.config && processManager.config.networkSharing),
-          click: async (menuItem) => {
+          label: (processManager && processManager.config && processManager.config.networkSharing)
+            ? 'Compartilhar na Rede: LIGADO (Clique para Desligar)'
+            : 'Compartilhar na Rede: DESLIGADO (Clique para Ligar)',
+          click: async () => {
             if (!processManager) return;
             try {
-              await processManager.setNetworkSharing(menuItem.checked);
+              const currentStatus = !!(processManager.config && processManager.config.networkSharing);
+              const newStatus = !currentStatus;
+              await processManager.setNetworkSharing(newStatus);
               const ips = processManager.getLocalIpAddresses();
               const ipList = ips.map(i => `• ${i.name}: ${i.url}`).join('\n') || 'Nenhuma placa de rede ativa encontrada.';
 
               dialog.showMessageBox(mainWindow, {
                 type: 'info',
                 title: 'Rede Local',
-                message: menuItem.checked ? 'Compartilhamento em Rede ATIVADO!' : 'Compartilhamento em Rede DESATIVADO (Apenas Local).',
-                detail: menuItem.checked ? `Outros computadores ou celulares podem acessar o Amura OS em:\n${ipList}` : 'Agora o sistema só aceita conexões deste computador (127.0.0.1).'
+                message: newStatus ? 'Compartilhamento em Rede ATIVADO!' : 'Compartilhamento em Rede DESATIVADO (Apenas Local).',
+                detail: newStatus ? `Outros computadores ou celulares podem acessar o Amura OS em:\n${ipList}` : 'Agora o sistema só aceita conexões deste computador (127.0.0.1).'
               });
 
               // Reconstruir menu para manter estado atualizado
@@ -256,7 +258,7 @@ function buildApplicationMenu() {
               message: isSharing ? 'O compartilhamento em rede está ATIVO.' : 'Atenção: O compartilhamento em rede está DESATIVADO.',
               detail: isSharing
                 ? `Para acessar de outro computador, tablet ou celular, abra o navegador em:\n\n${ipList}`
-                : `Endereços disponíveis no computador:\n${ipList}\n\nPara liberar o acesso para outros computadores, ative a opção "Compartilhar na Rede Local" no menu acima.`
+                : `Endereços disponíveis no computador:\n${ipList}\n\nPara liberar o acesso para outros computadores, clique em "Compartilhar na Rede" no menu acima.`
             });
           }
         }

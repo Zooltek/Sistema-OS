@@ -60,10 +60,25 @@
                     }
                     foreach ($results as $r) {
                         $estoqueBadge = ($r->estoque <= 0) ? 'amura-badge-danger' : (($r->estoque <= 5) ? 'amura-badge-warning' : 'amura-badge-neutral');
+                        $extraInfo = [];
+                        if (!empty($r->categoria)) {
+                            $extraInfo[] = '<span class="badge" style="background:#334155; font-size:10px; padding:2px 6px; font-weight:normal;">' . html_escape($r->categoria) . '</span>';
+                        }
+                        if (!empty($r->marca)) {
+                            $extraInfo[] = '<span class="badge" style="background:#1e293b; border:1px solid #475569; font-size:10px; padding:2px 6px; font-weight:normal;">' . html_escape($r->marca) . '</span>';
+                        }
+                        if (!empty($r->codigo_identificacao)) {
+                            $extraInfo[] = '<span class="badge" style="background:#0f172a; border:1px solid #38bdf8; color:#38bdf8; font-size:10px; padding:2px 6px; font-weight:normal;"><i class="bx bx-barcode"></i> ' . html_escape($r->codigo_identificacao) . '</span>';
+                        }
+                        if (!empty($r->localizacao)) {
+                            $extraInfo[] = '<small style="color:#94a3b8; font-size:11px;"><i class="bx bx-map-pin" style="color:#ff9204;"></i> ' . html_escape($r->localizacao) . '</small>';
+                        }
+                        $tagsHtml = !empty($extraInfo) ? '<div style="margin-top: 4px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">' . implode(' ', $extraInfo) . '</div>' : '';
+
                         echo '<tr>';
                         echo '<td><strong>#' . $r->idProdutos . '</strong></td>';
                         echo '<td>' . html_escape($r->codDeBarra) . '</td>';
-                        echo '<td>' . html_escape($r->descricao) . '</td>';
+                        echo '<td><div style="font-weight: 600; color: #f8fafc;">' . html_escape($r->descricao) . '</div>' . $tagsHtml . '</td>';
                         echo '<td style="text-align: center;"><span class="amura-badge ' . $estoqueBadge . '">' . $r->estoque . '</span></td>';
                         echo '<td style="text-align: right;"><strong>R$ ' . number_format($r->precoVenda, 2, ',', '.') . '</strong></td>';
                         echo '<td style="text-align: center;">';

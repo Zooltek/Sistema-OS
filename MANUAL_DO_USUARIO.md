@@ -173,7 +173,7 @@ O Amura OS conta com um portal exclusivo para que os clientes acompanhem ordens 
 
 ### Como Disponibilizar o Acesso pelo Modo Desktop:
 1. **Na mesma rede (Loja / Oficina)**:
-   - Na janela do Amura OS, acesse o menu **Rede Local -> Compartilhar na Rede Local (Ligar / Desligar)**.
+   - Na janela do Amura OS, acesse o menu **Rede Local -> Compartilhar na Rede (LIGADO / DESLIGADO)**.
    - Veja o endereço em **Rede Local -> Ver Endereços de Acesso (IP / URL)** (ex: `http://192.168.1.100:8002/mine`).
    - Qualquer computador, tablet ou celular conectado ao mesmo Wi-Fi poderá acessar o portal.
 2. **Pela Internet (Cliente acessando de casa)**:
